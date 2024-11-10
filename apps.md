@@ -10,3 +10,5 @@
 - ani-cli (For Watching Anime on my terminal)
 - Syncplay (For watching Anime or Movies with my friends elsewhere in the world)
 - LibreOffice (For Documents) 
+- fre:ac (CD Ripping)
+- MakeMKV (Blu-Ray Ripping) 
