@@ -1,4 +1,8 @@
-# apps
+# apps 
+
+**Average Linux Rice Tool:** [Fastfetch]() 
+
+**Code Editor:** [VSCodium](https://aur.archlinux.org/packages/vscodium-bin)
 
 **Photo Editor:** [GIMP](https://archlinux.org/packages/extra/x86_64/gimp/)
 
@@ -27,3 +31,5 @@
 **Game Engine:** [Godot Engine](https://archlinux.org/packages/extra/x86_64/godot/)
 
 **Music Player:** [Foobar2000](https://www.foobar2000.org/download) ([with Foobox](https://github.com/dream7180/foobox-en/releases))
+
+**ASCII Generator:** [Figlet]() 
