@@ -9,3 +9,5 @@ I don't use Arch Linux yet, this is just a wishlist for when I transition from W
 **Terminal Emulator:** [Kitty](https://archlinux.org/packages/extra/x86_64/kitty/)
 
 **Topbar:** [Waybar](https://archlinux.org/packages/extra/x86_64/waybar/)
+
+**Compatibility Layer:** [Wine](https://wiki.archlinux.org/title/Wine)

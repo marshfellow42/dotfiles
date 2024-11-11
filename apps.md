@@ -25,3 +25,5 @@
 **Blu-Ray Ripping:** [MakeMKV](https://aur.archlinux.org/packages/makemkv)
 
 **Game Engine:** [Godot Engine](https://archlinux.org/packages/extra/x86_64/godot/)
+
+**Music Player:** [Foobar2000](https://www.foobar2000.org/download) ([with Foobox](https://github.com/dream7180/foobox-en/releases))
