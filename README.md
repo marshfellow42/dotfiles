@@ -8,6 +8,8 @@ I don't use Arch Linux yet, this is just a wishlist for when I transition from W
 
 **Hyprland Lock Screen:** [Hyprlock]()
 
+**Hyprland Idle Daemon:** [Hypridle]()
+
 **Hyprland Wallpaper:** [Hyprpaper]() 
 
 **Hyprland Screenshot:** [Hyprshot](https://aur.archlinux.org/packages/hyprshot)
