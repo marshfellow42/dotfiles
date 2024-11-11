@@ -20,7 +20,7 @@
 
 **Document Suite:** [LibreOffice](https://archlinux.org/packages/extra-testing/x86_64/libreoffice-fresh/)
 
-**CD Ripping:** [fre:ac](https://aur.archlinux.org/packages/freac)
+**CD Ripping:** [whipper](https://archlinux.org/packages/extra/x86_64/whipper/)
 
 **Blu-Ray Ripping:** [MakeMKV](https://aur.archlinux.org/packages/makemkv)
 
