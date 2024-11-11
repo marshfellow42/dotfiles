@@ -4,6 +4,12 @@ I don't use Arch Linux yet, this is just a wishlist for when I transition from W
 
 **Desktop Environment:** [Hyprland](https://archlinux.org/packages/extra-testing/x86_64/hyprland/)
 
+**Hyprland Cursor:** [Hyprcursor]()
+
+**Hyprland Lock Screen:** [Hyprlock]()
+
+**Hyprland Wallpaper:** [Hyprpaper]() 
+
 **File Manager:** [Dolphin](https://archlinux.org/packages/extra/x86_64/dolphin/)
 
 **Terminal Emulator:** [Kitty](https://archlinux.org/packages/extra/x86_64/kitty/)
