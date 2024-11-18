@@ -32,4 +32,6 @@
 
 **Music Player:** [Foobar2000](https://www.foobar2000.org/download) ([with Foobox](https://github.com/dream7180/foobox-en/releases))
 
-**ASCII Generator:** [Figlet]() 
+**ASCII Generator:** [Figlet](https://archlinux.org/packages/extra/x86_64/figlet/) 
+
+**Art Reference Board:** [Beeref](https://aur.archlinux.org/packages/beeref)
