@@ -10,7 +10,7 @@ I don't use Arch Linux yet, this is just a wishlist for when I transition from W
 
 **Hyprland Idle Daemon:** [Hypridle]()
 
-**Hyprland Wallpaper:** [Hyprpaper]() 
+**Wayland Wallpaper:** [swww](https://github.com/Horus645/swww), I would use [Hyprpaper]() but they don't have support for animated wallpapers, maybe I could include it someday
 
 **Hyprland Screenshot:** [Hyprshot](https://aur.archlinux.org/packages/hyprshot)
 
