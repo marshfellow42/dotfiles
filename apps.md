@@ -1,6 +1,6 @@
 # apps 
 
-**Average Linux Rice Tool:** [Fastfetch]() 
+**Average Linux Rice Tool:** [Fastfetch](https://github.com/fastfetch-cli/fastfetch) 
 
 **Code Editor:** [VSCodium](https://aur.archlinux.org/packages/vscodium-bin)
 
