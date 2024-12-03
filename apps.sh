@@ -15,7 +15,7 @@ state=$(get_state)
 if [[ "$state" == "start" ]]; then
     cd ~/Downloads || { echo "Error: Cannot access ~/Downloads"; exit 1; }
 
-    if ! pacman -Syu git go fastfetch gimp krita kdenlive mpv flatpak syncplay libreoffice-fresh whipper godot figlet lutris dolphin-emu retroarch blender; then
+    if ! pacman -Syu git go fastfetch gimp krita mpv flatpak syncplay libreoffice-fresh whipper godot figlet lutris dolphin-emu retroarch blender; then
         echo "Error: Failed to install packages with pacman."
         exit 1
     fi
@@ -42,7 +42,7 @@ if [[ "$state" == "start" ]]; then
 fi
 
 if [[ "$state" == "post-reboot" ]]; then
-    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite
+    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive
 
     rm -f "$STATE_FILE"
     echo "Script completed!"
