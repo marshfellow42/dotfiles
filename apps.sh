@@ -25,7 +25,7 @@ if [[ "$state" == "start" ]]; then
     makepkg -si || { echo "Error: Failed to build yay"; exit 1; }
     cd ../
 
-    yay -Syu vscodium-bin mullvad-browser-bin librewolf-bin ani-cli makemkv beeref jellyfin-media-player foobar2000 emulationstation-de rpcs3-bin cemu ryujinx-git
+    yay -Syu vscodium-bin mullvad-browser-bin librewolf-bin ani-cli makemkv beeref foobar2000 emulationstation-de rpcs3-bin cemu ryujinx-git
 
     sudo pacman -Syu base-devel clang git cmake sndio jack2 openal qt6-base qt6-declarative qt6-multimedia sdl2 vulkan-validation-layers
     git clone --recursive https://github.com/shadps4-emu/shadPS4.git || { echo "Error: Failed to clone ShadPS4"; exit 1; }
@@ -42,7 +42,7 @@ if [[ "$state" == "start" ]]; then
 fi
 
 if [[ "$state" == "post-reboot" ]]; then
-    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive
+    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive com.github.iwalton3.jellyfin-media-player
 
     rm -f "$STATE_FILE"
     echo "Script completed!"
