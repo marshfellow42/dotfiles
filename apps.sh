@@ -42,7 +42,7 @@ if [[ "$state" == "start" ]]; then
 fi
 
 if [[ "$state" == "post-reboot" ]]; then
-    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive com.github.iwalton3.jellyfin-media-player
+    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive com.github.iwalton3.jellyfin-media-player org.prismlauncher.PrismLauncher
 
     rm -f "$STATE_FILE"
     echo "Script completed!"
