@@ -1,6 +1,6 @@
-# my-arch-environment
+# hypricing
 
-I don't use Arch Linux yet, this is just a wishlist for when I transition from Windows to Linux
+A Hyprland Ricing helper
 
 These scripts will only be used after Hyprland is installed through archinstall
 
