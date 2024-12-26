@@ -1,0 +1,3 @@
+yay
+
+flatpak update
