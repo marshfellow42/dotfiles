@@ -1,66 +1,81 @@
 #!/usr/bin/bash
 
-STATE_FILE="/tmp/script_state"
+cd ~/Downloads
 
-function set_state {
-    echo "$1" > "$STATE_FILE"
-}
+read -p "Do you wish to download the Developer Suite? [Y/N] " developer_choice
 
-function get_state {
-    [ -f "$STATE_FILE" ] && cat "$STATE_FILE" || echo "start"
-}
+read -p "Do you wish to download Libreoffice? [Y/N] " libreoffice_choice
 
-state=$(get_state)
+read -p "Do you wish to download the Creator Suite? [Y/N] " creator_choice
 
-if [[ "$state" == "start" ]]; then
-    cd ~/Downloads || { echo "Error: Cannot access ~/Downloads"; exit 1; }
+read -p "Do you wish to download the Gaming Suite? [Y/N] " gaming_choice
 
-    if ! pacman -Syu git go fastfetch gimp krita mpv flatpak syncplay libreoffice-fresh whipper godot figlet lutris dolphin-emu retroarch blender handbrake syncthing; then
-        echo "Error: Failed to install packages with pacman."
-        exit 1
-    fi
+read -p "Do you wish to download the Media Suite? [Y/N] " media_choice
 
-    sudo pacman -Syu qemu virt-manager virt-viewer vde2 dnsmasq bridge-utils libvirt
+read -p "Do you wish to download the Privacy Suite? [Y/N] " privacy_choice
 
-    sudo systemctl enable libvirtd
-    sudo systemctl start libvirtd
+read -p "Do you wish to download the Ripper Suite? [Y/N] " ripper_choice
 
-    sudo usermod -aG libvirt,kvm $USER
+read -p "Do you wish to download the Misc Suite? [Y/N] " misc_choice
 
-    git clone https://aur.archlinux.org/yay.git || { echo "Error: Failed to clone yay"; exit 1; }
-    cd yay || { echo "Error: Failed to access yay directory"; exit 1; }
-    makepkg -si || { echo "Error: Failed to build yay"; exit 1; }
-    cd ../
+if [[ $developer_choice = [Yy]* ]] || [[ -z $developer_choice ]]; then
+  sudo pacman -Syu gnupg qemu virt-manager virt-viewer vde2 dnsmasq bridge-utils libvirt
 
-    yay -Syu vscodium-bin mullvad-browser-bin librewolf-bin ani-cli makemkv beeref foobar2000 emulationstation-de rpcs3-bin cemu ryujinx-git
+  sudo systemctl enable libvirtd
+  sudo systemctl start libvirtd
 
-    sudo pacman -Syu base-devel clang git cmake sndio jack2 openal qt6-base qt6-declarative qt6-multimedia sdl2 vulkan-validation-layers
-    git clone --recursive https://github.com/shadps4-emu/shadPS4.git || { echo "Error: Failed to clone ShadPS4"; exit 1; }
-    cd shadPS4 || { echo "Error: Failed to access ShadPS4 directory"; exit 1; }
-    cmake --build . --parallel$(nproc) || { echo "Error: Failed to build ShadPS4"; exit 1; }
-    cd ../
-
-    curl -O https://github.com/dream7180/foobox-en/releases/download/7.37/foobox_x64.en.v7.37-1.exe || { echo "Error: Failed to download foobox"; exit 1; }
-
-    set_state "post-reboot"
-    echo "Rebooting in 10 seconds... Press Ctrl+C to cancel."
-    sleep 10
-    reboot
+  sudo usermod -aG libvirt,kvm $USER
 fi
 
-if [[ "$state" == "post-reboot" ]]; then
-    flatpak install flathub org.torproject.torbrowser-launcher net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP com.obsproject.Studio com.github.libresprite.LibreSprite org.kde.kdenlive com.github.iwalton3.jellyfin-media-player org.prismlauncher.PrismLauncher
-
-    flatpak install --user https://sober.vinegarhq.org/sober.flatpakref
-    
-    rm -f "$STATE_FILE"
-    echo "Script completed!"
+if [[ $libreoffice_choice = [Yy]* ]] || [[ -z $libreoffice_choice ]]; then
+  sudo pacman -Syu libreoffice-fresh
 fi
 
-cd ~/
+if [[ $creator_choice = [Yy]* ]] || [[ -z $creator_choice ]]; then
+  sudo pacman -Syu gimp krita blender godot
 
-if ! grep -q "fastfetch" ~/.bashrc; then
-    echo 'if [[ $- == *i* ]]; then fastfetch; fi' >> ~/.bashrc
+  yay -Syu beeref
+
+  flatpak install flathub com.github.libresprite.LibreSprite com.obsproject.Studio org.kde.kdenlive
 fi
 
-source ~/.bashrc
+if [[ $gaming_choice = [Yy]* ]] || [[ -z $gaming_choice ]]; then
+  sudo pacman -Syu base-devel clang git cmake sndio jack2 openal qt6-base qt6-declarative qt6-multimedia sdl2 vulkan-validation-layers
+
+  sudo pacman -Syu lutris dolphin-emu retroarch
+
+  yay -Syu emulationstation-de rpcs3-bin cemu ryujinx-git org.prismlauncher.PrismLauncher
+
+  flatpak install flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP
+
+  flatpak install --user https://sober.vinegarhq.org/sober.flatpakref
+
+  git clone --recursive https://github.com/shadps4-emu/shadPS4.git
+  cd shadPS4
+  cmake --build . --parallel$(nproc)
+  cd ../
+fi
+
+if [[ $media_choice = [Yy]* ]] || [[ -z $media_choice ]]; then
+  sudo pacman -Syu mpv syncplay
+
+  yay -Syu ani-cli foobar2000
+
+  curl -O https://github.com/dream7180/foobox-en/releases/download/7.37/foobox_x64.en.v7.37-1.exe
+
+  flatpak install flathub com.github.iwalton3.jellyfin-media-player
+fi
+
+if [[ $privacy_choice = [Yy]* ]] || [[ -z $privacy_choice ]]; then
+  yay -Syu vscodium-bin mullvad-browser-bin librewolf-bin torbrowser-launcher
+fi
+
+if [[ $ripper_choice = [Yy]* ]] || [[ -z $ripper_choice ]]; then
+  sudo pacman -Syu whipper
+
+  yay -Syu makemkv
+fi
+
+if [[ $misc_choice = [Yy]* ]] || [[ -z $misc_choice ]]; then
+  sudo pacman -Syu figlet handbrake syncthing
+fi

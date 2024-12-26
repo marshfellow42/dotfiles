@@ -1,8 +1,23 @@
-pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland jq swww waybar swaync cliphist gnupg
+#!/usr/bin/bash
 
-git clone https://aur.archlinux.org/yay.git || { echo "Error: Failed to clone yay"; exit 1; }
-cd yay || { echo "Error: Failed to access yay directory"; exit 1; }
-makepkg -si || { echo "Error: Failed to build yay"; exit 1; }
+sudo pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak
+
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
 cd ../
 
 yay -Syu oh-my-posh
+
+git clone https://github.com/marshfellow42/wallpapers.git
+
+git clone https://github.com/marshfellow42/dotfiles.git
+
+cd dotfiles
+mv .bashrc ~/
+
+source ~/.bashrc
+
+echo "Rebooting in 10 seconds... Press Ctrl+C to cancel."
+sleep 10
+reboot
