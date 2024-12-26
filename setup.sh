@@ -1,4 +1,4 @@
-pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland jq swww waybar swaync
+pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland jq swww waybar swaync cliphist
 
 git clone https://aur.archlinux.org/yay.git || { echo "Error: Failed to clone yay"; exit 1; }
 cd yay || { echo "Error: Failed to access yay directory"; exit 1; }
