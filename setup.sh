@@ -4,3 +4,5 @@ git clone https://aur.archlinux.org/yay.git || { echo "Error: Failed to clone ya
 cd yay || { echo "Error: Failed to access yay directory"; exit 1; }
 makepkg -si || { echo "Error: Failed to build yay"; exit 1; }
 cd ../
+
+yay -Syu oh-my-posh
