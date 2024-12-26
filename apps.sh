@@ -20,6 +20,13 @@ if [[ "$state" == "start" ]]; then
         exit 1
     fi
 
+    sudo pacman -Syu qemu virt-manager virt-viewer vde2 dnsmasq bridge-utils libvirt
+
+    sudo systemctl enable libvirtd
+    sudo systemctl start libvirtd
+
+    sudo usermod -aG libvirt,kvm $USER
+
     git clone https://aur.archlinux.org/yay.git || { echo "Error: Failed to clone yay"; exit 1; }
     cd yay || { echo "Error: Failed to access yay directory"; exit 1; }
     makepkg -si || { echo "Error: Failed to build yay"; exit 1; }
