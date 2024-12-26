@@ -15,7 +15,7 @@ state=$(get_state)
 if [[ "$state" == "start" ]]; then
     cd ~/Downloads || { echo "Error: Cannot access ~/Downloads"; exit 1; }
 
-    if ! pacman -Syu git go fastfetch gimp krita mpv flatpak syncplay libreoffice-fresh whipper godot figlet lutris dolphin-emu retroarch blender; then
+    if ! pacman -Syu git go fastfetch gimp krita mpv flatpak syncplay libreoffice-fresh whipper godot figlet lutris dolphin-emu retroarch blender handbrake; then
         echo "Error: Failed to install packages with pacman."
         exit 1
     fi
