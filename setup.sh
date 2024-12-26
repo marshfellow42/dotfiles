@@ -1,1 +1,1 @@
-pacman -Syu hyprcursor hyprlock hypridle hyprshot rofi-wayland jq
+pacman -Syu hyprcursor hyprlock hypridle hyprshot rofi-wayland jq swww waybar
