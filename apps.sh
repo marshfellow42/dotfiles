@@ -31,6 +31,7 @@ fi
 
 if [[ $developer_choice =~ ^[Yy]*$ ]] || [[ -z $developer_choice ]]; then
   sudo pacman -Syu gnupg qemu virt-manager virt-viewer vde2 dnsmasq bridge-utils libvirt
+  yay -Syu vscodium-bin
   sudo systemctl enable libvirtd
   sudo systemctl start libvirtd
   sudo usermod -aG libvirt,kvm "$USER"
@@ -66,7 +67,7 @@ if [[ $media_choice =~ ^[Yy]*$ ]] || [[ -z $media_choice ]]; then
 fi
 
 if [[ $privacy_choice =~ ^[Yy]*$ ]] || [[ -z $privacy_choice ]]; then
-  yay -Syu vscodium-bin mullvad-browser-bin librewolf-bin torbrowser-launcher
+  yay -Syu mullvad-browser-bin librewolf-bin torbrowser-launcher
 fi
 
 if [[ $ripper_choice =~ ^[Yy]*$ ]] || [[ -z $ripper_choice ]]; then
