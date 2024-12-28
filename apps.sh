@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if ! command -v yay &> /dev/null; then
+  echo "Error: yay is not installed. Please install yay first."
+  exit 1
+fi
+
+if ! command -v flatpak &> /dev/null; then
+  echo "Error: flatpak is not installed. Please install flatpak first."
+  exit 1
+fi
+
 cd ~/Downloads || { echo "Failed to navigate to ~/Downloads"; exit 1; }
 
 prompt_user() {
@@ -17,18 +27,6 @@ privacy_choice=$(prompt_user "Do you wish to download the Privacy Suite?")
 ripper_choice=$(prompt_user "Do you wish to download the Ripper Suite?")
 misc_choice=$(prompt_user "Do you wish to download the Misc Suite?")
 
-# Ensure yay is installed
-if ! command -v yay &> /dev/null; then
-  echo "Error: yay is not installed. Please install yay first."
-  exit 1
-fi
-
-# Ensure flatpak is installed
-if ! command -v flatpak &> /dev/null; then
-  echo "Error: flatpak is not installed. Please install flatpak first."
-  exit 1
-fi
-
 if [[ $developer_choice =~ ^[Yy]*$ ]] || [[ -z $developer_choice ]]; then
   sudo pacman -Syu gnupg qemu virt-manager virt-viewer vde2 dnsmasq bridge-utils libvirt
   yay -Syu vscodium-bin
@@ -42,14 +40,14 @@ if [[ $libreoffice_choice =~ ^[Yy]*$ ]] || [[ -z $libreoffice_choice ]]; then
 fi
 
 if [[ $creator_choice =~ ^[Yy]*$ ]] || [[ -z $creator_choice ]]; then
-  sudo pacman -Syu gimp krita blender godot
+  sudo pacman -Syu gimp krita blender godot handbrake
   yay -Syu beeref
   flatpak install flathub com.github.libresprite.LibreSprite com.obsproject.Studio org.kde.kdenlive
 fi
 
 if [[ $gaming_choice =~ ^[Yy]*$ ]] || [[ -z $gaming_choice ]]; then
   sudo pacman -Syu base-devel clang git cmake sndio jack2 openal qt6-base qt6-declarative qt6-multimedia sdl2 vulkan-validation-layers
-  sudo pacman -Syu lutris dolphin-emu retroarch
+  sudo pacman -Syu lutris dolphin-emu retroarch syncthing
   yay -Syu emulationstation-de rpcs3-bin cemu ryujinx-git org.prismlauncher.PrismLauncher
   flatpak install flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP
   flatpak install --user https://sober.vinegarhq.org/sober.flatpakref
@@ -73,8 +71,4 @@ fi
 if [[ $ripper_choice =~ ^[Yy]*$ ]] || [[ -z $ripper_choice ]]; then
   sudo pacman -Syu whipper
   yay -Syu makemkv
-fi
-
-if [[ $misc_choice =~ ^[Yy]*$ ]] || [[ -z $misc_choice ]]; then
-  sudo pacman -Syu figlet handbrake syncthing
 fi
