@@ -59,7 +59,7 @@ fi
 
 if [[ $media_choice =~ ^[Yy]*$ ]] || [[ -z $media_choice ]]; then
   sudo pacman -Syu mpv syncplay
-  yay -Syu ani-cli foobar2000
+  yay -Syu ani-cli mov-cli python-mov-cli-youtube python-mov-cli-jellyplex python-mov-cli-files foobar2000
   curl -O https://github.com/dream7180/foobox-en/releases/download/7.37/foobox_x64.en.v7.37-1.exe
   flatpak install flathub com.github.iwalton3.jellyfin-media-player
 fi
