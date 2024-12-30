@@ -65,7 +65,7 @@ if [[ $media_choice =~ ^[Yy]*$ ]] || [[ -z $media_choice ]]; then
 fi
 
 if [[ $privacy_choice =~ ^[Yy]*$ ]] || [[ -z $privacy_choice ]]; then
-  yay -Syu mullvad-browser-bin librewolf-bin torbrowser-launcher
+  yay -Syu mullvad-browser-bin librewolf-bin torbrowser-launcher bisq
 fi
 
 if [[ $ripper_choice =~ ^[Yy]*$ ]] || [[ -z $ripper_choice ]]; then
