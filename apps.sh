@@ -41,7 +41,8 @@ fi
 
 if [[ $creator_choice =~ ^[Yy]*$ ]] || [[ -z $creator_choice ]]; then
   sudo pacman -Syu krita blender godot handbrake
-  yay -Syu beeref gimp-devel
+  yay -Syu beeref
+  flatpak install https://nightly.gnome.org/repo/appstream/org.gimp.GIMP.Nightly.flatpakref
   flatpak install flathub com.github.libresprite.LibreSprite com.obsproject.Studio org.kde.kdenlive
 fi
 
