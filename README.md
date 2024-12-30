@@ -1,6 +1,6 @@
 # hypricing
 
-A Hyprland Ricing helper
+My Hyprland Ricing dotfiles repo, where I store multiple dotfiles for multiples ricing themes specifically for Hyprland (on Arch)
 
 These scripts will only be used after Hyprland is installed through archinstall
 
