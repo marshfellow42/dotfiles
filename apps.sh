@@ -48,7 +48,7 @@ fi
 
 if [[ $gaming_choice =~ ^[Yy]*$ ]] || [[ -z $gaming_choice ]]; then
   sudo pacman -Syu lutris dolphin-emu retroarch syncthing
-  yay -Syu emulationstation-de rpcs3-bin cemu ryujinx-git shadps4-git
+  yay -Syu rpcs3-bin cemu ryujinx-git shadps4-git
   flatpak install flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP org.prismlauncher.PrismLauncher com.heroicgameslauncher.hgl
   flatpak install --user https://sober.vinegarhq.org/sober.flatpakref
 fi
