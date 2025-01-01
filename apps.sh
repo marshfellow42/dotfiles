@@ -40,7 +40,7 @@ if [[ $libreoffice_choice =~ ^[Yy]*$ ]] || [[ -z $libreoffice_choice ]]; then
 fi
 
 if [[ $creator_choice =~ ^[Yy]*$ ]] || [[ -z $creator_choice ]]; then
-  sudo pacman -Syu krita blender godot handbrake
+  sudo pacman -Syu krita blender godot handbrake tenacity
   yay -Syu beeref
   flatpak install https://nightly.gnome.org/repo/appstream/org.gimp.GIMP.Nightly.flatpakref
   flatpak install flathub com.github.libresprite.LibreSprite com.obsproject.Studio org.kde.kdenlive
