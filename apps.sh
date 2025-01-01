@@ -47,15 +47,10 @@ if [[ $creator_choice =~ ^[Yy]*$ ]] || [[ -z $creator_choice ]]; then
 fi
 
 if [[ $gaming_choice =~ ^[Yy]*$ ]] || [[ -z $gaming_choice ]]; then
-  sudo pacman -Syu base-devel clang git cmake sndio jack2 openal qt6-base qt6-declarative qt6-multimedia sdl2 vulkan-validation-layers
   sudo pacman -Syu lutris dolphin-emu retroarch syncthing
-  yay -Syu emulationstation-de rpcs3-bin cemu ryujinx-git org.prismlauncher.PrismLauncher
-  flatpak install flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP
+  yay -Syu emulationstation-de rpcs3-bin cemu ryujinx-git shadps4-git
+  flatpak install flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP org.prismlauncher.PrismLauncher com.heroicgameslauncher.hgl
   flatpak install --user https://sober.vinegarhq.org/sober.flatpakref
-  git clone --recursive https://github.com/shadps4-emu/shadPS4.git
-  cd shadPS4 || { echo "Failed to navigate to shadPS4 directory"; exit 1; }
-  cmake --build . --parallel"$(nproc)"
-  cd ../
 fi
 
 if [[ $media_choice =~ ^[Yy]*$ ]] || [[ -z $media_choice ]]; then
