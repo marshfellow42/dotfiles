@@ -1,7 +1,6 @@
 #!/bin/bash
 
-sudo pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak figlet
-
+sudo pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak figlet btop
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
