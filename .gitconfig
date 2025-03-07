@@ -11,3 +11,9 @@
 
 [gpg]
     program = /usr/bin/gpg
+
+[push]
+    autoSetupRemote = true
+
+[core]
+    editor = nano
