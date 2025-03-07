@@ -10,9 +10,6 @@ yay -Syu oh-my-posh
 
 git clone https://github.com/marshfellow42/wallpapers.git
 
-git clone https://github.com/marshfellow42/dotfiles.git
-
-cd dotfiles
 mv .bashrc ~/
 
 source ~/.bashrc
