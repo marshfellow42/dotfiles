@@ -1,0 +1,13 @@
+[user]
+    name = Your Name
+    email = [email protected]
+    signingkey = YOUR_GPG_KEY_ID
+
+[commit]
+    gpgSign = true
+
+[credential]
+    helper = cache --timeout=3600
+
+[gpg]
+    program = /usr/bin/gpg
