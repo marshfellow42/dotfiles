@@ -1,2 +1,12 @@
 @reboot swww-daemon
+
+* 7-11 * * * ./swww_morning.sh
+
+* 12-17 * * * ./swww_afternoon.sh
+
+# Night check: Runs once at 9:00 PM
+* 18-23 * * * ./swww_night.sh
+
+@reboot rm -f /tmp/swww_morning_flag /tmp/swww_afternoon_flag /tmp/swww_night_flag
+
 @reboot ./update_all.sh
