@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak figlet btop
+sudo pacman -Syu git fastfetch hyprcursor hyprpicker hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak figlet btop cronie
 
 git clone https://aur.archlinux.org/yay.git
 cd yay
