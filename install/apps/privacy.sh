@@ -10,8 +10,14 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
+# Install Pacman Packages
+echo "Installing Pacman Packages..."
+sudo pacman -S --noconfirm gnupg 
+
+gpg --keyserver hkps://keys.openpgp.org --recv-keys EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
+
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm mullvad-browser-bin librewolf-bin torbrowser-launcher bisq
+yay -S --noconfirm mullvad-browser-bin librewolf-bin tor-browser-bin bisq
 
 echo "Installation complete!"
