@@ -16,14 +16,15 @@ elif 13 <= current_hour <= 17:
 elif 18 <= current_hour <= 23:
     folder_name = "night"
 
-wallpaper_folder = os.path.join(wallpaper_directory, folder_name)
+flag_file = f"/tmp/swww_{folder_name}_flag"
 
-if os.path.exists(wallpaper_folder):
-    images = os.listdir(wallpaper_folder)
-    if images: 
-        wallpaper = os.path.join(wallpaper_folder, random.choice(images))
-        os.system(f'swww-img {wallpaper}')
-    else:
-        print(f"No images found in {wallpaper_folder}")
-else:
-    print(f"Folder {wallpaper_folder} does not exist")
+if not os.path.exists(flag_file):
+    wallpaper_folder = os.path.join(wallpaper_directory, folder_name)
+
+    if os.path.exists(wallpaper_folder):
+        images = os.listdir(wallpaper_folder)
+        if images:
+            wallpaper = os.path.join(wallpaper_folder, random.choice(images))
+            os.system(f'swww-img {wallpaper}')
+            with open(flag_file, "w") as f:
+                f.write(str(current_hour))
