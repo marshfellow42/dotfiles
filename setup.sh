@@ -9,7 +9,7 @@ cd ../
 
 yay -Syu oh-my-posh-bin
 
-git clone --depth=1 https://github.com/marshfellow42/wallpapers.git
+git clone --branch timeofday --depth=1 https://github.com/marshfellow42/wallpapers.git
 
 mv ./wallpapers ~/
 mv ./cron ~/
