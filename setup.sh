@@ -11,13 +11,12 @@ yay -Syu oh-my-posh-bin
 
 git clone --depth=1 https://github.com/marshfellow42/wallpapers.git
 
+mv ./wallpapers ~/
+mv ./cron ~/
+
 mv ./.bashrc ~/
 mv ./.gitconfig ~/
 mv ./update_all.sh ~/
-
-mv ./swww_morning.sh ~/
-mv ./swww_afternoon.sh ~/
-mv ./swww_night.sh ~/
 
 source ~/.bashrc
 
