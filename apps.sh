@@ -20,7 +20,7 @@ sudo pacman -S --noconfirm gnupg libreoffice-fresh krita blender godot handbrake
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm vscodium-bin beeref rpcs3-bin cemu ryujinx-git shadps4-git ani-cli mullvad-browser-bin librewolf-bin torbrowser-launcher bisq makemkv anki-bin aseprite
+yay -S --noconfirm vscodium-bin beeref rpcs3-bin cemu ryujinx-git shadps4-git ani-cli mullvad-browser-bin librewolf-bin torbrowser-launcher bisq makemkv anki-bin aseprite hoppscotch-bin
 
 # Install Flatpak Applications from Flathub
 echo "Installing Flatpak Apps from Flathub..."
