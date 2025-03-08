@@ -12,7 +12,7 @@ fi
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm handbrake mpv syncplay whipper qbittorrent
+sudo pacman -S --noconfirm handbrake mpv syncplay whipper qbittorrent picard
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
