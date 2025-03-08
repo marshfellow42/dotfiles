@@ -12,7 +12,7 @@ fi
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm thunderbird gnupg godot php composer nodejs npm
+sudo pacman -S --noconfirm thunderbird gnupg godot php composer nodejs npm sqlitebrowser
 
 composer global require laravel/installer
 
