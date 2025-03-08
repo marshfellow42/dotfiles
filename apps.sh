@@ -16,7 +16,7 @@ sudo pacman -Syu --noconfirm
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm gnupg libreoffice-fresh krita blender godot handbrake tenacity lutris dolphin-emu retroarch syncthing mpv syncplay whipper
+sudo pacman -S --noconfirm gnupg libreoffice-fresh krita blender godot handbrake tenacity lutris dolphin-emu retroarch syncthing mpv syncplay whipper qbittorrent
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
