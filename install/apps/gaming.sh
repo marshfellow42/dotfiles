@@ -16,7 +16,7 @@ sudo pacman -S --noconfirm lutris dolphin-emu retroarch
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm rpcs3-bin cemu ryujinx-git shadps4-git
+yay -S --noconfirm rpcs3-bin cemu ryujinx shadps4-git
 
 # Install Flatpak Applications from Flathub
 echo "Installing Flatpak Apps from Flathub..."
