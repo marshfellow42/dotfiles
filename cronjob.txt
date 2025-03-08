@@ -1,12 +1,7 @@
-@reboot rm -f /tmp/swww_morning_flag /tmp/swww_afternoon_flag /tmp/swww_night_flag
+@reboot rm -f /tmp/swww_morning_flag /tmp/swww_afternoon_flag /tmp/swww_night_flag /tmp/swww_midnight_flag
 
 @reboot swww-daemon
 
-* 5-11 * * * ./swww_morning.sh
-
-* 12-17 * * * ./swww_afternoon.sh
-
-* 18-23 * * * ./swww_night.sh
-* 0-4 * * * ./swww_night.sh
+* * * * * ./cron/change_wallpaper_according_to_time.py
 
 @reboot ./update_all.sh
