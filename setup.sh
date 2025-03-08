@@ -6,7 +6,7 @@ cd yay
 makepkg -si
 cd ../
 
-yay -Syu oh-my-posh
+yay -Syu oh-my-posh-bin
 
 git clone --depth=1 https://github.com/marshfellow42/wallpapers.git
 
