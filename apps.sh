@@ -20,11 +20,11 @@ sudo pacman -S --noconfirm gnupg libreoffice-fresh krita blender godot handbrake
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm vscodium-bin beeref rpcs3-bin cemu ryujinx-git shadps4-git ani-cli mullvad-browser-bin librewolf-bin torbrowser-launcher bisq makemkv
+yay -S --noconfirm vscodium-bin beeref rpcs3-bin cemu ryujinx-git shadps4-git ani-cli mullvad-browser-bin librewolf-bin torbrowser-launcher bisq makemkv anki-bin aseprite
 
 # Install Flatpak Applications from Flathub
 echo "Installing Flatpak Apps from Flathub..."
-flatpak install -y flathub com.github.libresprite.LibreSprite com.obsproject.Studio org.kde.kdenlive net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP org.prismlauncher.PrismLauncher com.heroicgameslauncher.hgl com.github.iwalton3.jellyfin-media-player
+flatpak install -y flathub com.obsproject.Studio org.kde.kdenlive net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP org.prismlauncher.PrismLauncher com.heroicgameslauncher.hgl com.github.iwalton3.jellyfin-media-player
 
 # Install Flatpak Links
 echo "Installing Flatpak Links..."
