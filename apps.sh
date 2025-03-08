@@ -31,4 +31,10 @@ echo "Installing Flatpak Links..."
 flatpak install -y https://flathub.org/repo/appstream/org.gimp.GIMP.flatpakref
 flatpak install -y https://sober.vinegarhq.org/sober.flatpakref
 
+echo "Installing GIMP plugin..."
+curl -O https://github.com/kamilburda/batcher/releases/download/1.0-RC3/batcher-1.0-RC3.zip
+unzip batcher-1.0-RC3.zip 
+mv batcher ~/.config/GIMP/plug-ins/
+rm batcher-1.0-RC3.zip
+
 echo "Installation complete!"
