@@ -1,1 +1,2 @@
+@reboot swww-daemon
 @reboot ./update_all.sh
