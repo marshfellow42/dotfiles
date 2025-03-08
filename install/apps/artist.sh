@@ -12,7 +12,7 @@ fi
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm krita blender handbrake tenacity mpv whipper
+sudo pacman -S --noconfirm krita blender tenacity
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
