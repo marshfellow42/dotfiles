@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Update system
-echo "Updating system..."
-sudo pacman -Syu --noconfirm
-
 if ! command -v yay &> /dev/null; then
    echo "Error: yay is not installed. Please install yay first."
    exit 1
- fi
+fi
  
- if ! command -v flatpak &> /dev/null; then
+if ! command -v flatpak &> /dev/null; then
    echo "Error: flatpak is not installed. Please install flatpak first."
    exit 1
- fi
+fi 
+
+# Update system
+echo "Updating system..."
+sudo pacman -Syu --noconfirm
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
