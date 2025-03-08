@@ -12,7 +12,9 @@ fi
 
 # Install Pacman Packages
 echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm gnupg godot
+sudo pacman -S --noconfirm gnupg godot php composer nodejs npm
+
+composer global require laravel/installer
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
