@@ -10,7 +10,7 @@
     gpgSign = true
 
 [tag]
-	gpgsign = true
+    gpgsign = true
 
 [gpg]
     program = /usr/bin/gpg
