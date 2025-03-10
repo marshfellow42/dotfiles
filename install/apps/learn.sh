@@ -16,6 +16,6 @@ sudo pacman -S --noconfirm obsidian-appimage
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm anki-bin
+yay -S --noconfirm anki
 
 echo "Installation complete!"
