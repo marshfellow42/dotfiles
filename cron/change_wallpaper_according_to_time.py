@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import random
 
-current_hour = int(datetime.now().astimezone().strftime("%H"))
+current_hour = datetime.now().astimezone().hour
 home_directory = Path.home()
 wallpaper_directory = os.path.join(home_directory, "wallpapers")
 
