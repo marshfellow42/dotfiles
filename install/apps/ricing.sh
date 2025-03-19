@@ -10,17 +10,12 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Update system
-echo "Updating system..."
-yay
+# Install Pacman Packages
+echo "Installing Pacman Packages..."
+sudo pacman -S --noconfirm figlet btop
 
-# Run category-specific installation scripts from the apps folder
-./apps/dev.sh
-./apps/artist.sh
-./apps/gaming.sh
-./apps/media.sh
-./apps/privacy.sh
-./apps/learn.sh
-./apps/ricing.sh
+# Install Yay Packages
+echo "Installing Yay Packages..."
+yay -S --noconfirm ani-cli cbonsai
 
 echo "Installation complete!"
