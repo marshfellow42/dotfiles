@@ -10,14 +10,9 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Install Pacman Packages
-echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm thunderbird gnupg godot php composer nodejs npm sqlitebrowser
+echo "Installing Arch Packages..."
+yay -S --noconfirm vscodium-bin hoppscotch-bin thunderbird gnupg godot php composer nodejs npm sqlitebrowser
 
 composer global require laravel/installer
-
-# Install Yay Packages
-echo "Installing Yay Packages..."
-yay -S --noconfirm vscodium-bin hoppscotch-bin
 
 echo "Installation complete!"
