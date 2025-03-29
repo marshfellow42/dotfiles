@@ -10,12 +10,7 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Install Pacman Packages
-echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm figlet btop
-
-# Install Yay Packages
-echo "Installing Yay Packages..."
-yay -S --noconfirm ani-cli cbonsai
+echo "Installing Arch Packages..."
+yay -S --noconfirm ani-cli cbonsai figlet btop
 
 echo "Installation complete!"
