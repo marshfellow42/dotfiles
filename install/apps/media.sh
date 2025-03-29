@@ -10,15 +10,9 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Install Pacman Packages
-echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm handbrake mpv syncplay whipper qbittorrent picard
+echo "Installing Arch Packages..."
+yay -S --noconfirm ani-cli makemkv handbrake mpv syncplay whipper qbittorrent picard
 
-# Install Yay Packages
-echo "Installing Yay Packages..."
-yay -S --noconfirm ani-cli makemkv
-
-# Install Flatpak Applications from Flathub
 echo "Installing Flatpak Apps from Flathub..."
 flatpak install -y flathub com.github.iwalton3.jellyfin-media-player
 
