@@ -28,5 +28,6 @@ if not os.path.exists(flag_file):
         if images:
             wallpaper = os.path.join(wallpaper_folder, random.choice(images))
             os.system(f'swww-img {wallpaper}')
+            os.system(f'wal -i {wallpaper}')
             with open(flag_file, "w") as f:
                 f.write(str(current_hour))
