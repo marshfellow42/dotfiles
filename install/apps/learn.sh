@@ -10,12 +10,7 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Install Pacman Packages
-echo "Installing Pacman Packages..."
-sudo pacman -S --noconfirm obsidian-appimage
-
-# Install Yay Packages
-echo "Installing Yay Packages..."
-yay -S --noconfirm anki
+echo "Installing Arch Packages..."
+yay -S --noconfirm anki obsidian-appimage
 
 echo "Installation complete!"
