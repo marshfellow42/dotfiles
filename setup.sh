@@ -1,22 +1,22 @@
 #!/bin/bash
 
-sudo pacman -Syu git fastfetch hyprcursor hyprlock hypridle hyprshot rofi-wayland swww waybar swaync cliphist flatpak cronie
+sudo pacman -Syu --needed fastfetch hyprcursor hyprlock hypridle rofi-wayland swww waybar swaync cliphist flatpak cronie
 
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 cd ../
 
-yay -Syu oh-my-posh-bin
+yay -Syu oh-my-posh-bin hyprshot --noconfirm
 
 git clone --branch timeofday --depth=1 https://github.com/marshfellow42/wallpapers.git
 
 mv ./wallpapers ~/
 mv ./cron ~/
 
-mv ./.config ~/
-mv ./.bashrc ~/
-mv ./.gitconfig ~/
+cp -r ./.config/* ~/.config/
+mv -f ./.bashrc ~/
+mv -f ./.gitconfig ~/
 mv ./update_all.sh ~/
 
 source ~/.bashrc

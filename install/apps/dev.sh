@@ -11,7 +11,7 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm vscodium-bin hoppscotch-bin thunderbird gnupg godot php composer nodejs npm sqlitebrowser
+yay -S --noconfirm vscodium-bin hoppscotch-bin thunderbird gnupg godot php composer nodejs npm sqlitebrowser --noconfirm
 
 composer global require laravel/installer
 

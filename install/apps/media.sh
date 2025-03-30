@@ -11,7 +11,7 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm ani-cli makemkv handbrake mpv syncplay whipper qbittorrent picard
+yay -S --noconfirm ani-cli makemkv handbrake mpv syncplay whipper qbittorrent picard --noconfirm
 
 echo "Installing Flatpak Apps from Flathub..."
 flatpak install -y flathub com.github.iwalton3.jellyfin-media-player

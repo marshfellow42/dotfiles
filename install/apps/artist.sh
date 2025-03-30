@@ -11,7 +11,7 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm beeref aseprite krita blender audacity lmms
+yay -S --noconfirm beeref aseprite krita blender audacity lmms --noconfirm
 
 echo "Installing Flatpak Apps from Flathub..."
 flatpak install -y flathub com.obsproject.Studio org.kde.kdenlive

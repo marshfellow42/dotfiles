@@ -7,17 +7,17 @@
 archinstall
 ```
 
-- After installing, clone the dotfiles repo
+- After installing Hyprland, install Git
 ```bash
-git clone https://github.com/marshfellow42/dotfiles.git
+sudo pacman -S git
+```
+
+- After installing Git, clone the dotfiles repo
+```bash
+git clone https://github.com/marshfellow42/dotfiles.git ~
 ```
 
 - Run the setup script
 ```bash
 ./setup.sh
-```
-
-- Copy the cronjob.txt content to crontab
-```bash
-crontab -e
 ```
