@@ -24,8 +24,9 @@ URL="https://github.com/kamilburda/batcher/releases/download/1.0/batcher-1.0.zip
 FILENAME=$(basename "$URL")
 DIRNAME="${FILENAME%.zip}"
 curl -O "$URL"
-unzip "$FILENAME"
+unzip "$FILENAME" -d "$DIRNAME"
 mv "$DIRNAME/batcher" ~/.config/GIMP/plug-ins/
-rm -r "$FILENAME" "$DIRNAME"
+rm "$FILENAME"
+rm -r "$DIRNAME"
 
 echo "Installation complete!"

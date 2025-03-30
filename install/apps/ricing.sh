@@ -11,6 +11,6 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm ani-cli cbonsai figlet btop
+yay -S --noconfirm cbonsai figlet btop
 
 echo "Installation complete!"
