@@ -1,3 +1,4 @@
 @reboot rm -f /tmp/swww_morning_flag /tmp/swww_afternoon_flag /tmp/swww_night_flag /tmp/swww_midnight_flag
 
 * * * * * $HOME/cron/change_wallpaper_according_to_time.py
+
