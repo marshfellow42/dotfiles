@@ -14,7 +14,7 @@ sudo pacman -S git
 
 - After installing Git, clone the dotfiles repo
 ```bash
-git clone https://github.com/marshfellow42/dotfiles.git ~
+git clone https://github.com/marshfellow42/dotfiles.git ~/
 ```
 
 - Run the setup script
