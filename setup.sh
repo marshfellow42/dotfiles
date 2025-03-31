@@ -9,8 +9,6 @@ cd ../
 
 cd dotfiles/
 
-flatpak install -y flathub org.kde.gwenview org.kde.kcalc
-
 yay -Syu hyprshot librewolf-bin fastfetch hyprcursor hyprlock hypridle rofi-wayland swww waybar swaync cliphist flatpak cronie mpv featherpad ttf-jetbrains-mono-nerd archlinux-xdg-menu python-pywal16 kde-cli-tools --noconfirm
 
 if kbuildsycoca6 --noincremental 2>&1 | grep -q '"applications.menu" not found in QList'; then
@@ -19,6 +17,8 @@ if kbuildsycoca6 --noincremental 2>&1 | grep -q '"applications.menu" not found i
   sudo mv arch-applications.menu applications.menu
   kbuildsycoca6 --noincremental
 fi
+
+flatpak install -y flathub org.kde.gwenview org.kde.kcalc
 
 git clone --branch timeofday --depth=1 https://github.com/marshfellow42/wallpapers.git
 
