@@ -1,11 +1,17 @@
 #!/bin/bash
 
-sudo pacman -Syu --needed fastfetch hyprcursor hyprlock hypridle rofi-wayland swww waybar swaync cliphist flatpak cronie
+sudo pacman -Syu --needed fastfetch hyprcursor hyprlock hypridle rofi-wayland swww waybar swaync cliphist flatpak cronie mpv featherpad ttf-jetbrains-mono-nerd
+
+cd ~/
 
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 cd ../
+
+cd dotfiles/
+
+flatpak install -y flathub org.kde.gwenview org.kde.kcalc
 
 yay -Syu oh-my-posh-bin hyprshot --noconfirm
 
@@ -18,6 +24,8 @@ cp -r ./.config/* ~/.config/
 mv -f ./.bashrc ~/
 mv -f ./.gitconfig ~/
 mv ./update_all.sh ~/
+
+mkdir ~/Pictures/Screenshots/
 
 source ~/.bashrc
 
