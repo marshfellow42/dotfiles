@@ -13,7 +13,7 @@ cd dotfiles/
 
 flatpak install -y flathub org.kde.gwenview org.kde.kcalc
 
-yay -Syu oh-my-posh-bin hyprshot --noconfirm
+yay -Syu hyprshot librewolf-bin --noconfirm
 
 git clone --branch timeofday --depth=1 https://github.com/marshfellow42/wallpapers.git
 

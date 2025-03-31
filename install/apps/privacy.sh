@@ -12,6 +12,6 @@ fi
 
 # Install Yay Packages
 echo "Installing Yay Packages..."
-yay -S --noconfirm mullvad-browser-bin librewolf-bin tor-browser-bin bisq --noconfirm
+yay -S --noconfirm mullvad-browser-bin tor-browser-bin bisq --noconfirm
 
 echo "Installation complete!"
