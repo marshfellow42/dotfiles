@@ -38,7 +38,7 @@ source ~/.bashrc
 sudo systemctl start cronie
 sudo systemctl enable cronie
 
-(cat cronjob.txt; crontab -l) | crontab -
+(crontab -l 2>/dev/null; cat cronjob.txt) | crontab -
 
 prompt_user() {
   local prompt_message=$1
