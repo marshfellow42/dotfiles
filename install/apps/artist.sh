@@ -11,16 +11,13 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm beeref aseprite krita blender audacity lmms --noconfirm
+yay -S --noconfirm beeref aseprite krita blender audacity lmms
 
 echo "Installing Flatpak Apps from Flathub..."
-flatpak install -y flathub com.obsproject.Studio org.kde.kdenlive
-
-echo "Installing Flatpak Links..."
-flatpak install -y https://flathub.org/repo/appstream/org.gimp.GIMP.flatpakref
+flatpak install -y flathub com.obsproject.Studio org.kde.kdenlive org.gimp.GIMP
 
 echo "Installing GIMP plugin..."
-URL="https://github.com/kamilburda/batcher/releases/download/1.0/batcher-1.0.zip"
+URL="https://github.com/kamilburda/batcher/releases/download/1.0.2/batcher-1.0.2.zip"
 FILENAME=$(basename "$URL")
 DIRNAME="${FILENAME%.zip}"
 curl -O "$URL"

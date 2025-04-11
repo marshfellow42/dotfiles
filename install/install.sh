@@ -10,17 +10,17 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Update system
-echo "Updating system..."
-yay
+cd ~/Downloads
 
-# Run category-specific installation scripts from the apps folder
+echo "Updating system..."
+~/update_all.sh
+
 ./apps/dev.sh
+./apps/ricing.sh
 ./apps/artist.sh
 ./apps/gaming.sh
 ./apps/media.sh
 ./apps/privacy.sh
 ./apps/learn.sh
-./apps/ricing.sh
 
 echo "Installation complete!"

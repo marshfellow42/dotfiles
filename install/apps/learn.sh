@@ -11,6 +11,6 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm anki obsidian-appimage --noconfirm
+yay -S --noconfirm anki obsidian-appimage
 
 echo "Installation complete!"

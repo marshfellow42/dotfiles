@@ -11,7 +11,7 @@ if ! command -v flatpak &> /dev/null; then
 fi
 
 echo "Installing Arch Packages..."
-yay -S --noconfirm rpcs3-bin cemu ryujinx shadps4-git vita3k-git lutris dolphin-emu retroarch --noconfirm
+yay -S --noconfirm rpcs3-bin cemu ryujinx shadps4-git vita3k-git lutris dolphin-emu retroarch
 
 echo "Installing Flatpak Apps from Flathub..."
 flatpak install -y flathub net.pcsx2.PCSX2 org.duckstation.DuckStation org.ppsspp.PPSSPP org.prismlauncher.PrismLauncher com.heroicgameslauncher.hgl com.fightcade.Fightcade

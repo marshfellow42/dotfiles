@@ -10,8 +10,7 @@ if ! command -v flatpak &> /dev/null; then
    exit 1
 fi
 
-# Install Yay Packages
-echo "Installing Yay Packages..."
-yay -S --noconfirm mullvad-browser-bin tor-browser-bin bisq --noconfirm
+echo "Installing Arch Packages..."
+yay -S --noconfirm mullvad-browser-bin tor-browser-bin keepassxc
 
 echo "Installation complete!"
