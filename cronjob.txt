@@ -2,3 +2,5 @@
 
 * * * * * $HOME/.config/cron/change_wallpaper_according_to_time.py
 
+@reboot $HOME/update_all.sh
+
