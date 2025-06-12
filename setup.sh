@@ -68,13 +68,15 @@ install_flatpak_apps "${ESSENCIAL_FLATPAK_APPS[@]}"
 
 install_packages "${FONTS[@]}"
 
-cd stow/HOME
+sudo gem install fusuma
+
+cd ~/dotfiles/stow/HOME
 stow --target="$HOME" * --adopt
-cd ../ROOT
+cd ~/dotfiles/stow/ROOT
 mkdir -p /usr/local/share/fonts/
 mkdir -p /usr/share/rofi/themes/
 stow --target="/" * --adopt
-cd ../..
+cd ~/dotfiles/
 
 git reset --hard
 
@@ -108,16 +110,33 @@ if [[ $optional_apps_choice =~ ^[Yy]*$ ]] || [[ -z $optional_apps_choice ]]; the
     exit 1
   fi
 
+  if ! command -v python3 &> /dev/null; then
+    echo "Error: Python 3 is not installed. Please install Python 3 first."
+    exit 1
+  fi
+
   ~/update_all.sh
 
   install_flatpak_apps "${ART_FLATPAK_APPS[@]}"
 
   install_flatpak_apps "${GAMING_FLATPAK_APPS[@]}"
 
+  sudo pacman -S glibc
+  sudo sed -i "s%#ja_JP.UTF-8 UTF-8%ja_JP.UTF-8 UTF-8%" /etc/locale.gen
+  sudo locale-gen
+  flatpak config --system --set languages "en;ja;pt_BR"
+  flatpak config --user --set languages "en;ja;pt_BR"
+  flatpak update
+
+  python3 -m pip install --user pipx
+  python3 -m pipx ensurepath
+
+  install_python_packages "${PYTHON_PACKAGES[@]}"
+
   URL="https://github.com/kamilburda/batcher/releases/download/1.0.2/batcher-1.0.2.zip"
   FILENAME=$(basename "$URL")
   DIRNAME="${FILENAME%.zip}"
-  curl -O "$URL"
+  aria2c "$URL"
   unzip "$FILENAME" -d "$DIRNAME"
   mv "$DIRNAME/batcher" ~/.config/GIMP/plug-ins/
   rm "$FILENAME"
@@ -126,7 +145,7 @@ if [[ $optional_apps_choice =~ ^[Yy]*$ ]] || [[ -z $optional_apps_choice ]]; the
   URL="https://fightcade.download/fc2json.zip"
   FILENAME=$(basename "$URL")
   DIRNAME="${FILENAME%.zip}"
-  curl -O "$URL"
+  aria2c "$URL"
   unzip "$FILENAME" -d "$DIRNAME"
   mv "$DIRNAME"/* ~/.local/share/flatpak/fightcade/emulator
   rm "$FILENAME"
@@ -137,6 +156,14 @@ if [[ $optional_apps_choice =~ ^[Yy]*$ ]] || [[ -z $optional_apps_choice ]]; the
   install_packages "${MEDIA[@]}"
 
   install_packages "${DEV[@]}"
+
+  URL="https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.zip"
+  FILENAME=$(basename "$URL")
+  DIRNAME="${FILENAME%.zip}"
+  aria2c "$URL"
+  unzip "$FILENAME" -d "$DIRNAME"
+  mv "$DIRNAME"/ ~/
+  rm "$FILENAME"
 
   install_packages "${GAMING[@]}"
 

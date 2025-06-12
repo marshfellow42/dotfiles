@@ -14,6 +14,7 @@ is_group_installed() {
 install_packages() {
   local packages=("$@")
   local to_install=()
+  local optional_deps=()
 
   for pkg in "${packages[@]}"; do
     if ! is_installed "$pkg" && ! is_group_installed "$pkg"; then
@@ -24,6 +25,14 @@ install_packages() {
   if [ ${#to_install[@]} -ne 0 ]; then
     echo "Installing: ${to_install[*]}"
     yay -Syu --noconfirm "${to_install[@]}"
+
+    for pkg in "${to_install[@]}"; do
+      optional_deps+=($(expac -S '%o' "$pkg" | tr ' ' '\n' | grep -v '^$'))
+    done
+
+    if [ ${#optional_deps[@]} -ne 0 ]; then
+      yay -S --asdeps --noconfirm "${optional_deps[@]}"
+    fi
   fi
 }
 
@@ -68,5 +77,23 @@ install_flatpak_apps() {
     flatpak install -y flathub "${to_install[@]}"
   else
     echo "All Flatpak apps are already installed."
+  fi
+}
+
+install_python_packages() {
+  local extensions=("$@")
+  local to_install=()
+
+  for ext in "${extensions[@]}"; do
+    to_install+=("$ext")
+  done
+
+  if [ ${#to_install[@]} -ne 0 ]; then
+    echo "Installing Python pip package: ${to_install[*]}"
+    for ext in "${to_install[@]}"; do
+      pipx install "$ext"
+    done
+  else
+    echo "All Python pip packages are already installed."
   fi
 }

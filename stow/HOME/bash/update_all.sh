@@ -17,4 +17,12 @@ kitty
 
 yay --noconfirm
 
-flatpak update
+flatpak update -y
+
+python3 -m pip install --upgrade pip
+
+python3 -m pip install --upgrade pipx
+
+pipx upgrade-all
+
+gem update

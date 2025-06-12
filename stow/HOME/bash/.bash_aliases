@@ -1,1 +1,1 @@
-alias a='aria2c -x 16 -s 16 -k 1M --continue=true'
+alias gags='git add . && git status'
