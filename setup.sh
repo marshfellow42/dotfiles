@@ -24,6 +24,9 @@ prompt_user() {
 # Exit on any error
 set -e
 
+chmod +x ./stow/HOME/bash/update_all.sh
+chmod +x ./stow/HOME/cron/.config/cron/change_wallpaper_according_to_time.py
+
 source utils.sh
 
 if [ ! -f "packages.conf" ]; then
@@ -73,9 +76,9 @@ sudo gem install fusuma
 cd ~/dotfiles/stow/HOME
 stow --target="$HOME" * --adopt
 cd ~/dotfiles/stow/ROOT
-mkdir -p /usr/local/share/fonts/
-mkdir -p /usr/share/rofi/themes/
-stow --target="/" * --adopt
+sudo mkdir -p /usr/local/share/fonts/
+sudo mkdir -p /usr/share/rofi/themes/
+sudo stow --target="/" * --adopt
 cd ~/dotfiles/
 
 git reset --hard
