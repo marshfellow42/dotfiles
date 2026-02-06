@@ -1,0 +1,21 @@
+{
+    "editor.detectIndentation": false,
+    "workbench.colorTheme": "Dracula Theme Soft",
+    "workbench.iconTheme": "vscode-icons",
+    "code-runner.runInTerminal": true,
+    "code-runner.saveAllFilesBeforeRun": true,
+    "editor.minimap.enabled": false,
+    "[makefile]": {
+        "editor.insertSpaces": false,
+        "editor.tabSize": 4
+    },
+    "files.autoSave": "afterDelay",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.configPath": "~/.prettierrc",
+    "explorer.confirmDelete": false,
+    "telemetry.feedback.enabled": false,
+    "code-runner.enableAppInsights": false,
+    "terminal.external.linuxExec": "kitty",
+}

@@ -1,30 +1,12 @@
 # dotfiles
 
-My dotfiles repo for a fresh Arch environment for me
+This repo contains the configuration to setup my machines. This is using [Chezmoi](https://chezmoi.io), the dotfile manager to setup the install.
 
-- Install [Arch Linux](https://archlinux.org/download/)
+This automated setup is currently only configured for Arch machines.
 
-- Use archinstall to install a Hyprland profile
+## How to run
+
 ```bash
-archinstall
-```
-
-- After installing Hyprland, install Git
-```bash
-sudo pacman -S git
-```
-
-- After installing Git, clone the dotfiles repo
-```bash
-git clone https://github.com/marshfellow42/dotfiles.git ~/dotfiles
-```
-
-- Enter the dotfiles repo
-```bash
-cd ~/dotfiles
-```
-
-- Run the setup script
-```bash
-./setup.sh
+export GITHUB_USERNAME=marshfellow42
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
 ```

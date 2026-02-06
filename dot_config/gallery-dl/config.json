@@ -1,0 +1,70 @@
+{
+    "extractor": {
+        "base-directory": "~/gallery-dl",
+
+        "twitter": {
+            "cookies": "",
+
+            "sleep": [12.9, 31.2],
+            "sleep-request": [11.8, 35.6],
+
+            "image-filter": "author is user",
+            "logout": true,
+            "include": ["media"],
+
+            "directory": ["Twitter", "{author['name']}"],
+
+            "filename": "{author['name']}-{date:%Y%m%d_%H%M%S}-{tweet_id}-{num}.{extension}"
+        },
+
+        "gelbooru": {
+            "api-key": "",
+            "user-id": "",
+
+            "directory": ["Gelbooru", "{search_tags}"],
+
+            "filename": "{search_tags}-{date:%Y%m%d_%H%M%S}-{id}.{extension}"
+        },
+
+        "kemono": {
+            "directory": ["Kemono", "{user_profile['name']}"],
+
+            "filename": "{user_profile['name']}-{title}-{id}-{num}.{extension}",
+
+            "postprocessors": [
+                {
+                    "name": "mtime",
+                    "event": "file",
+                    "key": "date"
+                }
+            ]
+        },
+
+        "pixiv": {
+            "refresh-token": "",
+            "cookies": {
+                "PHPSESSID": ""
+            },
+
+            "sleep": [12.9, 31.2],
+            "sleep-request": [11.8, 35.6],
+
+            "directory": {
+                "type == 'manga'": ["Pixiv", "{user['name']}", "{type}", "{series['title']}"],
+                "": ["Pixiv", "{user['name']}", "{type}"]
+            },
+
+            "filename": "{user['name']}-{title}-{id}-{num}.{extension}",
+
+            "postprocessors": [
+                {
+                    "name": "ugoira",
+                    "extension": "mkv",
+                    "ffmpeg-args": ["-c", "copy"],
+                    "libx264-prevent-odd": false,
+                    "repeat-last-frame": false
+                }
+            ]
+        }
+    }
+}

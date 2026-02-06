@@ -1,1 +1,0 @@
-alias gags='git add . && git status'

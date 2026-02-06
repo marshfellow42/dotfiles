@@ -1,0 +1,28 @@
+[credential]
+    helper = cache --timeout=3600
+
+[user]
+    name = {{ if hasKey . "name" }}{{ .name | quote }}{{ else }}"John Doe"{{ end }}
+    email = {{ if hasKey . "email" }}{{ .email | quote }}{{ else }}"hey@johndoespersonalspace.com"{{ end }} 
+    signingkey = {{ if hasKey . "signingkey" }}{{ .signingkey | quote }}{{ else }}"ABCDEF1234567890"{{ end }}
+
+[commit]
+    gpgSign = true
+
+[tag]
+    gpgsign = true
+
+[gpg]
+    program = /usr/bin/gpg
+
+[core]
+    editor = nano
+
+[push]
+    autoSetupRemote = true
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
