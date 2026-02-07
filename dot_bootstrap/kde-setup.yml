@@ -1,5 +1,5 @@
 ---
-- name: Machine setup
+- name: KDE Plasma Machine Setup
   hosts: localhost
   become: true
   connection: local
@@ -240,6 +240,24 @@
         mode: "0755"
         owner: "{{ remote_regular_user }}"
 
+    - name: Files we expect from FC2JSON
+      set_fact:
+        required_fc2json_files:
+          - snes9x_roms.json
+          - fbneo_sms_roms.json
+          - fbneo_nes_roms.json
+          - fbneo_md_roms.json
+          - fbneo_roms.json
+          - flycast_roms.json
+          - fbneo_cv_roms.json
+          - fbneo_gg_roms.json
+          - fbneo_msx_roms.json
+          - fbneo_pce_roms.json
+          - fbneo_sg1k_roms.json
+          - fbneo_tg_roms.json
+          - fc1_roms.json
+          - nulldc_roms.json
+
     - name: Check if FC2JSON files exists
       ansible.builtin.find:
         paths: "/home/{{ remote_regular_user }}/.local/share/flatpak/fightcade/emulator"
@@ -247,8 +265,13 @@
         file_type: file
       register: fc2json_files
 
-    - name: Download FC2JSON
-      when: fc2json_files.matched == 0
+    - name: Get existing json filenames from Fightcade folder
+      set_fact:
+        existing_fc2json_files: >-
+          {{ fc2json_files.files | map(attribute='path') | map('basename') | list }}
+
+    - name: Download FC2JSON if any required file is missing
+      when: required_fc2json_files | difference(existing_fc2json_files) | length > 0
       ansible.builtin.unarchive:
         src: https://fightcade.download/fc2json.zip
         dest: "/home/{{ remote_regular_user }}/.local/share/flatpak/fightcade/emulator/"
@@ -262,5 +285,10 @@
         state: absent
         name:
           - firefox
+          - google-chrome
+          - chromium
+          - brave-bin
+          - brave-nightly-bin
+          - brave-beta-bin
       become: yes
       become_user: aur_builder

@@ -28,6 +28,12 @@ case "$OS" in
                 arch)
                     install_on_arch
                     ;;
+                # ubuntu)
+                #     install_on_ubuntu
+                #     ;;
+                # fedora)
+                #     install_on_fedora
+                #     ;;
                 *)
                     echo "Unsupported Linux distribution: $ID"
                     exit 1
@@ -38,9 +44,9 @@ case "$OS" in
             exit 1
         fi
         ;;
-    Darwin)
-        install_on_mac
-        ;;
+    # Darwin)
+    #     install_on_mac
+    #     ;;
     *)
         echo "Unsupported operating system: $OS"
         exit 1
@@ -49,7 +55,4 @@ esac
 
 ansible-galaxy collection install kewlfft.aur
 
-ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass
-
 echo "Ansible installation complete."
-
