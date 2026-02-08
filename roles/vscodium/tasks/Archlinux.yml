@@ -1,0 +1,9 @@
+---
+- name: "VSCodium | {{ ansible_facts['distribution'] }} | Install vscodium"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - vscodium-bin
+      - vscodium-marketplace
+  become: yes
+  become_user: aur_builder

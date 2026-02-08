@@ -1,0 +1,58 @@
+---
+- name: "{{ role_name }} | Checking for Distribution Config: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
+  register: distribution_config
+
+- name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+  when: distribution_config.stat.exists
+
+- name: "Fightcade | {{ ansible_facts['distribution'] }} | Install fightcade"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - com.fightcade.Fightcade
+  when: flatpak_is_desktop
+  become: true
+
+- name: Fightcade | {{ ansible_facts['distribution'] }} | Files we expect from FC2JSON
+  set_fact:
+    required_fc2json_files:
+      - snes9x_roms.json
+      - fbneo_sms_roms.json
+      - fbneo_nes_roms.json
+      - fbneo_md_roms.json
+      - fbneo_roms.json
+      - flycast_roms.json
+      - fbneo_cv_roms.json
+      - fbneo_gg_roms.json
+      - fbneo_msx_roms.json
+      - fbneo_pce_roms.json
+      - fbneo_sg1k_roms.json
+      - fbneo_tg_roms.json
+      - fc1_roms.json
+      - nulldc_roms.json
+
+- name: Fightcade | {{ ansible_facts['distribution'] }} | Check if FC2JSON files exists
+  ansible.builtin.find:
+    paths: "{{ ansible_facts['user_dir'] }}/.local/share/flatpak/fightcade/emulator"
+    patterns: "*.json"
+    file_type: file
+  register: fc2json_files
+
+- name: Fightcade | {{ ansible_facts['distribution'] }} | Get existing json filenames from Fightcade folder
+  set_fact:
+    existing_fc2json_files: >-
+      {{ fc2json_files.files | map(attribute='path') | map('basename') | list }}
+
+- name: Fightcade | {{ ansible_facts['distribution'] }} | Download FC2JSON if any required file is missing
+  when: required_fc2json_files | difference(existing_fc2json_files) | length > 0
+  ansible.builtin.unarchive:
+    src: https://fightcade.download/fc2json.zip
+    dest: "{{ ansible_facts['user_dir'] }}/.local/share/flatpak/fightcade/emulator/"
+    remote_src: true
+    mode: "0755"
+    owner: "{{ remote_regular_user }}"

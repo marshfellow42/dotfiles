@@ -1,0 +1,38 @@
+---
+- name: "{{ role_name }} | Checking for Distribution Config: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
+  register: distribution_config
+
+- name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+  when: distribution_config.stat.exists
+
+- name: VSCodium | {{ ansible_facts['distribution'] }} | Get installed VSCodium extensions
+  ansible.builtin.command: codium --list-extensions
+  register: codium_extensions
+  changed_when: false
+
+- name: VSCodium | {{ ansible_facts['distribution'] }} | Install missing VSCodium extensions
+  ansible.builtin.command: codium --install-extension {{ item }}
+  loop:
+    - ms-python.python
+    - esbenp.prettier-vscode
+    - vscode-icons-team.vscode-icons
+    - dracula-theme.theme-dracula
+    - formulahendry.code-runner
+    - mathematic.vscode-pdf
+    - myriad-dreamin.tinymist
+  when: item not in codium_extensions.stdout_lines
+
+- name: "VSCodium | {{ ansible_facts['distribution'] }} | Ensure .config directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.config/VSCodium/User"
+    state: directory
+    mode: "0755"
+
+- name: "VSCodium | {{ ansible_facts['distribution'] }} | Copy config file"
+  ansible.builtin.copy:
+    src: "{{ _files_path }}/config.json"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/VSCodium/User/config.json"
+    mode: "0644"

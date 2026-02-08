@@ -1,0 +1,121 @@
+---
+- name: "{{ role_name }} | Checking for Distribution Config: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
+  register: distribution_config
+
+- name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+  when: distribution_config.stat.exists
+
+- name: "Flatpak | Install flatpak"
+  ansible.builtin.package:
+    name: flatpak
+    state: present
+  become: true
+
+- name: "Flatpak | Add Flathub remote"
+  community.general.flatpak_remote:
+    name: "flathub"
+    flatpakrepo_url: "https://flathub.org/repo/flathub.flatpakrepo"
+    state: present
+  become: true
+
+- name: Flatpak | Add Dolphin Emulator remote
+  community.general.flatpak_remote:
+    name: "dolphin-emu"
+    flatpakrepo_url: "https://flatpak.dolphin-emu.org/releases.flatpakrepo"
+    state: present
+  become: true
+
+- name: "Flatpak | Detect desktop environment"
+  ansible.builtin.command: systemctl get-default
+  register: flatpak_systemd_target
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "Flatpak | Set desktop environment fact"
+  ansible.builtin.set_fact:
+    flatpak_is_desktop: "{{ flatpak_systemd_target.stdout == 'graphical.target' and not ansible_host_environment_is_wsl }}"
+
+- name: "Flatpak | Install desktop applications"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - org.mozilla.Thunderbird
+  when: flatpak_is_desktop
+  become: true
+
+- name: "Flatpak | Install media applications"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - com.github.iwalton3.jellyfin-media-player
+  when: flatpak_is_desktop
+  become: true
+
+- name: "Flatpak | Install art applications"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - com.obsproject.Studio
+    - org.kde.kdenlive
+    - org.tenacityaudio.Tenacity
+    - org.kde.krita
+    - org.inkscape.Inkscape
+    - org.blender.Blender
+    - org.darktable.Darktable
+  when: flatpak_is_desktop
+  become: true
+
+- name: "Flatpak | Install privacy applications"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - org.torproject.torbrowser-launcher
+  when: flatpak_is_desktop
+  become: true
+
+- name: "Flatpak | Install emulators"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - net.pcsx2.PCSX2
+    - org.duckstation.DuckStation
+    - org.ppsspp.PPSSPP
+  when: flatpak_is_desktop
+  become: true
+
+- name: "Flatpak | Install Dolphin Emulator"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: dolphin-emu
+  loop:
+    - org.DolphinEmu.dolphin-emu
+  when: flatpak_is_desktop
+  become: true
+  
+- name: "Flatpak | Install gaming applications"
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    remote: flathub
+  loop:
+    - net.lutris.Lutris
+    - com.feaneron.Boatswain
+    - org.vinegarhq.Sober
+    - io.github.marco_calautti.DeltaPatcher
+  when: flatpak_is_desktop
+  become: true

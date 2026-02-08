@@ -1,0 +1,143 @@
+---
+- name: "Yay | {{ ansible_facts['distribution'] }} | Check if yay is installed"
+  ansible.builtin.command: command -v yay
+  register: yay_check
+  changed_when: false
+  failed_when: false
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install dependencies for yay"
+  community.general.pacman:
+    name:
+      - git
+      - base-devel
+    state: present
+  when: yay_check.rc != 0
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Clone yay AUR repo"
+  ansible.builtin.git:
+    repo: https://aur.archlinux.org/yay.git
+    dest: /home/{{ ansible_user }}/yay
+  when: yay_check.rc != 0
+  become: false
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Build and install yay"
+  ansible.builtin.command: makepkg -si --noconfirm
+  args:
+    chdir: /home/{{ ansible_user }}/yay
+  when: yay_check.rc != 0
+  become: false
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Generate yay development package database"
+  ansible.builtin.command: yay -Y --gendb
+  when: yay_check.rc != 0
+  become: false
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Enable permanent devel package updates"
+  ansible.builtin.command: yay -Y --devel --save
+  when: yay_check.rc != 0
+  become: false
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Remove yay build directory"
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/yay
+    state: absent
+  when: yay_check.rc != 0
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install essential apps using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - librewolf-bin
+      - rofi-wayland
+      - swww
+      - mpv
+      - qbittorrent
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install media apps using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - ffmpeg
+      - imagemagick
+      - makemkv
+      - whipper
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install art apps using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - aseprite
+      - lmms
+      - mpd
+      - rmpc
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install privacy apps using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - mullvad-browser-bin
+      - veracrypt
+      - keepassxc
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install dev tools using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - scrcpy
+      - gnupg
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install emulators using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - rpcs3-bin
+      - cemu
+      - shadps4-git
+      - vita3k-git
+      - eden
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install gaming apps using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - freesmlauncher
+      - osu-lazer-bin
+      - emulationstation-de
+      - steam
+      - lutris
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Install writing tools using yay"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - obsidian-appimage
+  become: yes
+  become_user: aur_builder
+
+- name: "Yay | {{ ansible_facts['distribution'] }} | Remove unnecessary packages using yay"
+  kewlfft.aur.aur:
+    use: yay
+    state: absent
+    name:
+      - firefox
+      - google-chrome
+      - chromium
+      - brave-bin
+      - brave-nightly-bin
+      - brave-beta-bin
+  become: yes
+  become_user: aur_builder

@@ -1,0 +1,9 @@
+---
+- name: "Fonts | {{ ansible_facts['distribution'] }} | Install"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - ttf-jetbrains-mono-nerd
+    state: present
+  become: yes
+  become_user: aur_builder

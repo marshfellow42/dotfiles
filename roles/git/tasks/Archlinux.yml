@@ -1,0 +1,9 @@
+---
+- name: "Git | {{ ansible_facts['distribution'] }} | Install git"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - git
+    state: present
+  become: yes
+  become_user: aur_builder

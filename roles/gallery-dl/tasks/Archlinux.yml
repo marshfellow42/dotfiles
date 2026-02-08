@@ -1,0 +1,9 @@
+---
+- name: "Gallery-dl | {{ ansible_facts['distribution'] }} | Install gallery-dl"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - gallery-dl
+    state: present
+  become: yes
+  become_user: aur_builder

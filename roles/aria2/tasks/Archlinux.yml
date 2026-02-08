@@ -1,0 +1,9 @@
+---
+- name: "Aria2 | {{ ansible_facts['distribution'] }} | Install aria2"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - aria2
+    state: present
+  become: yes
+  become_user: aur_builder
