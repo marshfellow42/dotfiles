@@ -1,0 +1,69 @@
+---
+- name: "{{ role_name }} | Checking for Distribution Config: {{ ansible_facts['distribution'] }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
+  register: distribution_config
+
+- name: "{{ role_name }} | Distribution specific tasks + ES-DE setup"
+  when: distribution_config.stat.exists
+  block:
+
+    - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+      ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+
+    - name: "EmulationStation Desktop Edition | {{ ansible_facts['distribution'] }} | Ensure the custom folders directory exists"
+      ansible.builtin.file:
+        path: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems"
+        state: directory
+        mode: "0755"
+
+    ############################################################
+    # es_find_rules.xml checksum comparison
+    ############################################################
+
+    - name: "ES-DE | Get source es_find_rules checksum"
+      ansible.builtin.stat:
+        path: "{{ _files_path }}/es_find_rules.xml"
+        checksum_algorithm: sha256
+      register: es_find_rules_src
+
+    - name: "ES-DE | Get destination es_find_rules checksum"
+      ansible.builtin.stat:
+        path: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_find_rules.xml"
+        checksum_algorithm: sha256
+      register: es_find_rules_dest
+
+    - name: "ES-DE | Copy es_find_rules if different"
+      ansible.builtin.copy:
+        src: "{{ _files_path }}/es_find_rules.xml"
+        dest: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_find_rules.xml"
+        mode: "0644"
+      when: >
+        not es_find_rules_dest.stat.exists or
+        es_find_rules_src.stat.checksum != es_find_rules_dest.stat.checksum
+
+
+    ############################################################
+    # es_systems.xml checksum comparison
+    ############################################################
+
+    - name: "ES-DE | Get source es_systems checksum"
+      ansible.builtin.stat:
+        path: "{{ _files_path }}/es_systems.xml"
+        checksum_algorithm: sha256
+      register: es_systems_src
+
+    - name: "ES-DE | Get destination es_systems checksum"
+      ansible.builtin.stat:
+        path: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_systems.xml"
+        checksum_algorithm: sha256
+      register: es_systems_dest
+
+    - name: "ES-DE | Copy es_systems if different"
+      ansible.builtin.copy:
+        src: "{{ _files_path }}/es_systems.xml"
+        dest: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_systems.xml"
+        mode: "0644"
+      when: >
+        not es_systems_dest.stat.exists or
+        es_systems_src.stat.checksum != es_systems_dest.stat.checksum

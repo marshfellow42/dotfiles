@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleList>
+    <emulator name="EDEN">
+        <!-- Nintendo Switch emulator Eden -->
+        <rule type="systempath">
+            <entry>eden.exe</entry>
+            <entry>eden-cli.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\Emulators\Eden\eden.exe</entry>
+            <entry>%ESPATH%\Emulators\Eden\eden-cli.exe</entry>
+            <entry>%ESPATH%\..\Emulators\Eden\eden.exe</entry>
+            <entry>%ESPATH%\..\Emulators\Eden\eden-cli.exe</entry>
+        </rule>
+    </emulator>
+</ruleList>

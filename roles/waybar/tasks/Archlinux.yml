@@ -1,0 +1,9 @@
+---
+- name: "Waybar | {{ ansible_facts['distribution'] }} | Install waybar"
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - waybar
+    state: present
+  become: yes
+  become_user: aur_builder

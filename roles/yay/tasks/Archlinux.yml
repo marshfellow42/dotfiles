@@ -6,24 +6,27 @@
   failed_when: false
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install dependencies for yay"
-  community.general.pacman:
+  kewlfft.aur.aur:
+    use: yay
     name:
       - git
       - base-devel
     state: present
+  become: yes
+  become_user: aur_builder
   when: yay_check.rc != 0
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Clone yay AUR repo"
   ansible.builtin.git:
     repo: https://aur.archlinux.org/yay.git
-    dest: /home/{{ ansible_user }}/yay
+    dest: "{{ ansible_facts['user_dir'] }}/yay"
   when: yay_check.rc != 0
   become: false
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Build and install yay"
   ansible.builtin.command: makepkg -si --noconfirm
   args:
-    chdir: /home/{{ ansible_user }}/yay
+    chdir: "{{ ansible_facts['user_dir'] }}/yay"
   when: yay_check.rc != 0
   become: false
 
@@ -39,7 +42,7 @@
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Remove yay build directory"
   ansible.builtin.file:
-    path: /home/{{ ansible_user }}/yay
+    path: "{{ ansible_facts['user_dir'] }}/yay"
     state: absent
   when: yay_check.rc != 0
 
@@ -52,6 +55,7 @@
       - swww
       - mpv
       - qbittorrent
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -63,6 +67,7 @@
       - imagemagick
       - makemkv
       - whipper
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -74,6 +79,7 @@
       - lmms
       - mpd
       - rmpc
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -84,6 +90,7 @@
       - mullvad-browser-bin
       - veracrypt
       - keepassxc
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -93,6 +100,7 @@
     name:
       - scrcpy
       - gnupg
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -105,6 +113,7 @@
       - shadps4-git
       - vita3k-git
       - eden
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -114,9 +123,9 @@
     name:
       - freesmlauncher
       - osu-lazer-bin
-      - emulationstation-de
       - steam
       - lutris
+    state: present
   become: yes
   become_user: aur_builder
 
@@ -125,19 +134,7 @@
     use: yay
     name:
       - obsidian-appimage
-  become: yes
-  become_user: aur_builder
-
-- name: "Yay | {{ ansible_facts['distribution'] }} | Remove unnecessary packages using yay"
-  kewlfft.aur.aur:
-    use: yay
-    state: absent
-    name:
-      - firefox
-      - google-chrome
-      - chromium
-      - brave-bin
-      - brave-nightly-bin
-      - brave-beta-bin
+      - timelineproject-hg
+    state: present
   become: yes
   become_user: aur_builder

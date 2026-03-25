@@ -17,6 +17,12 @@
             "filename": "{author['name']}-{date:%Y%m%d_%H%M%S}-{tweet_id}-{num}.{extension}"
         },
 
+        "nitter": {
+            "directory": ["Nitter", "{author['name']}"],
+
+            "filename": "{author['name']}-{date:%Y%m%d_%H%M%S}-{tweet_id}-{num}.{extension}"
+        },
+
         "gelbooru": {
             "api-key": "",
             "user-id": "",

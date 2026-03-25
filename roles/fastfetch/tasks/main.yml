@@ -4,18 +4,21 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+- name: "{{ role_name }} | Distribution specific tasks + Fastfetch setup"
   when: distribution_config.stat.exists
+  block:
 
-- name: "Fastfetch | {{ ansible_facts['distribution'] }} | Ensure .config directory exists"
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/.config/fastfetch"
-    state: directory
-    mode: "0755"
+    - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+      ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-- name: "Fastfetch | {{ ansible_facts['distribution'] }} | Copy config file"
-  ansible.builtin.copy:
-    src: "{{ _files_path }}/config.jsonc"
-    dest: "{{ ansible_facts['user_dir'] }}/.config/fastfetch/config.jsonc"
-    mode: "0644"
+    - name: "Fastfetch | {{ ansible_facts['distribution'] }} | Ensure .config directory exists"
+      ansible.builtin.file:
+        path: "{{ ansible_facts['user_dir'] }}/.config/fastfetch"
+        state: directory
+        mode: "0755"
+
+    - name: "Fastfetch | {{ ansible_facts['distribution'] }} | Copy config file"
+      ansible.builtin.copy:
+        src: "{{ _files_path }}/config.jsonc"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/fastfetch/config.jsonc"
+        mode: "0644"

@@ -4,18 +4,40 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
+- name: "{{ role_name }} | Distribution specific tasks + Aria2 setup"
   when: distribution_config.stat.exists
+  block:
 
-- name: "Aria2 | {{ ansible_facts['distribution'] }} | Ensure .config directory exists"
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/.aria2"
-    state: directory
-    mode: "0755"
+    - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
+      ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-- name: "Aria2 | {{ ansible_facts['distribution'] }} | Copy config file"
-  ansible.builtin.copy:
-    src: "{{ _files_path }}/aria2.conf"
-    dest: "{{ ansible_facts['user_dir'] }}/.aria2/aria2.conf"
-    mode: "0644"
+    - name: "Aria2 | {{ ansible_facts['distribution'] }} | Ensure .aria2 directory exists"
+      ansible.builtin.file:
+        path: "{{ ansible_facts['user_dir'] }}/.aria2"
+        state: directory
+        mode: "0755"
+
+    ############################################################
+    # Checksum comparison
+    ############################################################
+
+    - name: "Aria2 | Get source aria2.conf checksum"
+      ansible.builtin.stat:
+        path: "{{ _files_path }}/aria2.conf"
+        checksum_algorithm: sha256
+      register: aria2_src
+
+    - name: "Aria2 | Get destination aria2.conf checksum"
+      ansible.builtin.stat:
+        path: "{{ ansible_facts['user_dir'] }}/.aria2/aria2.conf"
+        checksum_algorithm: sha256
+      register: aria2_dest
+
+    - name: "Aria2 | Copy aria2.conf if different"
+      ansible.builtin.copy:
+        src: "{{ _files_path }}/aria2.conf"
+        dest: "{{ ansible_facts['user_dir'] }}/.aria2/aria2.conf"
+        mode: "0644"
+      when: >
+        not aria2_dest.stat.exists or
+        aria2_src.stat.checksum != aria2_dest.stat.checksum
