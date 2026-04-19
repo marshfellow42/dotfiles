@@ -11,15 +11,7 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "yt-dlp | {{ ansible_facts['distribution'] }} | Ensure config directory exists"
-      ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.config/yt-dlp"
-        state: directory
-        mode: "0755"
-
-    - name: "yt-dlp | {{ ansible_facts['distribution'] }} | Symlink config file (overwrites existing)"
-      ansible.builtin.file:
-        src: "{{ _files_path }}/config"
-        dest: "{{ ansible_facts['user_dir'] }}/.config/yt-dlp/config"
-        state: link
-        force: yes
+    - name: "Neovim | {{ ansible_facts['distribution'] }} | Clone LazyVim starter pack"
+      ansible.builtin.git:
+        repo: https://github.com/LazyVim/starter
+        dest: "{{ ansible_user_dir }}/.config/nvim"

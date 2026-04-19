@@ -7,12 +7,11 @@
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install dependencies for yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - git
       - base-devel
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
   when: yay_check.rc != 0
 
@@ -48,7 +47,6 @@
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install essential apps using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - librewolf-bin
       - rofi-wayland
@@ -56,57 +54,52 @@
       - mpv
       - qbittorrent
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install media apps using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - ffmpeg
       - imagemagick
       - makemkv
       - whipper
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install art apps using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - aseprite
       - lmms
       - mpd
       - rmpc
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install privacy apps using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - mullvad-browser-bin
       - veracrypt
       - keepassxc
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install dev tools using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - scrcpy
       - gnupg
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install emulators using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - rpcs3-bin
       - cemu
@@ -114,27 +107,25 @@
       - vita3k-git
       - eden
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install gaming apps using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - freesmlauncher
       - osu-lazer-bin
       - steam
       - lutris
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
 
 - name: "Yay | {{ ansible_facts['distribution'] }} | Install writing tools using yay"
   kewlfft.aur.aur:
-    use: yay
     name:
       - obsidian-appimage
       - timelineproject-hg
     state: present
-  become: yes
+  become: true
   become_user: aur_builder

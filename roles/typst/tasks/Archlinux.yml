@@ -1,8 +1,7 @@
 ---
 - name: "Typst | {{ ansible_facts['distribution'] }} | Install typst"
   kewlfft.aur.aur:
-    use: yay
     name:
       - typst
-  become: yes
+  become: true
   become_user: aur_builder

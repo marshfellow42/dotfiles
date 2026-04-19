@@ -1,0 +1,11 @@
+-o "%(title)s [%(id)s] - [%(extractor_key)s].%(ext)s"
+
+--embed-metadata
+
+--embed-thumbnail
+
+--embed-subs
+
+--sub-langs "en.*,.*-orig,ja,pt.*"
+
+-P "~/Downloads"

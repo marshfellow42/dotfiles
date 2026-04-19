@@ -16,7 +16,7 @@
   when: flatpak_is_desktop
 
 - name: "GIMP | {{ ansible_facts['distribution'] }} | Check if Batcher plugin exists in gimp"
-  ansible.builtin.shell: "ls /home/{{ remote_regular_user }}/.config/GIMP/plug-ins/batcher"
+  ansible.builtin.shell: "ls {{ ansible_user_dir }}/.config/GIMP/plug-ins/batcher"
   register: batcher_plugin_exists
   changed_when: false
 
@@ -24,7 +24,7 @@
   when: batcher_plugin_exists is failed
   ansible.builtin.unarchive:
     src: https://github.com/kamilburda/batcher/releases/download/1.2.2/batcher-1.2.2.zip
-    dest: "/home/{{ remote_regular_user }}/.config/GIMP/plug-ins/"
+    dest: "{{ ansible_user_dir }}/.config/GIMP/plug-ins/"
     remote_src: true
     mode: "0755"
     owner: "{{ remote_regular_user }}"

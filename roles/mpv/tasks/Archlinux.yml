@@ -1,8 +1,8 @@
 ---
-- name: "Aria2 | {{ ansible_facts['distribution'] }} | Install aria2"
+- name: "mpv | {{ ansible_facts['distribution'] }} | Install mpv"
   kewlfft.aur.aur:
     name:
-      - aria2
+      - mpv
     state: present
   become: true
   become_user: aur_builder

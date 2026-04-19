@@ -1,10 +1,8 @@
 ---
 - name: "yt-dlp | {{ ansible_facts['distribution'] }} | Install yt-dlp"
   kewlfft.aur.aur:
-    use: yay
     name:
       - yt-dlp
-      - yt-dlp-ejs
     state: present
-  become: yes
+  become: true
   become_user: aur_builder

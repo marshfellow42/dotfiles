@@ -1,0 +1,24 @@
+---
+- name: "rmpc | {{ ansible_facts['distribution'] }} | Install mpd"
+  kewlfft.aur.aur:
+    name:
+      - mpd
+    state: present
+  become: true
+  become_user: aur_builder
+
+- name: "rmpc | {{ ansible_facts['distribution'] }} | Install rmpc"
+  kewlfft.aur.aur:
+    name:
+      - rmpc
+    state: present
+  become: true
+  become_user: aur_builder
+
+- name: "rmpc | {{ ansible_facts['distribution'] }} | Install cava"
+  kewlfft.aur.aur:
+    name:
+      - cava
+    state: present
+  become: true
+  become_user: aur_builder

@@ -1,9 +1,8 @@
 ---
 - name: "Fastfetch | {{ ansible_facts['distribution'] }} | Install fastfetch"
   kewlfft.aur.aur:
-    use: yay
     name:
       - fastfetch
     state: present
-  become: yes
+  become: true
   become_user: aur_builder

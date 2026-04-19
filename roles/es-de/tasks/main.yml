@@ -17,53 +17,16 @@
         state: directory
         mode: "0755"
 
-    ############################################################
-    # es_find_rules.xml checksum comparison
-    ############################################################
-
-    - name: "ES-DE | Get source es_find_rules checksum"
-      ansible.builtin.stat:
-        path: "{{ _files_path }}/es_find_rules.xml"
-        checksum_algorithm: sha256
-      register: es_find_rules_src
-
-    - name: "ES-DE | Get destination es_find_rules checksum"
-      ansible.builtin.stat:
-        path: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_find_rules.xml"
-        checksum_algorithm: sha256
-      register: es_find_rules_dest
-
-    - name: "ES-DE | Copy es_find_rules if different"
-      ansible.builtin.copy:
+    - name: "ES-DE | Symlink es_find_rules.xml (overwrites existing file)"
+      ansible.builtin.file:
         src: "{{ _files_path }}/es_find_rules.xml"
         dest: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_find_rules.xml"
-        mode: "0644"
-      when: >
-        not es_find_rules_dest.stat.exists or
-        es_find_rules_src.stat.checksum != es_find_rules_dest.stat.checksum
+        state: link
+        force: yes
 
-
-    ############################################################
-    # es_systems.xml checksum comparison
-    ############################################################
-
-    - name: "ES-DE | Get source es_systems checksum"
-      ansible.builtin.stat:
-        path: "{{ _files_path }}/es_systems.xml"
-        checksum_algorithm: sha256
-      register: es_systems_src
-
-    - name: "ES-DE | Get destination es_systems checksum"
-      ansible.builtin.stat:
-        path: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_systems.xml"
-        checksum_algorithm: sha256
-      register: es_systems_dest
-
-    - name: "ES-DE | Copy es_systems if different"
-      ansible.builtin.copy:
+    - name: "ES-DE | Symlink es_systems.xml (overwrites existing file)"
+      ansible.builtin.file:
         src: "{{ _files_path }}/es_systems.xml"
         dest: "{{ ansible_facts['user_dir'] }}/ES-DE/custom_systems/es_systems.xml"
-        mode: "0644"
-      when: >
-        not es_systems_dest.stat.exists or
-        es_systems_src.stat.checksum != es_systems_dest.stat.checksum
+        state: link
+        force: yes

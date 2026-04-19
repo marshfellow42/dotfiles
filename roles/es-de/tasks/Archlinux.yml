@@ -1,9 +1,8 @@
 ---
 - name: "EmulationStation Desktop Edition | {{ ansible_facts['distribution'] }} | Install emulationstation-de"
   kewlfft.aur.aur:
-    use: yay
     name:
       - emulationstation-de
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
