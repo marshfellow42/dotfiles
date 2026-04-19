@@ -11,7 +11,16 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    # If config file doesn't exist bootstrap one
+    - name: "{{ role_name }} | Ensure rmpc config file is symlinked"
+      ansible.builtin.file:
+        src: "{{ _files_path }}/config.ron"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/rmpc/config.ron"
+        state: link
+        force: yes
 
-    - name: "rmpc | {{ ansible_facts['distribution'] }} | Bootstrap rmpc configuration file"
-      ansible.builtin.shell: "rmpc config > ~/.config/rmpc/config.ron"
+    - name: "{{ role_name }} | Ensure rmpc theme file is symlinked"
+      ansible.builtin.file:
+        src: "{{ _files_path }}/def.ron"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/rmpc/themes/def.ron"
+        state: link
+        force: yes

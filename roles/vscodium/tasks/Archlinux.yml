@@ -1,5 +1,5 @@
 ---
-- name: "VSCodium | {{ ansible_facts['distribution'] }} | Install vscodium"
+- name: "{{ role_name }} | Install vscodium"
   kewlfft.aur.aur:
     name:
       - vscodium-bin

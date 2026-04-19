@@ -1,5 +1,5 @@
 ---
-- name: "rmpc | {{ ansible_facts['distribution'] }} | Install mpd"
+- name: "{{ role_name }} | Install mpd"
   kewlfft.aur.aur:
     name:
       - mpd
@@ -7,7 +7,7 @@
   become: true
   become_user: aur_builder
 
-- name: "rmpc | {{ ansible_facts['distribution'] }} | Install rmpc"
+- name: "{{ role_name }} | Install rmpc"
   kewlfft.aur.aur:
     name:
       - rmpc
@@ -15,7 +15,7 @@
   become: true
   become_user: aur_builder
 
-- name: "rmpc | {{ ansible_facts['distribution'] }} | Install cava"
+- name: "{{ role_name }} | Install cava"
   kewlfft.aur.aur:
     name:
       - cava

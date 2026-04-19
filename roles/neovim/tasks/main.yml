@@ -11,7 +11,7 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "Neovim | {{ ansible_facts['distribution'] }} | Clone LazyVim starter pack"
+    - name: "{{ role_name }} | Clone LazyVim starter pack"
       ansible.builtin.git:
         repo: https://github.com/LazyVim/starter
-        dest: "{{ ansible_user_dir }}/.config/nvim"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/nvim"

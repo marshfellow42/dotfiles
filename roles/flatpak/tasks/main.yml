@@ -1,44 +1,44 @@
 ---
-- name: Flatpak | Check if flatpak is installed
+- name: "{{ role_name }} | Check if flatpak is installed"
   ansible.builtin.command: command -v flatpak
   register: flatpak_installed
   changed_when: false
   failed_when: false
 
-- name: Flatpak | Install and configure flatpak
+- name: "{{ role_name }} | Install and configure flatpak"
   when: flatpak_installed.rc != 0
   block:
 
-    - name: "Flatpak | Install flatpak"
+    - name: "{{ role_name }} | Install flatpak"
       ansible.builtin.package:
         name: flatpak
         state: present
       become: true
 
-    - name: "Flatpak | Add Flathub remote"
+    - name: "{{ role_name }} | Add Flathub remote"
       community.general.flatpak_remote:
         name: "flathub"
         flatpakrepo_url: "https://flathub.org/repo/flathub.flatpakrepo"
         state: present
 
-    - name: Flatpak | Add Dolphin Emulator remote
+    - name: "{{ role_name }} | Add Dolphin Emulator remote"
       community.general.flatpak_remote:
         name: "dolphin-emu"
         flatpakrepo_url: "https://flatpak.dolphin-emu.org/releases.flatpakrepo"
         state: present
 
-    - name: "Flatpak | Detect desktop environment"
+    - name: "{{ role_name }} | Detect desktop environment"
       ansible.builtin.command: systemctl get-default
       register: flatpak_systemd_target
       changed_when: false
       failed_when: false
       check_mode: false
 
-    - name: "Flatpak | Set desktop environment fact"
+    - name: "{{ role_name }} | Set desktop environment fact"
       ansible.builtin.set_fact:
         flatpak_is_desktop: "{{ flatpak_systemd_target.stdout == 'graphical.target' }}"
 
-    - name: "Flatpak | Install desktop applications"
+    - name: "{{ role_name }} | Install desktop applications"
       community.general.flatpak:
         name:
           - org.mozilla.Thunderbird
@@ -46,7 +46,7 @@
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Flatpak | Install media applications"
+    - name: "{{ role_name }} | Install media applications"
       community.general.flatpak:
         name:
           - com.github.iwalton3.jellyfin-media-player
@@ -54,7 +54,7 @@
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Flatpak | Install art applications"
+    - name: "{{ role_name }} | Install art applications"
       community.general.flatpak:
         name: 
           - com.obsproject.Studio
@@ -68,7 +68,7 @@
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Flatpak | Install privacy applications"
+    - name: "{{ role_name }} | Install privacy applications"
       community.general.flatpak:
         name:
           - org.torproject.torbrowser-launcher
@@ -76,7 +76,7 @@
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Flatpak | Install emulators"
+    - name: "{{ role_name }} | Install emulators"
       community.general.flatpak:
         name:
           - net.pcsx2.PCSX2
@@ -86,14 +86,14 @@
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Flatpak | Install Dolphin Emulator"
+    - name: "{{ role_name }} | Install Dolphin Emulator"
       community.general.flatpak:
         name: org.DolphinEmu.dolphin-emu
         state: present
         remote: dolphin-emu
       when: flatpak_is_desktop
       
-    - name: "Flatpak | Install gaming applications"
+    - name: "{{ role_name }} | Install gaming applications"
       community.general.flatpak:
         name:
           - net.lutris.Lutris

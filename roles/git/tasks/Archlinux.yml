@@ -1,5 +1,5 @@
 ---
-- name: "Git | {{ ansible_facts['distribution'] }} | Install git"
+- name: "{{ role_name }} | Install git"
   kewlfft.aur.aur:
     name:
       - git

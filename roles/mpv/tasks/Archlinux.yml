@@ -1,5 +1,5 @@
 ---
-- name: "mpv | {{ ansible_facts['distribution'] }} | Install mpv"
+- name: "{{ role_name }} | Install mpv"
   kewlfft.aur.aur:
     name:
       - mpv

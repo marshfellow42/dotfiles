@@ -11,14 +11,14 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "Fightcade | {{ ansible_facts['distribution'] }} | Install fightcade"
+    - name: "{{ role_name }} | Install fightcade"
       community.general.flatpak:
         name: com.fightcade.Fightcade
         state: present
         remote: flathub
       when: flatpak_is_desktop
 
-    - name: "Fightcade | {{ ansible_facts['distribution'] }} | Files we expect from FC2JSON"
+    - name: "{{ role_name }} | Files we expect from FC2JSON"
       ansible.builtin.set_fact:
         required_fc2json_files:
           - snes9x_roms.json
@@ -36,19 +36,19 @@
           - fc1_roms.json
           - nulldc_roms.json
 
-    - name: "Fightcade | {{ ansible_facts['distribution'] }} | Check if FC2JSON files exist"
+    - name: "{{ role_name }} | Check if FC2JSON files exist"
       ansible.builtin.find:
         paths: "{{ ansible_facts['user_dir'] }}/.local/share/flatpak/fightcade/emulator"
         patterns: "*.json"
         file_type: file
       register: fc2json_files
 
-    - name: "Fightcade | {{ ansible_facts['distribution'] }} | Get existing json filenames"
+    - name: "{{ role_name }} | Get existing json filenames"
       ansible.builtin.set_fact:
         existing_fc2json_files: >-
           {{ fc2json_files.files | map(attribute='path') | map('basename') | list }}
 
-    - name: "Fightcade | {{ ansible_facts['distribution'] }} | Download FC2JSON if missing"
+    - name: "{{ role_name }} | Download FC2JSON if missing"
       when: required_fc2json_files | difference(existing_fc2json_files) | length > 0
       ansible.builtin.unarchive:
         src: https://fightcade.download/fc2json.zip

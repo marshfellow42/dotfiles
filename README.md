@@ -9,7 +9,7 @@ This repo is heavily influenced by [TechDufus](https://github.com/TechDufus/dotf
 Just run the bash file
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/marshfellow42/dotfiles/main/install/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/marshfellow42/dotfiles/refs/heads/main/install/install.sh | bash
 ```
 
 Then, just run the dotfiles command

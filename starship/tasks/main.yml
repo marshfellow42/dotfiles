@@ -4,22 +4,16 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Distribution specific tasks + Fastfetch setup"
+- name: "{{ role_name }} | Distribution specific tasks + starship setup"
   when: distribution_config.stat.exists
   block:
 
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "{{ role_name }} | Ensure .config directory exists"
+    - name: "{{ role_name }} | Symlink config file"
       ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.config/fastfetch"
-        state: directory
-        mode: "0755"
-
-    - name: "{{ role_name }} | Symlink config file (overwrites existing)"
-      ansible.builtin.file:
-        src: "{{ _files_path }}/config.jsonc"
-        dest: "{{ ansible_facts['user_dir'] }}/.config/fastfetch/config.jsonc"
+        src: "{{ _files_path }}/starship.toml"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/starship.toml"
         state: link
         force: yes

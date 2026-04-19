@@ -1,5 +1,5 @@
 ---
-- name: "Typst | {{ ansible_facts['distribution'] }} | Install typst"
+- name: "{{ role_name }} | Install typst"
   kewlfft.aur.aur:
     name:
       - typst

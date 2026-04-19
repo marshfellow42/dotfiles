@@ -11,20 +11,20 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "mpv | {{ ansible_facts['distribution'] }} | Ensure config directory exists"
+    - name: "{{ role_name }} | Ensure config directory exists"
       ansible.builtin.file:
         path: "{{ ansible_facts['user_dir'] }}/.config/mpv"
         state: directory
         mode: "0755"
 
-    - name: "mpv | {{ ansible_facts['distribution'] }} | Symlink mpv.conf (overwrites existing)"
+    - name: "{{ role_name }} | Symlink mpv.conf (overwrites existing)"
       ansible.builtin.file:
         src: "{{ _files_path }}/mpv.conf"
         dest: "{{ ansible_facts['user_dir'] }}/.config/mpv/mpv.conf"
         state: link
         force: yes
 
-    - name: "mpv | {{ ansible_facts['distribution'] }} | Symlink input.conf (optional but common)"
+    - name: "{{ role_name }} | Symlink input.conf (optional but common)"
       ansible.builtin.file:
         src: "{{ _files_path }}/input.conf"
         dest: "{{ ansible_facts['user_dir'] }}/.config/mpv/input.conf"

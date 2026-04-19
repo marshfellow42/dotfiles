@@ -1,11 +1,11 @@
 ---
-- name: "Yay | {{ ansible_facts['distribution'] }} | Check if yay is installed"
+- name: "{{ role_name }} | Check if yay is installed"
   ansible.builtin.command: command -v yay
   register: yay_check
   changed_when: false
   failed_when: false
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install dependencies for yay"
+- name: "{{ role_name }} | Install dependencies for yay"
   kewlfft.aur.aur:
     name:
       - git
@@ -15,37 +15,37 @@
   become_user: aur_builder
   when: yay_check.rc != 0
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Clone yay AUR repo"
+- name: "{{ role_name }} | Clone yay AUR repo"
   ansible.builtin.git:
     repo: https://aur.archlinux.org/yay.git
     dest: "{{ ansible_facts['user_dir'] }}/yay"
   when: yay_check.rc != 0
   become: false
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Build and install yay"
+- name: "{{ role_name }} | Build and install yay"
   ansible.builtin.command: makepkg -si --noconfirm
   args:
     chdir: "{{ ansible_facts['user_dir'] }}/yay"
   when: yay_check.rc != 0
   become: false
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Generate yay development package database"
+- name: "{{ role_name }} | Generate yay development package database"
   ansible.builtin.command: yay -Y --gendb
   when: yay_check.rc != 0
   become: false
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Enable permanent devel package updates"
+- name: "{{ role_name }} | Enable permanent devel package updates"
   ansible.builtin.command: yay -Y --devel --save
   when: yay_check.rc != 0
   become: false
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Remove yay build directory"
+- name: "{{ role_name }} | Remove yay build directory"
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/yay"
     state: absent
   when: yay_check.rc != 0
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install essential apps using yay"
+- name: "{{ role_name }} | Install essential apps using yay"
   kewlfft.aur.aur:
     name:
       - librewolf-bin
@@ -57,7 +57,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install media apps using yay"
+- name: "{{ role_name }} | Install media apps using yay"
   kewlfft.aur.aur:
     name:
       - ffmpeg
@@ -68,7 +68,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install art apps using yay"
+- name: "{{ role_name }} | Install art apps using yay"
   kewlfft.aur.aur:
     name:
       - aseprite
@@ -79,7 +79,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install privacy apps using yay"
+- name: "{{ role_name }} | Install privacy apps using yay"
   kewlfft.aur.aur:
     name:
       - mullvad-browser-bin
@@ -89,7 +89,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install dev tools using yay"
+- name: "{{ role_name }} | Install dev tools using yay"
   kewlfft.aur.aur:
     name:
       - scrcpy
@@ -98,7 +98,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install emulators using yay"
+- name: "{{ role_name }} | Install emulators using yay"
   kewlfft.aur.aur:
     name:
       - rpcs3-bin
@@ -110,7 +110,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install gaming apps using yay"
+- name: "{{ role_name }} | Install gaming apps using yay"
   kewlfft.aur.aur:
     name:
       - freesmlauncher
@@ -121,7 +121,7 @@
   become: true
   become_user: aur_builder
 
-- name: "Yay | {{ ansible_facts['distribution'] }} | Install writing tools using yay"
+- name: "{{ role_name }} | Install writing tools using yay"
   kewlfft.aur.aur:
     name:
       - obsidian-appimage

@@ -1,5 +1,5 @@
 ---
-- name: "Waybar | {{ ansible_facts['distribution'] }} | Install waybar"
+- name: "{{ role_name }} | Install waybar"
   kewlfft.aur.aur:
     name:
       - waybar

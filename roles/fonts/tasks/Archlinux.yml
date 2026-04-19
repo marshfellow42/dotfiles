@@ -1,5 +1,5 @@
 ---
-- name: "Fonts | {{ ansible_facts['distribution'] }} | Install"
+- name: "{{ role_name }} | Install"
   kewlfft.aur.aur:
     name:
       - ttf-jetbrains-mono-nerd

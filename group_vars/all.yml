@@ -7,6 +7,7 @@ default_roles:
   - zsh
   - gimp
   - fonts
+  - kitty
   - vscodium
   - typst
   - yt-dlp
@@ -17,5 +18,6 @@ default_roles:
   - aria2
   - rmpc
   - mpv
+  - starship
 
 git_user_name: "marshfellow42"

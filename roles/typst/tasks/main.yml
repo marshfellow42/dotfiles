@@ -21,12 +21,12 @@
       when: codium_installed.rc == 0
       block:
 
-        - name: Typst | {{ ansible_facts['distribution'] }} | Get installed VSCodium extensions
+        - name: "{{ role_name }} | Get installed VSCodium extensions"
           ansible.builtin.command: codium --list-extensions
           register: typst_codium_extensions
           changed_when: false
 
-        - name: Typst | {{ ansible_facts['distribution'] }} | Install Typst VSCodium extensions
+        - name: "{{ role_name }} | Install Typst VSCodium extensions"
           ansible.builtin.command: codium --install-extension {{ item }}
           loop:
             - mathematic.vscode-pdf

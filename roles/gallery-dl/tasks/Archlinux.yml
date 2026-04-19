@@ -1,5 +1,5 @@
 ---
-- name: "Gallery-dl | {{ ansible_facts['distribution'] }} | Install gallery-dl"
+- name: "{{ role_name }} | Install gallery-dl"
   kewlfft.aur.aur:
     name:
       - gallery-dl

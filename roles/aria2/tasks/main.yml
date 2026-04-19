@@ -11,13 +11,13 @@
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "Aria2 | {{ ansible_facts['distribution'] }} | Ensure .aria2 directory exists"
+    - name: "{{ role_name }} | Ensure .aria2 directory exists"
       ansible.builtin.file:
         path: "{{ ansible_facts['user_dir'] }}/.aria2"
         state: directory
         mode: "0755"
 
-    - name: "Aria2 | Ensure aria2.conf is symlinked (overwriting existing)"
+    - name: "{{ role_name }} | Ensure aria2.conf is symlinked (overwriting existing)"
       ansible.builtin.file:
         src: "{{ _files_path }}/aria2.conf"
         dest: "{{ ansible_facts['user_dir'] }}/.aria2/aria2.conf"

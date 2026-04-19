@@ -1,5 +1,5 @@
 ---
-- name: "Aria2 | {{ ansible_facts['distribution'] }} | Install aria2"
+- name: "{{ role_name }} | Install aria2"
   kewlfft.aur.aur:
     name:
       - aria2

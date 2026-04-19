@@ -16,7 +16,7 @@
     # Git configuration
     ############################################################
 
-    - name: "Git | Configure credential.helper"
+    - name: "{{ role_name }} | Configure credential.helper"
       community.general.git_config:
         name: credential.helper
         scope: global
@@ -26,13 +26,13 @@
     # User
     ############################################################
 
-    - name: "Git | Set user.name"
+    - name: "{{ role_name }} | Set user.name"
       community.general.git_config:
         name: user.name
         scope: global
         value: "{{ git_user_name }}"
 
-    - name: "Git | Set user.email"
+    - name: "{{ role_name }} | Set user.email"
       community.general.git_config:
         name: user.email
         scope: global
@@ -40,7 +40,7 @@
       when: git_user_email is defined
       no_log: true
 
-    - name: "Git | Set user.signingkey"
+    - name: "{{ role_name }} | Set user.signingkey"
       community.general.git_config:
         name: user.signingkey
         scope: global
@@ -50,13 +50,13 @@
     # Commit / Tag signing
     ############################################################
 
-    - name: "Git | Enable commit.gpgsign"
+    - name: "{{ role_name }} | Enable commit.gpgsign"
       community.general.git_config:
         name: commit.gpgsign
         scope: global
         value: true
 
-    - name: "Git | Enable tag.gpgsign"
+    - name: "{{ role_name }} | Enable tag.gpgsign"
       community.general.git_config:
         name: tag.gpgsign
         scope: global
@@ -66,7 +66,7 @@
     # GPG (Linux version)
     ############################################################
 
-    - name: "Git | Set gpg.program"
+    - name: "{{ role_name }} | Set gpg.program"
       community.general.git_config:
         name: gpg.program
         scope: global
@@ -76,13 +76,13 @@
     # Core
     ############################################################
 
-    - name: "Git | Set core.editor"
+    - name: "{{ role_name }} | Set core.editor"
       community.general.git_config:
         name: core.editor
         scope: global
         value: nano
 
-    - name: "Git | Set core.autocrlf"
+    - name: "{{ role_name }} | Set core.autocrlf"
       community.general.git_config:
         name: core.autocrlf
         scope: global
@@ -92,7 +92,7 @@
     # Push
     ############################################################
 
-    - name: "Git | Set push.autoSetupRemote"
+    - name: "{{ role_name }} | Set push.autoSetupRemote"
       community.general.git_config:
         name: push.autoSetupRemote
         scope: global
@@ -102,25 +102,25 @@
     # Git LFS
     ############################################################
 
-    - name: "Git | Configure filter.lfs.clean"
+    - name: "{{ role_name }} | Configure filter.lfs.clean"
       community.general.git_config:
         name: filter.lfs.clean
         scope: global
         value: "git-lfs clean -- %f"
 
-    - name: "Git | Configure filter.lfs.smudge"
+    - name: "{{ role_name }} | Configure filter.lfs.smudge"
       community.general.git_config:
         name: filter.lfs.smudge
         scope: global
         value: "git-lfs smudge -- %f"
 
-    - name: "Git | Configure filter.lfs.process"
+    - name: "{{ role_name }} | Configure filter.lfs.process"
       community.general.git_config:
         name: filter.lfs.process
         scope: global
         value: "git-lfs filter-process"
 
-    - name: "Git | Configure filter.lfs.required"
+    - name: "{{ role_name }} | Configure filter.lfs.required"
       community.general.git_config:
         name: filter.lfs.required
         scope: global

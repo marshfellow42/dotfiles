@@ -1,5 +1,5 @@
 ---
-- name: "Neovim | {{ ansible_facts['distribution'] }} | Install neovim"
+- name: "{{ role_name }} | Install neovim"
   kewlfft.aur.aur:
     name:
       - neovim

@@ -8,23 +8,23 @@
   ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
   when: distribution_config.stat.exists
 
-- name: "GIMP | {{ ansible_facts['distribution'] }} | Install gimp"
+- name: "{{ role_name }} | Install gimp"
   community.general.flatpak:
     name: org.gimp.GIMP
     state: present
     remote: flathub
   when: flatpak_is_desktop
 
-- name: "GIMP | {{ ansible_facts['distribution'] }} | Check if Batcher plugin exists in gimp"
-  ansible.builtin.shell: "ls {{ ansible_user_dir }}/.config/GIMP/plug-ins/batcher"
+- name: "{{ role_name }} | Check if Batcher plugin exists in gimp"
+  ansible.builtin.shell: "ls {{ ansible_facts['user_dir'] }}/.config/GIMP/plug-ins/batcher"
   register: batcher_plugin_exists
   changed_when: false
 
-- name: "GIMP | {{ ansible_facts['distribution'] }} | Download Batcher plguin"
+- name: "{{ role_name }} | Download Batcher plguin"
   when: batcher_plugin_exists is failed
   ansible.builtin.unarchive:
-    src: https://github.com/kamilburda/batcher/releases/download/1.2.2/batcher-1.2.2.zip
-    dest: "{{ ansible_user_dir }}/.config/GIMP/plug-ins/"
+    src: https://github.com/kamilburda/batcher/releases/download/1.2.5/batcher-1.2.5.zip
+    dest: "{{ ansible_facts['user_dir'] }}/.config/GIMP/plug-ins/"
     remote_src: true
     mode: "0755"
     owner: "{{ remote_regular_user }}"

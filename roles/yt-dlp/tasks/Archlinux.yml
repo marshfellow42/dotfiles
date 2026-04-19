@@ -1,5 +1,5 @@
 ---
-- name: "yt-dlp | {{ ansible_facts['distribution'] }} | Install yt-dlp"
+- name: "{{ role_name }} | Install yt-dlp"
   kewlfft.aur.aur:
     name:
       - yt-dlp

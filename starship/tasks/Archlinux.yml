@@ -1,8 +1,8 @@
 ---
-- name: "{{ role_name }} | Install fastfetch"
+- name: "{{ role_name }} | Install starship"
   kewlfft.aur.aur:
     name:
-      - fastfetch
+      - starship
     state: present
   become: true
   become_user: aur_builder

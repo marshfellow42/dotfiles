@@ -1,8 +1,8 @@
 ---
-- name: "{{ role_name }} | Install fastfetch"
+- name: "{{ role_name }} | Install zsh"
   kewlfft.aur.aur:
     name:
-      - fastfetch
+      - zsh
     state: present
   become: true
   become_user: aur_builder
