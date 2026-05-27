@@ -4,7 +4,7 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Distribution specific tasks + zsh setup"
+- name: "{{ role_name }} | Distribution specific tasks + {{ role_name }} setup"
   when: distribution_config.stat.exists
   block:
 

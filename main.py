@@ -6,10 +6,8 @@ import shutil
 import sys
 import platform
 from rich.console import Console
-from rich_argparse import RichHelpFormatter
 import install.setup
-from typing import Optional
-import time
+from pathlib import Path
 
 console = Console()
 
@@ -104,7 +102,7 @@ def update():
     else:
         run_step(["git", "pull"], "Pulling latest git changes")
 
-        run_step(["uv", "tool", "install", ".", "--force"], f"Updating tool")
+        run_step(["uv", "tool", "install", ".", "--force"], "Updating tool")
         
 @app.command(help="Show the version number for this dotfiles.")
 def version():

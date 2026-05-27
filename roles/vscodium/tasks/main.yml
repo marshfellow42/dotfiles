@@ -4,7 +4,7 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Distribution specific tasks + VSCodium setup"
+- name: "{{ role_name }} | Distribution specific tasks + {{ role_name }} setup"
   when: distribution_config.stat.exists
   block:
 
@@ -25,12 +25,6 @@
         - dracula-theme.theme-dracula
         - formulahendry.code-runner
       when: item not in codium_extensions.stdout_lines
-
-    - name: "{{ role_name }} | Ensure .config directory exists"
-      ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.config/VSCodium/User"
-        state: directory
-        mode: "0755"
 
     - name: "{{ role_name }} | Symlink config file (overwrites existing)"
       ansible.builtin.file:

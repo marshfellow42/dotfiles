@@ -14,3 +14,16 @@
     create: yes
     mode: 0644
     validate: 'visudo -cf %s'
+
+- name: "{{ role_name }} | Install rate-mirrors"
+  ansible.builtin.package:
+    name: rate-mirrors
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Schedule an update of pacman mirrors every week using rate-mirrors"
+  ansible.builtin.cron:
+    name: "rate-mirrors weekly update"
+    special_time: "weekly"
+    job: "rate-mirrors arch --entry-country BR --protocol https | sudo tee /etc/pacman.d/mirrorlist"
+    state: present

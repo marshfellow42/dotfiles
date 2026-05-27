@@ -53,6 +53,9 @@
       - swww
       - mpv
       - qbittorrent
+      - webapp-manager
+      - man-db
+      - man-pages
     state: present
   become: true
   become_user: aur_builder
@@ -73,8 +76,6 @@
     name:
       - aseprite
       - lmms
-      - mpd
-      - rmpc
     state: present
   become: true
   become_user: aur_builder
@@ -94,6 +95,10 @@
     name:
       - scrcpy
       - gnupg
+      - jq
+      - ripgrep
+      - fzf
+      - zoxide
     state: present
   become: true
   become_user: aur_builder
@@ -102,8 +107,7 @@
   kewlfft.aur.aur:
     name:
       - rpcs3-bin
-      - cemu
-      - shadps4-git
+      - shadps4-qtlauncher-bin
       - vita3k-git
       - eden
     state: present

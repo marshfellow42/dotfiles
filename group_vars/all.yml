@@ -16,8 +16,8 @@ default_roles:
   - fastfetch
   - es-de
   - aria2
-  - rmpc
   - mpv
-  - starship
+  - ohmyposh
+  - neovim
 
 git_user_name: "marshfellow42"

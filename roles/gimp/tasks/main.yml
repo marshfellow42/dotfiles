@@ -23,7 +23,7 @@
 - name: "{{ role_name }} | Download Batcher plguin"
   when: batcher_plugin_exists is failed
   ansible.builtin.unarchive:
-    src: https://github.com/kamilburda/batcher/releases/download/1.2.5/batcher-1.2.5.zip
+    src: https://github.com/kamilburda/batcher/releases/download/1.2.9/batcher-1.2.9.zip
     dest: "{{ ansible_facts['user_dir'] }}/.config/GIMP/plug-ins/"
     remote_src: true
     mode: "0755"

@@ -4,7 +4,7 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Distribution specific tasks + starship setup"
+- name: "{{ role_name }} | Distribution specific tasks + {{ role_name }} setup"
   when: distribution_config.stat.exists
   block:
 
@@ -13,7 +13,7 @@
 
     - name: "{{ role_name }} | Symlink config file"
       ansible.builtin.file:
-        src: "{{ _files_path }}/starship.toml"
-        dest: "{{ ansible_facts['user_dir'] }}/.config/starship.toml"
+        src: "{{ _files_path }}/ohmyposh.toml"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/ohmyposh/ohmyposh.toml"
         state: link
         force: yes

@@ -1,8 +1,8 @@
 ---
-- name: "{{ role_name }} | Install starship"
+- name: "{{ role_name }} | Install ohmyposh"
   kewlfft.aur.aur:
     name:
-      - starship
+      - ohmyposh
     state: present
   become: true
   become_user: aur_builder

@@ -4,30 +4,16 @@
     path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
   register: distribution_config
 
-- name: "{{ role_name }} | Distribution specific tasks + mpv setup"
+- name: "{{ role_name }} | Distribution specific tasks + {{ role_name }} setup"
   when: distribution_config.stat.exists
   block:
 
     - name: "{{ role_name }} | Run Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-    - name: "{{ role_name }} | Ensure config directory exists"
+    - name: "{{ role_name }} | Symlink mpv folder"
       ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.config/mpv"
-        state: directory
-        mode: "0755"
-
-    - name: "{{ role_name }} | Symlink mpv.conf (overwrites existing)"
-      ansible.builtin.file:
-        src: "{{ _files_path }}/mpv.conf"
-        dest: "{{ ansible_facts['user_dir'] }}/.config/mpv/mpv.conf"
+        src: "{{ _files_path }}/mpv"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/mpv"
         state: link
         force: yes
-
-    - name: "{{ role_name }} | Symlink input.conf (optional but common)"
-      ansible.builtin.file:
-        src: "{{ _files_path }}/input.conf"
-        dest: "{{ ansible_facts['user_dir'] }}/.config/mpv/input.conf"
-        state: link
-        force: yes
-      ignore_errors: true

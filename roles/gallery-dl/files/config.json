@@ -14,13 +14,13 @@
 
             "directory": ["Twitter", "{author['name']}"],
 
-            "filename": "{author['name']}-{date:%Y%m%d_%H%M%S}-{tweet_id}-{num}.{extension}"
+            "filename": "{author['name']} - {date:%Y%m%d_%H%M%S} - [{tweet_id}] - [Twitter] - {num}.{extension}"
         },
 
         "nitter": {
             "directory": ["Nitter", "{author['name']}"],
 
-            "filename": "{author['name']}-{date:%Y%m%d_%H%M%S}-{tweet_id}-{num}.{extension}"
+            "filename": "{author['name']} - {date:%Y%m%d_%H%M%S} - [{tweet_id}] - [Twitter] - {num}.{extension}"
         },
 
         "gelbooru": {
@@ -29,13 +29,13 @@
 
             "directory": ["Gelbooru", "{search_tags}"],
 
-            "filename": "{search_tags}-{date:%Y%m%d_%H%M%S}-{id}.{extension}"
+            "filename": "{search_tags} - {date:%Y%m%d_%H%M%S} - [{id}] - [Gelbooru].{extension}"
         },
 
         "kemono": {
             "directory": ["Kemono", "{user_profile['name']}"],
 
-            "filename": "{user_profile['name']}-{title}-{id}-{num}.{extension}",
+            "filename": "{user_profile['name']} - {title} - [{id}] - [Kemono] - {num}.{extension}",
 
             "postprocessors": [
                 {
@@ -52,15 +52,14 @@
                 "PHPSESSID": ""
             },
 
-            "sleep": [12.9, 31.2],
-            "sleep-request": [11.8, 35.6],
-
             "directory": {
                 "type == 'manga'": ["Pixiv", "{user['name']}", "{type}", "{series['title']}"],
                 "": ["Pixiv", "{user['name']}", "{type}"]
             },
 
-            "filename": "{user['name']}-{title}-{id}-{num}.{extension}",
+            "filename": "{user['name']} - {title} - [{id}] - [Pixiv] - {num}.{extension}",
+
+            "ugoira": "original",
 
             "postprocessors": [
                 {
@@ -69,6 +68,12 @@
                     "ffmpeg-args": ["-c", "copy"],
                     "libx264-prevent-odd": false,
                     "repeat-last-frame": false
+                },
+                {
+                    "name": "exec",
+                    "event": "after",
+                    "filter": "extension == 'mkv'",
+                    "command": "python ~/Projects/Gist/make_gif.py -i {}"
                 }
             ]
         }

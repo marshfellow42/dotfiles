@@ -6,9 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "rich>=15.0.0",
-    "rich-argparse>=1.7.2",
     "typer>=0.24.1",
 ]
 
 [project.scripts]
 dotfiles = "main:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.11",
+]
