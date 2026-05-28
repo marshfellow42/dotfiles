@@ -1,0 +1,15 @@
+---
+- name: "{{ role_name }} | Install docker"
+  kewlfft.aur.aur:
+    name:
+      - docker
+      - docker-compose
+    state: present
+  become: true
+  become_user: aur_builder
+
+- name: "{{ role_name }} | Enable docker socket"
+  ansible.builtin.systemctl:
+    name: "docker.socket"
+    enabled: true
+

@@ -1,0 +1,8 @@
+{
+    "Lua.diagnostics.globals": [
+        "hl"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global"
+    ]
+}

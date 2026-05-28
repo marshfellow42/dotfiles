@@ -5,65 +5,57 @@ import platform
 import sys
 from pathlib import Path
 
-def run_cmd(command):
-    # Helper to run shell commands and handle errors.
-    try:
-        # shell=True is needed for piped commands or sudo strings
-        subprocess.run(command, shell=True, check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing {command}: {e}")
-
 def ubuntu_setup():
     print("Detected Ubuntu/Debian. Starting setup...")
     
-    # Check for Ansible using shutil.which()
     if not shutil.which("ansible"):
-        run_cmd("sudo apt-get update")
-        run_cmd("sudo apt-get upgrade")
-        run_cmd("sudo apt-get install -y software-properties-common")
-        run_cmd("sudo apt-add-repository -y ppa:ansible/ansible")
-        run_cmd("sudo apt-get install -y ansible python3-argcomplete")
+        subprocess.run(["sudo", "apt-get", "update"], shell=True, check=True)
+        subprocess.run(["sudo", "apt-get", "upgrade"], shell=True, check=True)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "software-properties-common"], shell=True, check=True)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "ansible", "python3-argcomplete"], shell=True, check=True)
 
     if not shutil.which("python3"):
-        run_cmd("sudo apt-get install -y python3")
+        subprocess.run(["sudo", "apt-get", "install", "-y", "python3"], shell=True, check=True)
 
     # Handling Ubuntu versioning for Pip/Watchdog
     # Example: version 22.04 -> 22
-    major_version = int(platform.release().split('.')[0]) 
-    # Note: On Linux, platform.freedesktop_os_release() is more accurate for VERSION_ID
+    major_version = int(platform.release().split('.')[0])
+    
     try:
         os_info = platform.freedesktop_os_release()
         major_version = int(os_info.get("VERSION_ID", "0").split('.')[0])
-    except AttributeError: pass
+    except AttributeError:
+        pass
 
     if major_version <= 22:
-        run_cmd("sudo apt-get install -y python3-pip python3-watchdog")
+        subprocess.run(["sudo", "apt-get", "install", "-y", "python3-pip", "python3-watchdog"], shell=True, check=True)
 
 def arch_setup():
     if shutil.which("yay"):
-        run_cmd("yay -Syu --noconfirm")
+        subprocess.run(["yay", "-Syu", "--noconfirm"], shell=True, check=True)
     else:
-        run_cmd("sudo pacman -Syu --noconfirm")
+        subprocess.run(["sudo", "pacman", "-Syu", "--noconfirm"], shell=True, check=True)
     
-    pkgs = ["uv", "ansible", "python-argcomplete", "python-watchdog", "openssh", "git"]
+    pkgs = ["uv", "ansible"]
     
     for pkg in pkgs:
         check = subprocess.run(["pacman", "-Qq", pkg], capture_output=True, text=True)
         if check.returncode != 0:
-            run_cmd(f"sudo pacman -S --noconfirm {pkg}")
+            subprocess.run(["sudo", "pacman", "-S", "--noconfirm", pkg], shell=True, check=True)
 
 def macos_setup():
     print("Detected macOS. Starting setup...")
     if not shutil.which("brew"):
-        run_cmd('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+        subprocess.run(["/bin/bash", "-c", "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"], shell=True, check=True)
     
     tools = ["git", "ansible", "1password-cli"]
     for tool in tools:
         if not shutil.which(tool):
-            run_cmd(f"brew install {tool}")
+            subprocess.run(["brew", "install", tool], shell=True, check=True)
 
 def run_os_setup():
     system = platform.system()
+    distro = "unknown"
 
     match system:
         case "Linux":
@@ -74,13 +66,12 @@ def run_os_setup():
                     ubuntu_setup()
                 case "arch":
                     arch_setup()
-                case "fedora":
-                    fedora_setup()
                 case _:
                     print(f"Linux distribution '{distro}' is not supported.")
                     sys.exit(1)
 
         case "Darwin":
+            distro = "macos"
             macos_setup()
 
         case "Windows":
@@ -95,7 +86,7 @@ def run_os_setup():
     if "dotfiles" not in tool_check.stdout:
         try:
             print("Installing dotfiles tool via uv...")
-            run_cmd("uv tool install . --force")
+            subprocess.run(["uv", "tool", "install", ".", "--force"], shell=True, check=True)
         except FileNotFoundError:
             print("Error: uv is not installed or not found in your PATH.")
             sys.exit(1)
@@ -115,8 +106,11 @@ def run_os_setup():
                 print(f"Adding OS-specific requirements: {os_reqs.name}")
                 galaxy_cmd.extend([str(os_reqs)])
                 
-            print(f"--> Running ansible-galaxy install...")
+            print("--> Running ansible-galaxy install...")
             subprocess.run(galaxy_cmd, check=True)
         except FileNotFoundError:
             print("Error: ansible-galaxy is not installed or not found in your PATH.")
             sys.exit(1)
+
+if __name__ == "__main__":
+    run_os_setup()

@@ -19,5 +19,6 @@ default_roles:
   - mpv
   - ohmyposh
   - neovim
+  - qemu
 
 git_user_name: "marshfellow42"

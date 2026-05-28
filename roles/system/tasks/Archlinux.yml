@@ -23,7 +23,7 @@
 
 - name: "{{ role_name }} | Schedule an update of pacman mirrors every week using rate-mirrors"
   ansible.builtin.cron:
-    name: "rate-mirrors weekly update"
+    name: "arch mirrors weekly update"
     special_time: "weekly"
     job: "rate-mirrors arch --entry-country BR --protocol https | sudo tee /etc/pacman.d/mirrorlist"
     state: present

@@ -45,22 +45,23 @@
     state: absent
   when: yay_check.rc != 0
 
-- name: "{{ role_name }} | Install essential apps using yay"
+- name: "{{ role_name }} | Install essential apps"
   kewlfft.aur.aur:
     name:
       - librewolf-bin
       - rofi-wayland
-      - swww
+      - awww
       - mpv
       - qbittorrent
       - webapp-manager
       - man-db
       - man-pages
+      - netbird
     state: present
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install media apps using yay"
+- name: "{{ role_name }} | Install media apps"
   kewlfft.aur.aur:
     name:
       - ffmpeg
@@ -71,7 +72,7 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install art apps using yay"
+- name: "{{ role_name }} | Install art apps"
   kewlfft.aur.aur:
     name:
       - aseprite
@@ -80,7 +81,7 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install privacy apps using yay"
+- name: "{{ role_name }} | Install privacy apps"
   kewlfft.aur.aur:
     name:
       - mullvad-browser-bin
@@ -90,7 +91,7 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install dev tools using yay"
+- name: "{{ role_name }} | Install dev tools"
   kewlfft.aur.aur:
     name:
       - scrcpy
@@ -103,7 +104,18 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install emulators using yay"
+- name: "{{ role_name }} | Install the tools for Majora's Mask Recomp modding"
+  kewlfft.aur.aur:
+    name:
+      - clang
+      - make
+      - lld
+      - zip
+    state: present
+  become: true
+  become_user: aur_builder
+
+- name: "{{ role_name }} | Install emulators"
   kewlfft.aur.aur:
     name:
       - rpcs3-bin
@@ -114,7 +126,7 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install gaming apps using yay"
+- name: "{{ role_name }} | Install gaming apps"
   kewlfft.aur.aur:
     name:
       - freesmlauncher
@@ -125,7 +137,7 @@
   become: true
   become_user: aur_builder
 
-- name: "{{ role_name }} | Install writing tools using yay"
+- name: "{{ role_name }} | Install writing tools"
   kewlfft.aur.aur:
     name:
       - obsidian-appimage

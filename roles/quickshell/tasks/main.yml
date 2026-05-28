@@ -21,3 +21,10 @@
     - name: "{{ role_name }} | Run OS Tasks: {{ ansible_facts['distribution'] }}"
       ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
       when: distribution_config.stat.exists
+
+    - name: "{{ role_name }} | Symlink quickshell folder"
+      ansible.builtin.file:
+        src: "{{ _files_path }}/quickshell"
+        dest: "{{ ansible_facts['user_dir'] }}/.config/quickshell"
+        state: link
+        force: yes

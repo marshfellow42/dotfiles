@@ -1,0 +1,7 @@
+---
+- name: "{{ role_name }} | Install quickshell"
+  kewlfft.aur.aur:
+    name:
+      - quickshell
+  become: true
+  become_user: aur_builder

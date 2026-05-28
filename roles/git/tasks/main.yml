@@ -30,21 +30,21 @@
       community.general.git_config:
         name: user.name
         scope: global
-        value: "{{ git_user_name }}"
+        value: "{{ lookup('community.general.bitwarden', 'git', field='username') | first }}"
+      no_log: true
 
     - name: "{{ role_name }} | Set user.email"
       community.general.git_config:
         name: user.email
         scope: global
-        value: "{{ git_user_email }}"
-      when: git_user_email is defined
+        value: "{{ lookup('community.general.bitwarden', 'git', field='email') | first }}"
       no_log: true
 
     - name: "{{ role_name }} | Set user.signingkey"
       community.general.git_config:
         name: user.signingkey
         scope: global
-        value: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519.pub"
+        value: "{{ lookup('community.general.bitwarden', 'git', field='signingkey') | first }}"
 
     ############################################################
     # Commit / Tag signing
@@ -88,6 +88,12 @@
         scope: global
         value: input
 
+    - name: "{{ role_name }} | Set core.longpaths"
+      community.general.git_config:
+        name: core.longpaths
+        scope: global
+        value: true
+
     ############################################################
     # Push
     ############################################################
@@ -97,6 +103,16 @@
         name: push.autoSetupRemote
         scope: global
         value: true
+
+    ############################################################
+    # Init
+    ############################################################
+
+    - name: "{{ role_name }} | Set init.defaultBranch"
+      community.general.git_config:
+        name: init.defaultBranch
+        scope: global
+        value: main
 
     ############################################################
     # Git LFS
