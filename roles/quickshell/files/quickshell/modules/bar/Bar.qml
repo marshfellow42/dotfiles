@@ -22,9 +22,9 @@ PanelWindow {
     Rectangle {
         id: bar
         anchors.fill: parent
-        color: #1a1a1a
+        color: "#1a1a1a"
         radius: 0
-        border.color: #333333
+        border.color: "#333333"
         border.width: 3
 
         Row {
@@ -45,8 +45,8 @@ PanelWindow {
                     width: 32
                     height: 24
                     radius: 4
-                    color: modelData.active ? #4a9eff : #333333
-                    border.color: #555555
+                    color: modelData.active ? "#4a9eff" : "#333333"
+                    border.color: "#555555"
                     border.width: 2
 
                     MouseArea {
@@ -57,7 +57,7 @@ PanelWindow {
                     Text {
                         text: modelData.id
                         anchors.centerIn: parent
-                        color: modelData.active ? #ffffff : #cccccc
+                        color: modelData.active ? "#ffffff" : "#cccccc"
                         font.pixelSize: 12
                         font.family: "Inter, sans-serif"
                     }
@@ -67,7 +67,7 @@ PanelWindow {
             Text {
                 visible: Hyprland.workspaces.length === 0
                 text: "No workspaces"
-                color: #ffffff
+                color: "#ffffff"
                 font.pixelSize: 12
             }
         }
@@ -81,27 +81,15 @@ PanelWindow {
                 rightMargin: 16
             }
 
-            property string currentTime: ""
+            SystemClock {
+                id: clock
+                precision: SystemClock.Seconds
+            }
 
-            text: currentTime
-            color: #ffffff
+            text: Qt.formatDateTime(clock.date, "hh:mm:ss  MMM dd")
+            color: "#ffffff"
             font.pixelSize: 14
             font.family: "Inter, sans-serif"
-
-            Timer {
-                interval: 1000
-                running: true
-                repeat: true
-                onTriggered: {
-                    var now = new Date()
-                    timeDisplay.currentTime = Qt.formatDate(now, "MMM dd") + " " + Qt.formatDate(now, "hh:mm:ss")
-                }
-            }
-
-            Component.onCompleted: {
-                var now = new Date()
-                timeDisplay.currentTime = Qt.formatDate(now, "MMM dd") + " " + Qt.formatDate(now, "hh:mm:ss")
-            }
         }
     }
 }

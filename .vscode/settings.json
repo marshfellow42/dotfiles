@@ -1,8 +1,9 @@
 {
-    "Lua.diagnostics.globals": [
-        "hl"
+    "Lua.workspace.library": [
+        "/usr/share/hypr/stubs"
     ],
-    "Lua.diagnostics.disable": [
-        "undefined-global"
+    "Lua.diagnostics.globals": [
+        "hl",
+        "mp"
     ]
 }
