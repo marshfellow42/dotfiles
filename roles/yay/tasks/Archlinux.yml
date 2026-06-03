@@ -39,6 +39,11 @@
   when: yay_check.rc != 0
   become: false
 
+- name: "{{ role_name }} | Keep sudo privileges alive"
+  ansible.builtin.command: yay --sudoloop --save
+  when: yay_check.rc != 0
+  become: false
+
 - name: "{{ role_name }} | Remove yay build directory"
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/yay"
@@ -56,10 +61,18 @@
       - webapp-manager
       - man-db
       - man-pages
-      - netbird
+      - netbird-bin
+      - syncthing
+      - vlc
+      - gamemode
+      - lib32-gamemode
     state: present
   become: true
   become_user: aur_builder
+
+- name: "{{ role_name }} | Enable syncthing service"
+  ansible.builtin.systemctl:
+    name: syncthing.service
 
 - name: "{{ role_name }} | Install media apps"
   kewlfft.aur.aur:
@@ -121,7 +134,7 @@
       - rpcs3-bin
       - shadps4-qtlauncher-bin
       - vita3k-git
-      - eden
+      - eden-pgo-bin
     state: present
   become: true
   become_user: aur_builder

@@ -1,19 +1,35 @@
 local terminal    = "kitty"
 local fileManager = "dolphin"
-local menu        = "hyprlauncher"
+local menu        = "rofi -show run"
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
--- closeWindowBind:set_enabled(false)
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("ALT + F4", hl.dsp.window.close())
 hl.bind("ALT + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
+hl.bind("Print", hl.dsp.exec_cmd('grim - | satty -f - --copy-command wl-copy -o "$(xdg-user-dir PICTURES)/Screenshots/%Y%m%d_%H%M%S.png"'))
+hl.bind("SUPER + Print", hl.dsp.exec_cmd([[
+    SAVE_DIR="$(xdg-user-dir PICTURES)/Screenshots"
+    mkdir -p "$SAVE_DIR"
+    SCREENSHOT_PATH="$SAVE_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
+
+    grim "$SCREENSHOT_PATH"
+
+    hyprctl eval "hl.config({ decoration = { screen_shader = '$HOME/.config/hypr/shaders/dim.glsl' } })"
+    
+    wl-copy < "$SCREENSHOT_PATH" &
+
+    sleep 1
+
+    hyprctl eval "hl.config({ decoration = { screen_shader = '' } })"
+    
+    hyprctl reload
+]]))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
@@ -34,8 +50,8 @@ hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+hl.bind("CTRL + " .. mainMod .. " + right", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind("CTRL + " .. mainMod .. " + left",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })

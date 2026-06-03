@@ -1,6 +1,7 @@
-import qtQuick
+import QtQuick
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Services.UPower
 
 PanelWindow {
     id: panel
@@ -11,7 +12,7 @@ PanelWindow {
         right: true
     }
 
-    implicitHeight: 40
+    implicitHeight: 48
 
     margins {
         top: 4
@@ -31,7 +32,7 @@ PanelWindow {
             id: workspacesRow
 
             anchors {
-                left.parent.left
+                left: parent.left
                 verticalCenter: parent.verticalCenter
                 leftMargin: 16
             }
@@ -51,7 +52,7 @@ PanelWindow {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: Hyprland.dispatch("workspaces " + modelData.id)
+                        onClicked: Hyprland.dispatch("hl.dsp.focus({ workspace = " + modelData.id + " })")
                     }
 
                     Text {
@@ -72,24 +73,93 @@ PanelWindow {
             }
         }
 
-        Text {
-            id: timeDisplay
-
+        Row {
             anchors {
                 right: parent.right
                 verticalCenter: parent.verticalCenter
                 rightMargin: 16
             }
 
-            SystemClock {
-                id: clock
-                precision: SystemClock.Seconds
+            spacing: 14
+
+            Text {
+                id: batteryDisplay
+                
+                text: UPower.displayDevice.isLaptopBattery 
+                    ? Math.round(UPower.displayDevice.percentage * 100) + "%" 
+                    : ""
+                color: "#ffffff"
+                font.pixelSize: 14
+                font.family: "Inter, sans-serif"
+                
+                // 3. Aligns the battery text to the vertical center of the Row layout
+                anchors.verticalCenter: parent.verticalCenter 
             }
 
-            text: Qt.formatDateTime(clock.date, "hh:mm:ss  MMM dd")
-            color: "#ffffff"
-            font.pixelSize: 14
-            font.family: "Inter, sans-serif"
+            Canvas {
+                id: batteryIcon
+                width: 24
+                height: 14
+                anchors.verticalCenter: parent.verticalCenter
+
+                property real percentage: UPower.displayDevice.isLaptopBattery ? UPower.displayDevice.percentage : 0.0
+
+                onPercentageChanged: requestPaint()
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    ctx.reset();
+
+                    // Style configuration
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.fillStyle = "#ffffff";
+                    ctx.lineWidth = 1.5;
+
+                    // Dimensions
+                    var tipWidth = 2;
+                    var tipHeight = 5;
+                    var bodyX = tipWidth; // Shift body right to leave room for the left tip
+                    var bodyWidth = width - tipWidth;
+                    var bodyHeight = height;
+
+                    // 1. Draw the battery tip on the left side
+                    var tipX = 0;
+                    var tipY = (bodyHeight - tipHeight) / 2;
+                    ctx.fillRect(tipX, tipY, tipWidth, tipHeight);
+
+                    // 2. Draw the main outer frame (Battery body shifted right)
+                    ctx.strokeRect(bodyX + 0.75, 0.75, bodyWidth - 1.5, bodyHeight - 1.5);
+
+                    // 3. Draw the inner dynamic fluid fill (Drains/fills from right to left)
+                    var maxFillWidth = bodyWidth - 5; // Interior padding width
+                    var fillWidth = maxFillWidth * percentage;
+                    var fillHeight = bodyHeight - 5;
+                    
+                    // Calculate X starting point from the right edge so it empties leftward
+                    var fillX = (bodyX + bodyWidth - 2.5) - fillWidth; 
+                    var fillY = 2.5;
+
+                    if (fillWidth > 0) {
+                        ctx.fillRect(fillX, fillY, fillWidth, fillHeight);
+                    }
+                }
+            }
+
+            Text {
+                id: timeDisplay
+
+                SystemClock {
+                    id: clock
+                    precision: SystemClock.Seconds
+                }
+
+                text: Qt.formatDateTime(clock.date, "hh:mm:ss\ndd/MM/yyyy")
+                color: "#ffffff"
+                font.pixelSize: 14
+                font.family: "Inter, sans-serif"
+
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
     }
 }

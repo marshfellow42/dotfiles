@@ -8,44 +8,33 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/jellyfin:/config
-      - ${MEDIA_PATH}:/media  
+      - ${MEDIA_PATH}:/media
     ports:
       - 8096:8096
     restart: unless-stopped
     
   navidrome:
     image: deluan/navidrome:latest
-    user: ${APP_USER_ID}:${APP_GROUP_ID}
-    ports:
-      - "4533:4533"
-    restart: unless-stopped
+    container_name: navidrome
     environment:
       - ND_DEVARTISTINFOTIMETOLIVE=1s
       - ND_DEVALBUMINFOTIMETOLIVE=1s
       - ND_AGENTS=artist-nfo-metadata,lastfm,deezer,listenbrainz
       - ND_PLUGINS_AUTORELOAD=true
       - ND_PLUGINS_LOGLEVEL=debug
-      - ND_BACKUP_PATH=./data/plugins
+      - ND_BACKUP_PATH=/data/plugins
       - ND_BACKUP_SCHEDULE=0 */2 * * *
       - ND_BACKUP_COUNT=3
     volumes:
       - "${CONFIG_PATH}/navidrome:/data"
       - "${MEDIA_PATH}/music:/music:ro"
-
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=${APP_USER_ID}
-      - PGID=${APP_GROUP_ID}
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_PATH}/prowlarr:/config
-      - ${MEDIA_PATH}:/media/  
     ports:
-      - 9696:9696
+      - "4533:4533"
     restart: unless-stopped
-    
+    # To restore a backup, just give yourself permission in the folder
+    # sudo chown -R 1000:1000 ${CONFIG_PATH}/navidrome
+    # Copy and paste the .db backup in the folder and rename it to navidrome.db
+
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -55,7 +44,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/radarr:/config
-      - ${MEDIA_PATH}:/media  
+      - ${MEDIA_PATH}:/media
+      - ${DATA_PATH}:/data
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -69,15 +59,14 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
-      - ${MEDIA_PATH}:/media  
+      - ${MEDIA_PATH}:/media
+      - ${DATA_PATH}:/data
     ports:
       - 8989:8989
     restart: unless-stopped
 
   seerr:
     image: ghcr.io/seerr-team/seerr:latest
-    init: true
-    user: "${APP_USER_ID}:${APP_GROUP_ID}"
     container_name: seerr
     environment:
       - LOG_LEVEL=debug
@@ -94,7 +83,23 @@ services:
       interval: 15s
       retries: 3
     restart: unless-stopped
-    
+    # sudo chown -R 1000:1000 ${CONFIG_PATH}/seerr
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${APP_USER_ID}
+      - PGID=${APP_GROUP_ID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/prowlarr:/config
+      - ${MEDIA_PATH}:/media
+      - ${DATA_PATH}:/data
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -107,16 +112,31 @@ services:
       - 8191:8191
     restart: unless-stopped
 
+  qbittorrent:
+    image: linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${APP_USER_ID}
+      - PGID=${APP_GROUP_ID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8690
+    volumes:
+      - ${CONFIG_PATH}/qbittorrent:/config
+      - ${DATA_PATH}:/data
+    ports:
+      - 8690:8690
+    restart: unless-stopped
+    # sudo chown -R 1000:1000 ${DATA_PATH}
+
   qui:
     image: ghcr.io/autobrr/qui:latest
     container_name: qui
-    user: "${APP_USER_ID}:${APP_GROUP_ID}"
     restart: unless-stopped
     ports:
-      - "7476:7476"
+      - 7476:7476
     volumes:
       - ${CONFIG_PATH}/qui:/config
-      - ${MEDIA_PATH}:/media  
+      - ${DATA_PATH}:/data
 
   profilarr:
     image: ghcr.io/dictionarry-hub/profilarr:latest
@@ -133,7 +153,7 @@ services:
     container_name: dozzle
     image: amir20/dozzle:latest
     ports:
-      - '8888:8080'
+      - 8888:8080
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -144,28 +164,43 @@ services:
     restart: unless-stopped
     volumes:
       - ${CONFIG_PATH}/glance:/app/config
+      - ${CONFIG_PATH}/glance/assets:/app/assets
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 8094:8080
+      # sudo chown -R 1000:1000 ${CONFIG_PATH}/glance
 
   faved:
     container_name: faved
     image: denho/faved
-    restart: unless-stopped
+    working_dir: /var/www/html
+    user: "1000:1000"
     volumes:
       - ${CONFIG_PATH}/faved:/var/www/html/storage/
     ports:
       - 8063:80
       - 8443:443
-
-  vaultwarden:
-    image: vaultwarden/server:latest
-    container_name: vaultwarden
     restart: unless-stopped
+    # sudo chown -R 1000:1000 ${CONFIG_PATH}/faved
+    # chmod -R 755 ${CONFIG_PATH}/faved
+
+  seadexerr:
+    image: ghcr.io/ryder-c/seadexerr:latest
+    container_name: seadexerr
     environment:
-      DOMAIN: "https://vault.example.com"  # Your domain here!
-      # ADMIN_TOKEN: changeme
-    volumes:
-      - ${CONFIG_PATH}/vaultwarden:/data
-    ports:
-      - 8090:80
+      - SONARR_BASE_URL=http://sonarr:8989/
+      - SONARR_API_KEY=${SONARR_API_KEY}
+      - RADARR_BASE_URL=http://radarr:7878/
+      - RADARR_API_KEY=${RADARR_API_KEY}
+
+  # vaultwarden:
+  #   image: vaultwarden/server:latest
+  #   container_name: vaultwarden
+  #   restart: unless-stopped
+  #   environment:
+  #     DOMAIN: "https://vault.example.com"  # Your domain here!
+  #     # ADMIN_TOKEN: changeme
+  #   volumes:
+  #     - ${CONFIG_PATH}/vaultwarden:/data
+  #   ports:
+  #     - 8090:80

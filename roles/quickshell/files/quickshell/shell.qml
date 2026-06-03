@@ -1,12 +1,12 @@
-import qtQuick
+import QtQuick
 import Quickshell
 import "./modules/bar"
 
-shellroot {
+ShellRoot {
     id: root
 
     Loader {
         active: true
-        sourceComponent: Bar{}
+        source: "./modules/bar/Bar.qml"
     }
 }

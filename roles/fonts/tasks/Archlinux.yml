@@ -1,8 +1,12 @@
 ---
-- name: "{{ role_name }} | Install"
+- name: "{{ role_name }} | Install all necessary fonts"
   kewlfft.aur.aur:
     name:
       - ttf-jetbrains-mono-nerd
+      - noto-fonts
+      - noto-fonts-cjk
+      - noto-fonts-emoji
+      - noto-fonts-extra
     state: present
   become: true
   become_user: aur_builder

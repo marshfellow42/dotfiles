@@ -15,9 +15,21 @@
     mode: 0644
     validate: 'visudo -cf %s'
 
+- name: "{{ role_name }} | Install dolphin-plugins"
+  ansible.builtin.package:
+    name: dolphin-plugins
+    state: present
+  become: true
+
 - name: "{{ role_name }} | Install rate-mirrors"
   ansible.builtin.package:
     name: rate-mirrors
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Install cronie"
+  ansible.builtin.package:
+    name: cronie
     state: present
   become: true
 
@@ -25,5 +37,84 @@
   ansible.builtin.cron:
     name: "arch mirrors weekly update"
     special_time: "weekly"
-    job: "rate-mirrors arch --entry-country BR --protocol https | sudo tee /etc/pacman.d/mirrorlist"
+    job: "rate-mirrors --entry-country BR --protocol https arch | sudo tee /etc/pacman.d/mirrorlist"
     state: present
+
+- name: "{{ role_name }} | Ensure pipewire is installed"
+  ansible.builtin.package:
+    name:
+      - pipewire
+      - pipewire-alsa
+      - pipewire-pulse
+      - wireplumber
+      - jack2
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Enable pipewire socket"
+  ansible.builtin.systemctl:
+    name: pipewire.socket
+
+- name: "{{ role_name }} | Enable pipewire-pulse socket"
+  ansible.builtin.systemctl:
+    name: pipewire-pulse.socket
+
+- name: "{{ role_name }} | Enable wireplumber socket"
+  ansible.builtin.systemctl:
+    name: wireplumber.socket
+
+- name: "{{ role_name }} | Install playerctl"
+  ansible.builtin.package:
+    name: playerctl
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Install ark"
+  ansible.builtin.package:
+    name: ark
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Install 7zip"
+  ansible.builtin.package:
+    name: 7zip
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Define Dolphin file manager as default for opening directories on other apps"
+  ansible.builtin.command: xdg-mime default org.kde.dolphin.desktop inode/directory
+
+- name: "{{ role_name }} | Install screenshot tools"
+  ansible.builtin.package:
+    name:
+      - grim
+      - wl-clipboard
+      - satty
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Install Dolphin file manager tools"
+  ansible.builtin.package:
+    name:
+      - ark
+      - audiocd-kio
+      - baloo
+      - dolphin-plugins
+      - kio-admin
+      - kompare
+      - ffmpegthumbs
+      - icoutils
+      - kdegraphics-thumbnailers
+      - kimageformats
+      - libappimage
+      - qt6-imageformats
+      - resvg
+      - taglib
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Symlink Dolphin service menu folder to .local/share"
+  ansible.builtin.file:
+    src: "{{ _files_path }}/servicemenus"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/share/kio/servicemenus"
+    state: link

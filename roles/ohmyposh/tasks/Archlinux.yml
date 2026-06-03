@@ -1,8 +1,8 @@
 ---
-- name: "{{ role_name }} | Install ohmyposh"
+- name: "{{ role_name }} | Install oh-my-posh"
   kewlfft.aur.aur:
     name:
-      - ohmyposh
+      - oh-my-posh-bin
     state: present
   become: true
   become_user: aur_builder
