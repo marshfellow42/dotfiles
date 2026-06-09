@@ -3,11 +3,12 @@ default_roles:
   - yay
   - flatpak
   - git
-  - waybar
+  - quickshell
   - zsh
   - gimp
   - fonts
   - kitty
+  - hyprland
   - vscodium
   - typst
   - yt-dlp
@@ -20,5 +21,6 @@ default_roles:
   - ohmyposh
   - neovim
   - qemu
+  - waydroid
 
 git_user_name: "marshfellow42"

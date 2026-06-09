@@ -1,6 +1,6 @@
 local terminal    = "kitty"
 local fileManager = "dolphin"
-local menu        = "rofi -show run"
+local menu        = "quickshell ipc call appLauncher toggle"
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
@@ -8,12 +8,23 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind("ALT + F4", hl.dsp.window.close())
 hl.bind("ALT + SPACE", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + P", function ()
+    hl.dispatch(hl.dsp.focus({ last = true }))
+    hl.dispatch(hl.dsp.window.swap({ next = true }))
+    hl.dispatch(hl.dsp.focus({ last = true }))
+end)
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
-hl.bind("Print", hl.dsp.exec_cmd('grim - | satty -f - --copy-command wl-copy -o "$(xdg-user-dir PICTURES)/Screenshots/%Y%m%d_%H%M%S.png"'))
-hl.bind("SUPER + Print", hl.dsp.exec_cmd([[
+hl.bind("Print", hl.dsp.exec_cmd([[
+    SAVE_DIR="$(xdg-user-dir PICTURES)/Screenshots"
+    mkdir -p "$SAVE_DIR"
+    SCREENSHOT_PATH="$SAVE_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
+
+    grim -g "$(slurp)" - | tee "$SCREENSHOT_PATH" | wl-copy --type image/png
+]]))
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd([[
     SAVE_DIR="$(xdg-user-dir PICTURES)/Screenshots"
     mkdir -p "$SAVE_DIR"
     SCREENSHOT_PATH="$SAVE_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
@@ -22,9 +33,9 @@ hl.bind("SUPER + Print", hl.dsp.exec_cmd([[
 
     hyprctl eval "hl.config({ decoration = { screen_shader = '$HOME/.config/hypr/shaders/dim.glsl' } })"
     
-    wl-copy < "$SCREENSHOT_PATH" &
+    wl-copy --type image/png < "$SCREENSHOT_PATH" &
 
-    sleep 1
+    sleep 0.5
 
     hyprctl eval "hl.config({ decoration = { screen_shader = '' } })"
     
@@ -62,8 +73,8 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
 hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl set 5%+"),                   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl set 5%-"),                  { locked = true, repeating = true })
 
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })

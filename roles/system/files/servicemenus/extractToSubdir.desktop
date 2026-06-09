@@ -8,4 +8,4 @@ X-KDE-Priority=TopLevel
 [Desktop Action extractToSubdir]
 Name=Extract to Subdirectory
 Icon=archive-extract
-Exec=bash -c 'DIR="${1%.*}"; mkdir -p "$DIR"; ark --batch --destination "$DIR" "$1"' _ %f
+Exec=bash -c 'for file in "$@"; do DIR="${file%.*}"; mkdir -p "$DIR"; ark --batch --destination "$DIR" "$file"; done' _ %F

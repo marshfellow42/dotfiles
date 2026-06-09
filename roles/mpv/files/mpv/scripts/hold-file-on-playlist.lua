@@ -1,0 +1,10 @@
+-- mp.register_event("end-file", function(event)
+--     if event.reason == "eof" then
+--         -- Use an absolute minimal delay to allow the playlist engine to advance,
+--         -- then instantly snap back and pause.
+--         mp.add_timeout(0.05, function()
+--             mp.command("playlist-prev")
+--             mp.set_property_bool("pause", true)
+--         end)
+--     end
+-- end)

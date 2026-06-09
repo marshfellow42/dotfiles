@@ -1,4 +1,6 @@
--o "%(title)s [%(id)s] - [%(extractor_key)s].%(ext)s"
+--output "%(title)s [%(id)s] - [%(extractor_key)s].%(ext)s"
+
+--paths "$(xdg-user-dir VIDEOS)/yt-dlp"
 
 --embed-metadata
 
@@ -7,5 +9,3 @@
 --embed-subs
 
 --sub-langs "en.*,.*-orig,ja,pt.*"
-
--P "~/Downloads"

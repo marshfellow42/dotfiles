@@ -47,3 +47,18 @@
 
         - name: "{{ role_name }} | Test if Dolphin File Manager file preferences are okay (again)"
           ansible.builtin.command: kbuildsycoca6 --noincremental
+
+        - name: "{{ role_name }} | Install pywal16"
+          kewlfft.aur.aur:
+            name:
+              - pywal16
+            state: present
+          become: true
+          become_user: aur_builder
+
+        - name: "{{ role_name }} | Symlink pywal16 lua hyprland colors"
+          ansible.builtin.file:
+            src: "{{ _files_path }}/wal/colors-hyprland.lua"
+            dest: "{{ ansible_facts['user_dir'] }}/.config/wal/templates/colors-hyprland.lua"
+            state: link
+            force: yes

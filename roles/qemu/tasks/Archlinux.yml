@@ -40,13 +40,13 @@
 
   tasks:
     - name: "{{ role_name }} | Enable virtualization services"
-      ansible.builtin.systemctl:
+      ansible.builtin.systemd_service:
         name: "virt{{ item }}d.service"
         enabled: true
       loop: "{{ virt_drivers }}"
 
     - name: "{{ role_name }} | Enable virtualization sockets (-ro and -admin)"
-      ansible.builtin.systemctl:
+      ansible.builtin.systemd_service:
         name: "virt{{ item[0] }}d{{ item[1] }}.socket"
         enabled: true
       with_nested:
@@ -77,27 +77,11 @@
         mode: '0644'
       when: "'AuthenticAMD' in ansible_processor or 'AMD' in ansible_processor_view"
 
-- name: "{{ role_name }} | Manage Tuned Profile"
-  hosts: all
+- name: "{{ role_name }} | Add user to libvirt and kvm groups"
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    groups:
+      - libvirt
+      - kvm
+    append: yes
   become: true
-
-  tasks:
-    - name: "{{ role_name }} | Enable Tuned"
-      ansible.builtin.systemctl:
-        name: "tuned.service"
-        enabled: true
-
-    - name: "{{ role_name }} | Check the active tuned profile"
-      ansible.builtin.command: tuned-adm active
-      register: tuned_status
-      changed_when: false
-
-    - name: "{{ role_name }} | Set profile to virtual-host if it is not already active"
-      ansible.builtin.command: tuned-adm profile virtual-host
-      when: "'Current active profile: virtual-host' not in tuned_status.stdout"
-
-    - name: "{{ role_name }} | Verify the tuned profile configuration"
-      ansible.builtin.command: tuned-adm verify
-      register: tuned_verify
-      failed_when: "'Current active profile matches' not in tuned_verify.stdout and tuned_verify.rc != 0"
-      changed_when: false

@@ -1,9 +1,9 @@
 {
-    "Lua.workspace.library": [
-        "/usr/share/hypr/stubs"
-    ],
-    "Lua.diagnostics.globals": [
-        "hl",
-        "mp"
-    ]
+  "editor.fontFamily": "'JetBrainsMono Nerd Font', 'Droid Sans Mono', monospace",
+  "Lua.workspace.library": [
+    "/usr/share/hypr/stubs"
+  ],
+  "Lua.diagnostics.globals": [
+    "mp"
+  ],
 }

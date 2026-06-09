@@ -14,6 +14,10 @@ hl.config({
             natural_scroll = true,
         },
     },
+
+    cursor = {
+        persistent_warps = true,
+    }
 })
 
 hl.gesture({

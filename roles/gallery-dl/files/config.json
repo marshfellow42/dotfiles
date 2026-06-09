@@ -73,7 +73,7 @@
                     "name": "exec",
                     "event": "after",
                     "filter": "extension == 'mkv'",
-                    "command": "python ~/Projects/Gist/make_gif.py -i {}"
+                    "command": "~/Projects/Gist/make_gif.py -i {}"
                 }
             ]
         }

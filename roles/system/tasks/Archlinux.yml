@@ -52,20 +52,26 @@
   become: true
 
 - name: "{{ role_name }} | Enable pipewire socket"
-  ansible.builtin.systemctl:
+  ansible.builtin.systemd_service:
     name: pipewire.socket
 
 - name: "{{ role_name }} | Enable pipewire-pulse socket"
-  ansible.builtin.systemctl:
+  ansible.builtin.systemd_service:
     name: pipewire-pulse.socket
 
 - name: "{{ role_name }} | Enable wireplumber socket"
-  ansible.builtin.systemctl:
+  ansible.builtin.systemd_service:
     name: wireplumber.socket
 
 - name: "{{ role_name }} | Install playerctl"
   ansible.builtin.package:
     name: playerctl
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Install brightnessctl"
+  ansible.builtin.package:
+    name: brightnessctl
     state: present
   become: true
 
@@ -118,3 +124,35 @@
     src: "{{ _files_path }}/servicemenus"
     dest: "{{ ansible_facts['user_dir'] }}/.local/share/kio/servicemenus"
     state: link
+
+- name: "{{ role_name }} | Install a sound processing tool"
+  ansible.builtin.package:
+    name:
+      - sox
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Symlink usb-sound.sh to usr/local/bin"
+  ansible.builtin.file:
+    src: "{{ _files_path }}/udev/usb-sound.sh"
+    dest: "/usr/local/bin/usb-sound.sh"
+    state: link
+  become: true
+
+- name: "{{ role_name }} | Symlink udev rules"
+  ansible.builtin.file:
+    src: "{{ _files_path }}/udev/99-usb-sound.rules"
+    dest: "/etc/udev/rules.d/99-usb-sound.rules"
+    state: link
+  become: true
+
+- name: "{{ role_name }} | Reload udev rules"
+  ansible.builtin.command: udevadm control --reload-rules
+  become: true
+
+- name: "{{ role_name }} | Install jq"
+  ansible.builtin.package:
+    name:
+      - jq
+    state: present
+  become: true

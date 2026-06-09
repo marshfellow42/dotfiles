@@ -9,7 +9,7 @@
   become_user: aur_builder
 
 - name: "{{ role_name }} | Enable docker socket"
-  ansible.builtin.systemctl:
+  ansible.builtin.systemd_service:
     name: "docker.socket"
     enabled: true
 

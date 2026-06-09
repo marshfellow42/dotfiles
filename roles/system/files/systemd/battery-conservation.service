@@ -1,0 +1,11 @@
+[Unit]
+Description=Enable Lenovo IdeaPad Battery Conservation Mode
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

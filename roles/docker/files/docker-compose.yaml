@@ -166,6 +166,8 @@ services:
       - ${CONFIG_PATH}/glance:/app/config
       - ${CONFIG_PATH}/glance/assets:/app/assets
       - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ${CONFIG_PATH}/glance/.env
     ports:
       - 8094:8080
       # sudo chown -R 1000:1000 ${CONFIG_PATH}/glance
@@ -192,6 +194,117 @@ services:
       - SONARR_API_KEY=${SONARR_API_KEY}
       - RADARR_BASE_URL=http://radarr:7878/
       - RADARR_API_KEY=${RADARR_API_KEY}
+
+  paperless-broker:
+    image: docker.io/library/redis:8
+    container_name: paperless-redis
+    volumes:
+      - ${CONFIG_PATH}/redis/paperless:/data
+    restart: unless-stopped
+
+  paperless-db:
+    image: docker.io/library/postgres:18
+    container_name: paperless-postgres
+    volumes:
+      - ${CONFIG_PATH}/postgres/paperless:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    restart: unless-stopped
+
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    volumes:
+      - ${CONFIG_PATH}/paperless/data:/usr/src/paperless/data
+      - ${CONFIG_PATH}/paperless/media:/usr/src/paperless/media
+      - ${CONFIG_PATH}/paperless/export:/usr/src/paperless/export
+      - ${CONFIG_PATH}/paperless/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://paperless-broker:6379
+      PAPERLESS_DBHOST: paperless-db
+    ports:
+      - 8000:8000
+    depends_on:
+      - paperless-db
+      - paperless-broker
+    restart: unless-stopped
+
+  bentopdf:
+    image: ghcr.io/alam00000/bentopdf-simple:latest
+    container_name: bentopdf
+    ports:
+      - 3000:8080
+    restart: unless-stopped
+
+  forgejo-db:
+    image: postgres:14
+    container_name: forgejo-postgres
+    volumes:
+      - ${CONFIG_PATH}/postgres/forgejo:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=forgejo
+      - POSTGRES_PASSWORD=forgejo
+      - POSTGRES_DB=forgejo
+    networks:
+      - forgejo
+    restart: always
+
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:15
+    container_name: forgejo
+    environment:
+      - USER_UID=${APP_USER_ID}
+      - USER_GID=${APP_GROUP_ID}
+      - FORGEJO__database__DB_TYPE=postgres
+      - FORGEJO__database__HOST=forgejo-db:5432
+      - FORGEJO__database__NAME=forgejo
+      - FORGEJO__database__USER=forgejo
+      - FORGEJO__database__PASSWD=forgejo
+    volumes:
+      - ${CONFIG_PATH}/forgejo:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '3069:3000'
+      - '222:22'
+    depends_on:
+      - forgejo-db
+    networks:
+      - forgejo
+    restart: always
+
+  copyparty:
+    image: copyparty/ac:latest
+    container_name: copyparty
+    user: "1000:1000"
+    ports:
+      - 3923:3923
+    volumes:
+      - ${CONFIG_PATH}/copyparty/config:/cfg:z
+      - ${CONFIG_PATH}/copyparty/share:/w:z
+      - /home/leandro/Imagens:/home/leandro/Imagens:ro
+    # sudo chown -R 1000:1000 ${CONFIG_PATH}/copyparty
+
+    environment:
+      LD_PRELOAD: /usr/lib/libmimalloc-secure.so.2
+      # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
+
+      PYTHONUNBUFFERED: 1
+      # ensures log-messages are not delayed (but can reduce speed a tiny bit)
+
+    stop_grace_period: 15s  # thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
+    healthcheck:
+      # hide it from logs with "/._" so it matches the default --lf-url filter 
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: 1m
+      timeout: 2s
+      retries: 5
+      start_period: 15s
+
+networks:
+  forgejo:
+    external: false
 
   # vaultwarden:
   #   image: vaultwarden/server:latest

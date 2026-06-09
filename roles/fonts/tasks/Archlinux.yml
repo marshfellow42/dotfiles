@@ -7,6 +7,8 @@
       - noto-fonts-cjk
       - noto-fonts-emoji
       - noto-fonts-extra
+      - ttf-courier-prime
+      - ttf-material-symbols-variable
     state: present
   become: true
   become_user: aur_builder

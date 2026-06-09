@@ -1,0 +1,75 @@
+- name: "{{ role_name }} | Ensure waydroid is installed"
+  ansible.builtin.package:
+    name: waydroid
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Enable waydroid service"
+  ansible.builtin.systemd_service:
+    name: waydroid-container.service
+    state: started
+    enabled: true
+
+- name: "{{ role_name }} | Install Android TV on Waydroid"
+  ansible.builtin.command: 
+    argv:
+      - waydroid init -f 
+      - -c https://waydroid-atv.github.io/ota/a16-tv/system 
+      - -v https://waydroid-atv.github.io/ota/a16-tv/vendor 
+      - -r lineage 
+      - -s VANILLA
+  become: true
+
+- name: "{{ role_name }} | Install the Android TV images on Waydroid"
+  ansible.builtin.command: sudo waydroid upgrade
+
+- name: "{{ role_name }} | Apply window full screen and USB controller support on Waydroid"
+  ansible.builtin.command:
+    argv:
+      - waydroid shell
+      - setprop persist.waydroid.multi_windows false
+      - setprop persist.waydroid.width 1366
+      - setprop persist.waydroid.height 768
+      - setprop persist.waydroid.uevent true
+      - exit
+  become: true
+
+- name: "{{ role_name }} | Ensure firewalld is installed"
+  ansible.builtin.package:
+    name: firewalld
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Allow VPN passthrough on Waydroid"
+  ansible.builtin.command: firewall-cmd --zone=trusted --permanent --add-interface=waydroid0
+  become: true
+
+- name: "{{ role_name }} | Add masquerade on firewall on Waydroid"
+  ansible.builtin.command: firewall-cmd --zone=trusted --permanent --add-masquerade
+  become: true
+
+- name: "{{ role_name }} | Reload firewall-cmd on Waydroid"
+  ansible.builtin.command: firewall-cmd --reload
+  become: true
+
+- name: "{{ role_name }} | Install bindfs"
+  kewlfft.aur.aur:
+    name:
+      - bindfs
+    state: present
+  become: true
+  become_user: aur_builder
+
+- name: "{{ role_name }} | Create waydroid directory on mount"
+  ansible.builtin.file:
+    path: /mnt/waydroid
+    state: directory
+
+- name: "{{ role_name }} | Bind the waydroid directory to mount"
+  ansible.builtin.command: bindfs --mirror=$(id -u) ~/.local/share/waydroid/data/media/0 /mnt/waydroid
+  become: true
+
+- name: "{{ role_name }} | Download Obtainium to directory"
+  ansible.builtin.get_url:
+    url: https://github.com/ImranR98/Obtainium/releases/download/v1.4.3/app-x86_64-release.apk
+    dest: /mnt/waydroid/Download
