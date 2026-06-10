@@ -5,7 +5,7 @@ import Quickshell.Networking
 import qs.theme
 
 /**
- * A unified system status indicator for Audio (Pipewire) and Power (UPower).
+ * A unified system status indicator for Internet, Audio (Pipewire) and Power (UPower).
  */
 Rectangle {
     id: root
@@ -26,12 +26,13 @@ Rectangle {
             id: internetModule
             spacing: 8
 
-            readonly property var currentWifiDevice: Networking.devices.values[0]
-            readonly property bool isConnected: currentWifiDevice.connected
-            readonly property string networkName: currentWifiDevice.networks.values[0].name ?? "Disconnected"
-            readonly property int networkConnectionState: currentWifiDevice.networks.values[0].state
-            readonly property int networkConnectionType: currentWifiDevice.type
-            readonly property string networkTypeString: DeviceType.toString(networkConnectionType)
+            readonly property var currentWifiDevice: Networking.devices.values[0] ?? null
+            readonly property bool hasNetwork: currentWifiDevice !== null && (currentWifiDevice.networks?.values?.length ?? 0) > 0
+            readonly property bool isConnected: hasNetwork ? currentWifiDevice.connected : false
+            readonly property string networkName: hasNetwork ? (currentWifiDevice.networks.values[0].name ?? "Disconnected") : "Disconnected"
+            readonly property int networkConnectionState: hasNetwork ? currentWifiDevice.networks.values[0].state : 0
+            readonly property int networkConnectionType: hasNetwork ? currentWifiDevice.type : -1
+            readonly property string networkTypeString: hasNetwork ? DeviceType.toString(networkConnectionType) : ""
 
             Text {
                 id: internetIcon
@@ -143,6 +144,12 @@ Rectangle {
                 text: parent.activeSink?.audio ? Math.round(parent.volumeLevel * 100) + "%" : "--%"
             }
 
+            HoverHandler {
+                id: audioMouseArea
+                cursorShape: Qt.PointingHandCursor
+            }
+
+            // A handler to mute or unmute the volume with a mouse click
             TapHandler {
                 onTapped: {
                     if (parent.activeSink?.audio) {
@@ -151,11 +158,7 @@ Rectangle {
                 }
             }
 
-            HoverHandler {
-                id: audioMouseArea
-                cursorShape: Qt.PointingHandCursor
-            }
-
+            // A handler to raise or lower the volume with the mouse scroll wheel
             WheelHandler {
                 id: audioRotationArea
                 rotationScale: 0.05

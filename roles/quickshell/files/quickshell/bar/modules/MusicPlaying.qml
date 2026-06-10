@@ -25,11 +25,11 @@ Rectangle {
             id: musicModule
             spacing: 8
         
-            readonly property var currentMusicPlayer: Mpris.players.values[0]
-            readonly property bool isPlayingMusic: currentMusicPlayer.isPlaying
-            readonly property string trackTitle: currentMusicPlayer.trackTitle
-            readonly property string trackArtUrl: currentMusicPlayer.trackArtUrl
-            readonly property string trackAlbum: currentMusicPlayer.trackAlbum
+            readonly property var currentMusicPlayer: Mpris.players.values.length > 0 ? Mpris.players.values[0] : null
+            readonly property bool isPlayingMusic: currentMusicPlayer?.isPlaying ?? false
+            readonly property string trackTitle: currentMusicPlayer?.trackTitle ?? ""
+            readonly property string trackArtUrl: currentMusicPlayer?.trackArtUrl ?? ""
+            readonly property string trackAlbum: currentMusicPlayer?.trackAlbum ?? ""
 
             Item {
                 id: playPauseWrapper
@@ -63,7 +63,7 @@ Rectangle {
 
             Item {
                 id: textContainer
-                width: 225 // Adjust this value to set the maximum width of your text area
+                width: Math.min(musicPlaying.width, 225) // Adjust this value to set the maximum width of your text area
                 height: musicPlaying.height
                 clip: true
                 anchors.verticalCenter: parent.verticalCenter
@@ -78,7 +78,7 @@ Rectangle {
                         family: "Google Sans Medium"
                         pixelSize: 16
                     }
-                    text: `${musicModule.trackTitle} - ${musicModule.trackAlbum}`
+                    text: `${musicModule.trackTitle}     ${musicModule.trackAlbum}`
 
                     onTextChanged: {
                         marqueeAnimation.stop();
@@ -102,7 +102,7 @@ Rectangle {
                         target: musicPlaying
                         property: "x"
                         to: textContainer.width - musicPlaying.width
-                        duration: ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000
+                        duration: Math.max(0, ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000)
                         easing.type: Easing.InOutQuad
                     }
 
@@ -114,23 +114,9 @@ Rectangle {
                         target: musicPlaying
                         property: "x"
                         to: 0
-                        duration: ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000
+                        duration: Math.max(0, ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000)
                         easing.type: Easing.InOutQuad
                     }
-                }
-            }
-        }
-
-        TapHandler {
-            onTapped: {
-                const player = musicModule.currentMusicPlayer;
-                
-                // 1. Ensure the player exists
-                // 2. Ensure the documentation's requirement 'canTogglePlaying' is true
-                if (player && player.canTogglePlaying) {
-                    
-                    // Toggle the boolean state directly on the player
-                    player.isPlaying = !player.isPlaying;
                 }
             }
         }
@@ -138,6 +124,16 @@ Rectangle {
         HoverHandler {
             id: musicMouseArea
             cursorShape: Qt.PointingHandCursor
+        }
+
+        TapHandler {
+            onTapped: {
+                const player = musicModule.currentMusicPlayer;
+                
+                if (player && player.canTogglePlaying) {
+                    player.isPlaying = !player.isPlaying;
+                }
+            }
         }
     }
 }
