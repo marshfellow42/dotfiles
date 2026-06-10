@@ -45,17 +45,17 @@ Rectangle {
                 text: {
                     if (parent.networkTypeString == "Wifi") {
                         if (parent.networkConnectionState == 4)
-                            return "󰤨";
+                            return " 󰤨";
                         if (parent.networkConnectionState == 3)
-                            return "󰤥";
+                            return " 󰤥";
                         if (parent.networkConnectionState == 2)
-                            return "󰤢";
+                            return " 󰤢";
                         if (parent.networkConnectionState == 1)
-                            return "󰤟";
-                        return "󰤯";
+                            return " 󰤟";
+                        return " 󰤯";
                     }
                     if (parent.networkTypeString == "Wired") {
-                        return "󰈀";
+                        return " 󰈀";
                     }
                 }
             }
@@ -243,7 +243,7 @@ Rectangle {
                     family: "Google Sans Medium"
                     pixelSize: 16
                 }
-                text: Math.round(batteryModule.capacity) + "%"
+                text: Math.round(batteryModule.capacity) + "% "
             }
         }
     }

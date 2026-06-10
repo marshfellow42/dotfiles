@@ -87,3 +87,6 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light jirutka/zsh-shift-select
 
 alias g-dl="$(xdg-user-dir PROJECTS)/Gists/smart-gallery-dl.py"
+
+GPG_TTY=$(tty)
+export GPG_TTY
