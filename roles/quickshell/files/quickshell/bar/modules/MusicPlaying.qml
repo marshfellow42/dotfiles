@@ -12,9 +12,8 @@ Rectangle {
     color: Theme.surface_container
     radius: height / 2
 
-    readonly property bool isVisible: Mpris.players.values.length > 0 ? true : false
-
-    visible: isVisible
+    // Only visible if there's a player available
+    visible: Mpris.players.values.length > 0 
 
     Row {
         id: contentLayout
@@ -32,18 +31,25 @@ Rectangle {
             readonly property string trackArtUrl: currentMusicPlayer.trackArtUrl
             readonly property string trackAlbum: currentMusicPlayer.trackAlbum
 
-            Text {
-                id: musicPlayingLabel
+            Item {
+                id: playPauseWrapper
+                width: 16
+                height: 16
                 anchors.verticalCenter: parent.verticalCenter
-                color: Theme.on_surface
-                font {
-                    family: "Google Sans Medium"
-                    pixelSize: 16
-                }
-                text: {
-                    if (parent.isPlayingMusic)
-                        return "";
-                    return "";
+                
+                Text {
+                    id: musicPlayingLabel
+                    anchors.centerIn: parent // Center the icon inside the fixed box
+                    color: Theme.on_surface
+                    font {
+                        family: "Google Sans Medium"
+                        pixelSize: 16
+                    }
+                    text: {
+                        if (musicModule.isPlayingMusic)
+                            return "";
+                        return "";
+                    }
                 }
             }
 

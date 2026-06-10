@@ -36,9 +36,12 @@ Rectangle {
             id: internetModule
             spacing: 8
 
-            readonly property bool isConnected: Networking.devices.values[0].connected
-            readonly property string networkName: Networking.devices.values[0].networks.values[0].name ?? "Disconnected"
-            readonly property int networkConnectionState: Networking.devices.values[0].networks.values[0].state
+            readonly property var currentWifiDevice: Networking.devices.values[0]
+            readonly property bool isConnected: currentWifiDevice.connected
+            readonly property string networkName: currentWifiDevice.networks.values[0].name ?? "Disconnected"
+            readonly property int networkConnectionState: currentWifiDevice.networks.values[0].state
+            readonly property int networkConnectionType: currentWifiDevice.type
+            readonly property string networkTypeString: DeviceType.toString(networkConnectionType)
 
             Text {
                 id: internetIcon
@@ -50,15 +53,20 @@ Rectangle {
                 color: parent.isConnected ? Theme.primary : Theme.critical
 
                 text: {
-                    if (parent.networkConnectionState == 4)
-                        return "󰤨";
-                    if (parent.networkConnectionState == 3)
-                        return "󰤥";
-                    if (parent.networkConnectionState == 2)
-                        return "󰤢";
-                    if (parent.networkConnectionState == 1)
-                        return "󰤟";
-                    return "󰤯";
+                    if (parent.networkTypeString == "Wifi") {
+                        if (parent.networkConnectionState == 4)
+                            return "󰤨";
+                        if (parent.networkConnectionState == 3)
+                            return "󰤥";
+                        if (parent.networkConnectionState == 2)
+                            return "󰤢";
+                        if (parent.networkConnectionState == 1)
+                            return "󰤟";
+                        return "󰤯";
+                    }
+                    if (parent.networkTypeString == "Wired") {
+                        return "󰈀";
+                    }
                 }
             }
 
@@ -70,7 +78,14 @@ Rectangle {
                     family: "Google Sans Medium"
                     pixelSize: 16
                 }
-                text: parent.networkName
+                text: {
+                    if (parent.networkTypeString == "Wifi") {
+                        return parent.networkName;
+                    }
+                    if (parent.networkTypeString == "Wired") {
+                        return "Wired";
+                    }
+                }
             }
         }
 
