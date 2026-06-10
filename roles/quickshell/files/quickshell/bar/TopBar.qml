@@ -1,6 +1,7 @@
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
+import Quickshell.Services.Mpris
 import QtQuick
 import "modules"
 import qs.theme
@@ -13,10 +14,6 @@ Variants {
         id: mainBar
         required property var modelData
         screen: modelData
-
-        // --- Layer Shell Configuration ---
-        WlrLayershell.layer: WlrLayer.Overlay
-        WlrLayershell.namespace: "quickshell-topbar"
 
         // --- Fullscreen Detection Logic ---
         readonly property HyprlandMonitor monitor: Hyprland.monitorFor(screen)
@@ -32,16 +29,43 @@ Variants {
         color: "transparent"
         implicitHeight: Layout.topBarHeight
 
+        // This margin is important so that the gap between the window and the bar isn't too big
+        margins {
+            bottom: -15
+        }
+
         // --- Core Modules ---
-        Workspaces {
-            id: workspaceModule
-            targetMonitor: modelData.name
+        Row {
+            id: leftModules
+            
             anchors {
                 left: parent.left
                 leftMargin: 15
                 verticalCenter: parent.verticalCenter
             }
+
+            spacing: 10
+
+            Workspaces {
+                id: workspaceModule
+                targetMonitor: modelData.name
+            }
+
+            MusicPlaying {
+                id: musicModule
+            }
         }
+
+        Row {
+            id: centerModules
+            
+            anchors {
+                centerIn: parent
+            }
+
+            spacing: 10
+        }
+        
         Row {
             id: rightModules
             

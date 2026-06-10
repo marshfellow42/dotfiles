@@ -12,5 +12,5 @@ Singleton {
         precision: SystemClock.Seconds
     }
 
-    readonly property string time: Qt.formatDateTime(clock.date, " h:mm:ss  •  dd/MM/yyyy ")
+    readonly property string time: Qt.formatDateTime(clock.date, " hh:mm:ss  •  dd/MM/yyyy ")
 }

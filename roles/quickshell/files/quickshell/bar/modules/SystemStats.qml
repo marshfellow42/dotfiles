@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
+import Quickshell.Networking
 import qs.theme
 
 /**
@@ -29,6 +30,57 @@ Rectangle {
         id: contentLayout
         anchors.centerIn: parent
         spacing: 16
+
+        // --- Internet Module ---
+        Row {
+            id: internetModule
+            spacing: 8
+
+            readonly property bool isConnected: Networking.devices.values[0].connected
+            readonly property string networkName: Networking.devices.values[0].networks.values[0].name ?? "Disconnected"
+            readonly property int networkConnectionState: Networking.devices.values[0].networks.values[0].state
+
+            Text {
+                id: internetIcon
+                anchors.verticalCenter: parent.verticalCenter
+                font {
+                    family: "JetBrainsMono Nerd Font"
+                    pixelSize: 16
+                }
+                color: parent.isConnected ? Theme.primary : Theme.critical
+
+                text: {
+                    if (parent.networkConnectionState == 4)
+                        return "󰤨";
+                    if (parent.networkConnectionState == 3)
+                        return "󰤥";
+                    if (parent.networkConnectionState == 2)
+                        return "󰤢";
+                    if (parent.networkConnectionState == 1)
+                        return "󰤟";
+                    return "󰤯";
+                }
+            }
+
+            Text {
+                id: networkLabel
+                anchors.verticalCenter: parent.verticalCenter
+                color: Theme.on_surface
+                font {
+                    family: "Google Sans Medium"
+                    pixelSize: 16
+                }
+                text: parent.networkName
+            }
+        }
+
+        // --- Separator ---
+        Rectangle {
+            width: 1
+            height: 16
+            color: Theme.outline_variant
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
         // --- Audio Module ---
         Row {
@@ -108,10 +160,8 @@ Rectangle {
                 color: (batteryModule.isCharging && batteryModule.capacity < 100) || batteryModule.capacity <= 20 ? Theme.critical : Theme.primary
 
                 text: {
-                    if (!batteryModule.isVisible)
-                        return "";
                     if (batteryModule.isCharging && batteryModule.capacity < 100)
-                        return "󱐋";
+                        return "";
 
                     // Capacity breakpoints
                     if (batteryModule.capacity == 100)
