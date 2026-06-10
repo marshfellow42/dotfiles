@@ -61,26 +61,83 @@ Rectangle {
                 asynchronous: true
             }
 
-            Text {
-                id: musicPlaying
+            Item {
+                id: textContainer
+                width: 225 // Adjust this value to set the maximum width of your text area
+                height: musicPlaying.height
+                clip: true
                 anchors.verticalCenter: parent.verticalCenter
-                color: Theme.on_surface
-                font {
-                    family: "Google Sans Medium"
-                    pixelSize: 16
-                }
-                text: {      
-                    var fullText = `${parent.trackTitle} - ${parent.trackAlbum}`
 
-                    var maxChars = 31; 
+                // Define your fixed speed here (pixels per second)
+                readonly property real scrollSpeed: 20
 
-                    if (fullText.length > maxChars) {
-                        return fullText.substring(0, maxChars) + "...";
+                Text {
+                    id: musicPlaying
+                    color: Theme.on_surface
+                    font {
+                        family: "Google Sans Medium"
+                        pixelSize: 16
                     }
-                    
-                    return fullText;
+                    text: `${musicModule.trackTitle} - ${musicModule.trackAlbum}`
+
+                    onTextChanged: {
+                        marqueeAnimation.stop();
+                        x = 0;
+                        if (musicPlaying.width > textContainer.width) {
+                            marqueeAnimation.start();
+                        }
+                    }
+                }
+
+                SequentialAnimation {
+                    id: marqueeAnimation
+                    loops: Animation.Infinite
+                    running: musicPlaying.width > textContainer.width
+
+                    // Pause briefly at the start before scrolling
+                    PauseAnimation { duration: 5000 }
+
+                    // Scroll to the end of the text
+                    NumberAnimation {
+                        target: musicPlaying
+                        property: "x"
+                        to: textContainer.width - musicPlaying.width
+                        duration: ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000
+                        easing.type: Easing.InOutQuad
+                    }
+
+                    // Pause briefly at the end before returning
+                    PauseAnimation { duration: 5000 }
+
+                    // Scroll back to the beginning
+                    NumberAnimation {
+                        target: musicPlaying
+                        property: "x"
+                        to: 0
+                        duration: ((musicPlaying.width - textContainer.width) / textContainer.scrollSpeed) * 1000
+                        easing.type: Easing.InOutQuad
+                    }
                 }
             }
+        }
+
+        TapHandler {
+            onTapped: {
+                const player = musicModule.currentMusicPlayer;
+                
+                // 1. Ensure the player exists
+                // 2. Ensure the documentation's requirement 'canTogglePlaying' is true
+                if (player && player.canTogglePlaying) {
+                    
+                    // Toggle the boolean state directly on the player
+                    player.isPlaying = !player.isPlaying;
+                }
+            }
+        }
+
+        HoverHandler {
+            id: musicMouseArea
+            cursorShape: Qt.PointingHandCursor
         }
     }
 }
