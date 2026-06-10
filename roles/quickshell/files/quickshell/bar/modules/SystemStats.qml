@@ -16,16 +16,6 @@ Rectangle {
     color: Theme.surface_container
     radius: height / 2
 
-    // --- Audio State Management ---
-    readonly property var activeSink: Pipewire.defaultAudioSink
-    readonly property bool isMuted: activeSink?.audio?.muted ?? true
-    readonly property real volumeLevel: activeSink?.audio?.volume ?? 0.0
-
-    /** Ensures Pipewire sink stays reactive to external system changes. */
-    PwObjectTracker {
-        objects: root.activeSink ? [root.activeSink] : []
-    }
-
     Row {
         id: contentLayout
         anchors.centerIn: parent
@@ -79,13 +69,21 @@ Rectangle {
                     pixelSize: 16
                 }
                 text: {
-                    if (parent.networkTypeString == "Wifi") {
-                        return parent.networkName;
+                    if (networkMouseArea.hovered) {
+                        if (parent.networkTypeString == "Wifi") {
+                            return parent.networkName;
+                        }
+                        if (parent.networkTypeString == "Wired") {
+                            return "Wired";
+                        }
                     }
-                    if (parent.networkTypeString == "Wired") {
-                        return "Wired";
-                    }
+                    return "";
                 }
+            }
+
+            HoverHandler {
+                id: networkMouseArea
+                cursorShape: Qt.PointingHandCursor
             }
         }
 
@@ -102,6 +100,16 @@ Rectangle {
             id: volumeModule
             spacing: 8
 
+            // --- Audio State Management ---
+            readonly property var activeSink: Pipewire.defaultAudioSink
+            readonly property bool isMuted: activeSink?.audio?.muted ?? true
+            readonly property real volumeLevel: activeSink?.audio?.volume ?? 0.0
+
+            // Ensures Pipewire sink stays reactive to external system changes.
+            PwObjectTracker {
+                objects: parent.activeSink ? [parent.activeSink] : []
+            }
+
             Text {
                 id: volumeIcon
                 anchors.verticalCenter: parent.verticalCenter
@@ -109,16 +117,16 @@ Rectangle {
                     family: "JetBrainsMono Nerd Font"
                     pixelSize: 16
                 }
-                color: root.isMuted ? Theme.critical : Theme.primary
+                color: parent.isMuted ? Theme.critical : Theme.primary
 
                 text: {
-                    if (!root.activeSink?.audio)
+                    if (!parent.activeSink?.audio)
                         return ""; // No device
-                    if (root.isMuted)
+                    if (parent.isMuted)
                         return "";
-                    if (root.volumeLevel >= 0.6)
+                    if (parent.volumeLevel >= 0.6)
                         return ""; // High
-                    if (root.volumeLevel >= 0.3)
+                    if (parent.volumeLevel >= 0.3)
                         return ""; // Mid
                     return "";
                 }
@@ -132,13 +140,37 @@ Rectangle {
                     family: "Google Sans Medium"
                     pixelSize: 16
                 }
-                text: root.activeSink?.audio ? Math.round(root.volumeLevel * 100) + "%" : "--%"
+                text: parent.activeSink?.audio ? Math.round(parent.volumeLevel * 100) + "%" : "--%"
             }
 
             TapHandler {
-                onTapped: if (root.activeSink?.audio)
-                    root.activeSink.audio.muted = !root.isMuted
+                onTapped: {
+                    if (parent.activeSink?.audio) {
+                        parent.activeSink.audio.muted = !parent.isMuted
+                    }
+                }
+            }
+
+            HoverHandler {
+                id: audioMouseArea
                 cursorShape: Qt.PointingHandCursor
+            }
+
+            WheelHandler {
+                id: audioRotationArea
+                rotationScale: 0.05
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                onWheel: (event) => {
+                    if (!parent.activeSink?.audio) return;
+
+                    // Determine scroll direction (positive or negative steps)
+                    let step = event.angleDelta.y > 0 ? rotationScale : -rotationScale;
+                    
+                    // Calculate new volume bound between 0.0 and 1.0
+                    let newVolume = Math.min(1.0, Math.max(0.0, parent.volumeLevel + step));
+                    
+                    parent.activeSink.audio.volume = newVolume;
+                }
             }
         }
 

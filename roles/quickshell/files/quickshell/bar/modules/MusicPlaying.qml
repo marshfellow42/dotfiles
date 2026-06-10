@@ -39,7 +39,7 @@ Rectangle {
                 
                 Text {
                     id: musicPlayingLabel
-                    anchors.centerIn: parent // Center the icon inside the fixed box
+                    anchors.centerIn: parent
                     color: Theme.on_surface
                     font {
                         family: "Google Sans Medium"
@@ -55,7 +55,6 @@ Rectangle {
 
             IconImage {
                 id: albumArt
-                
                 implicitSize: 24
 
                 source: parent.trackArtUrl
@@ -75,7 +74,6 @@ Rectangle {
 
                     var maxChars = 31; 
 
-                    // 3. Truncate if it exceeds the limit
                     if (fullText.length > maxChars) {
                         return fullText.substring(0, maxChars) + "...";
                     }
