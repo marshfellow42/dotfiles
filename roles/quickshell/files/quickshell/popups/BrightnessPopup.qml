@@ -104,7 +104,7 @@ Variants {
 
                 radius: height / 2
 
-                color: Theme.surface_container
+                color: WalColors.background
 
                 layer.enabled: true
                 layer.effect: MultiEffect {
@@ -124,7 +124,7 @@ Variants {
                         id: brightnessIcon
                         anchors.verticalCenter: parent.verticalCenter
 
-                        color: Theme.on_surface
+                        color: WalColors.foreground
 
                         font {
                             family: "Material Symbols Rounded"
@@ -154,7 +154,7 @@ Variants {
                                 text: "Brightness"
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: Theme.on_surface
+                                color: WalColors.foreground
 
                                 font {
                                     family: "Google Sans Medium"
@@ -166,7 +166,7 @@ Variants {
                                 id: brightnessLabel
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: Theme.on_surface
+                                color: WalColors.foreground
 
                                 font {
                                     family: "Google Sans Medium"
@@ -193,7 +193,7 @@ Variants {
                                 width: (parent.width - 4) * parent.visualBrightness
                                 radius: height / 2
 
-                                color: Theme.primary
+                                color: WalColors.color14
 
                                 Behavior on width {
                                     SpringAnimation {
@@ -220,7 +220,7 @@ Variants {
 
                                     width: Math.max(parent.width, height)
                                     radius: height / 2
-                                    color: Theme.surface_variant
+                                    color: WalColors.color1
 
                                     Rectangle {
                                         anchors.right: parent.right
@@ -229,7 +229,7 @@ Variants {
                                         width: 5
                                         height: 5
                                         radius: 2.5
-                                        color: Theme.primary
+                                        color: WalColors.color14
                                     }
                                 }
                             }

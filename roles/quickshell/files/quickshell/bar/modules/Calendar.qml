@@ -26,7 +26,7 @@ Item {
                 // 8% overlay for a subtle hover state
                 return Qt.tint(Theme.surface_container, Qt.rgba(Theme.on_surface.r, Theme.on_surface.g, Theme.on_surface.b, 0.08));
 
-            return Theme.surface_container; // Base state
+            return WalColors.background; // Base state
         }
 
         // Tamed: Only scales down slightly when physically clicked
@@ -59,9 +59,7 @@ Item {
             anchors.centerIn: parent
             text: Time.time
 
-            // Keep the text color consistent. Changing text color is often
-            // the biggest culprit of a "loud" interaction.
-            color: Theme.on_surface
+            color: WalColors.foreground
 
             font {
                 family: "Google Sans"

@@ -9,11 +9,14 @@ Rectangle {
     // --- Layout Configuration ---
     implicitWidth: contentLayout.width + 30
     implicitHeight: contentLayout.height + 18
-    color: Theme.surface_container
+    color: WalColors.background
     radius: height / 2
 
-    // Only visible if there's a player available
-    visible: Mpris.players.values.length > 0 
+    readonly property var allowedPlayers: ["Feishin"]
+
+    readonly property var currentMusicPlayer: Mpris.players.values.find(p => allowedPlayers.includes(p.identity)) ?? null
+
+    visible: currentMusicPlayer !== null
 
     Row {
         id: contentLayout
@@ -24,8 +27,7 @@ Rectangle {
         Row {
             id: musicModule
             spacing: 8
-        
-            readonly property var currentMusicPlayer: Mpris.players.values.length > 0 ? Mpris.players.values[0] : null
+
             readonly property bool isPlayingMusic: currentMusicPlayer?.isPlaying ?? false
             readonly property string trackTitle: currentMusicPlayer?.trackTitle ?? ""
             readonly property string trackArtUrl: currentMusicPlayer?.trackArtUrl ?? ""
@@ -40,15 +42,15 @@ Rectangle {
                 Text {
                     id: musicPlayingLabel
                     anchors.centerIn: parent
-                    color: Theme.on_surface
+                    color: WalColors.foreground
                     font {
                         family: "Google Sans Medium"
                         pixelSize: 16
                     }
                     text: {
                         if (musicModule.isPlayingMusic)
-                            return "";
-                        return "";
+                            return "";
+                        return "";
                     }
                 }
             }
@@ -73,7 +75,7 @@ Rectangle {
 
                 Text {
                     id: musicPlaying
-                    color: Theme.on_surface
+                    color: WalColors.foreground
                     font {
                         family: "Google Sans Medium"
                         pixelSize: 16
@@ -128,7 +130,7 @@ Rectangle {
 
         TapHandler {
             onTapped: {
-                const player = musicModule.currentMusicPlayer;
+                const player = root.currentMusicPlayer;
                 
                 if (player && player.canTogglePlaying) {
                     player.isPlaying = !player.isPlaying;

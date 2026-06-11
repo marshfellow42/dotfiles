@@ -302,6 +302,21 @@ services:
       retries: 5
       start_period: 15s
 
+  kavita:
+    image: lscr.io/linuxserver/kavita:latest
+    container_name: kavita
+    environment:
+      - PUID=${APP_USER_ID}
+      - PGID=${APP_GROUP_ID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/kavita:/config
+      - ${MEDIA_PATH}/books:/data #optional
+      - /home/leandro/Projetos:/home/leandro/Projetos:ro
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
 networks:
   forgejo:
     external: false

@@ -13,7 +13,7 @@ Rectangle {
     // --- Layout Configuration ---
     implicitWidth: contentLayout.width + 30
     implicitHeight: contentLayout.height + 18
-    color: Theme.surface_container
+    color: WalColors.background
     radius: height / 2
 
     Row {
@@ -30,7 +30,7 @@ Rectangle {
             readonly property bool hasNetwork: currentWifiDevice !== null && (currentWifiDevice.networks?.values?.length ?? 0) > 0
             readonly property bool isConnected: hasNetwork ? currentWifiDevice.connected : false
             readonly property string networkName: hasNetwork ? (currentWifiDevice.networks.values[0].name ?? "Disconnected") : "Disconnected"
-            readonly property int networkConnectionState: hasNetwork ? currentWifiDevice.networks.values[0].state : 0
+            readonly property real networkConnectionStrength: hasNetwork ? currentWifiDevice.networks.values[0].signalStrength : 0
             readonly property int networkConnectionType: hasNetwork ? currentWifiDevice.type : -1
             readonly property string networkTypeString: hasNetwork ? DeviceType.toString(networkConnectionType) : ""
 
@@ -41,17 +41,17 @@ Rectangle {
                     family: "JetBrainsMono Nerd Font"
                     pixelSize: 16
                 }
-                color: parent.isConnected ? Theme.primary : Theme.critical
+                color: parent.isConnected ? WalColors.color14 : WalColors.color11
 
                 text: {
                     if (parent.networkTypeString == "Wifi") {
-                        if (parent.networkConnectionState == 4)
+                        if (parent.networkConnectionStrength > 0.8)
                             return " 󰤨";
-                        if (parent.networkConnectionState == 3)
+                        if (parent.networkConnectionStrength > 0.6)
                             return " 󰤥";
-                        if (parent.networkConnectionState == 2)
+                        if (parent.networkConnectionStrength > 0.4)
                             return " 󰤢";
-                        if (parent.networkConnectionState == 1)
+                        if (parent.networkConnectionStrength > 0.2)
                             return " 󰤟";
                         return " 󰤯";
                     }
@@ -64,7 +64,7 @@ Rectangle {
             Text {
                 id: networkLabel
                 anchors.verticalCenter: parent.verticalCenter
-                color: Theme.on_surface
+                color: WalColors.foreground
                 font {
                     family: "Google Sans Medium"
                     pixelSize: 16
@@ -118,7 +118,7 @@ Rectangle {
                     family: "JetBrainsMono Nerd Font"
                     pixelSize: 16
                 }
-                color: parent.isMuted ? Theme.critical : Theme.primary
+                color: parent.isMuted ? WalColors.color11 : WalColors.color14
 
                 text: {
                     if (!parent.activeSink?.audio)
@@ -136,7 +136,7 @@ Rectangle {
             Text {
                 id: volumeLabel
                 anchors.verticalCenter: parent.verticalCenter
-                color: Theme.on_surface
+                color: WalColors.foreground
                 font {
                     family: "Google Sans Medium"
                     pixelSize: 16
@@ -207,7 +207,7 @@ Rectangle {
                 }
 
                 // Color logic: Alert user if charging (active state) or critically low
-                color: (batteryModule.isCharging && batteryModule.capacity < 100) || batteryModule.capacity <= 20 ? Theme.critical : Theme.primary
+                color: (batteryModule.isCharging && batteryModule.capacity < 100) || batteryModule.capacity <= 20 ? WalColors.color11 : WalColors.color14
 
                 text: {
                     if (batteryModule.isCharging && batteryModule.capacity < 100)
@@ -241,7 +241,7 @@ Rectangle {
             Text {
                 id: batteryLabel
                 anchors.verticalCenter: parent.verticalCenter
-                color: Theme.on_surface
+                color: WalColors.foreground
                 font {
                     family: "Google Sans Medium"
                     pixelSize: 16

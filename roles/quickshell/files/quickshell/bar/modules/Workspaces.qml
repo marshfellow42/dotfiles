@@ -19,7 +19,7 @@ Rectangle {
     // --- Styling ---
     implicitWidth: mainLayout.width + 30
     implicitHeight: mainLayout.height + 18
-    color: Theme.surface_container
+    color: WalColors.background
     radius: height / 2
 
     Row {
@@ -53,8 +53,8 @@ Rectangle {
                 // State-driven color selection
                 color: {
                     if (modelData.focused)
-                        return Theme.primary ?? "#ffffff";
-                    return dotMouseArea.hovered ? "#666666" : "#4c4c4c";
+                        return WalColors.color14
+                    return dotMouseArea.hovered ? WalColors.color3 : WalColors.color2;
                 }
 
                 // Smooth transitions for interaction states
@@ -77,7 +77,7 @@ Rectangle {
                     anchors.centerIn: parent
                     
                     // Uses a contrasting color based on focus state
-                    color: modelData.focused ? (Theme.on_primary ?? "#000000") : "#ffffff"
+                    color: modelData.focused ? WalColors.background : WalColors.foreground
                     font.pixelSize: 11
                     font.bold: true
 

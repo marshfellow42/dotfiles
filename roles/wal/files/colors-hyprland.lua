@@ -2,6 +2,7 @@
 local colors = {
     background = "rgba({background.strip}ff)",
     foreground = "rgba({foreground.strip}ff)",
+        cursor = "rgba({cursor.strip}ff)",
         color0 = "rgba({color0.strip}ff)",
         color1 = "rgba({color1.strip}ff)",
         color2 = "rgba({color2.strip}ff)",

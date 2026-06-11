@@ -1,0 +1,1 @@
+/home/leandro/.cache/wal/colors-quickshell.qml

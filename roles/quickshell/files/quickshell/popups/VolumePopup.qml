@@ -92,7 +92,8 @@ Variants {
 
                 radius: height / 2
 
-                color: Theme.surface_container
+                // The Volume OSD background
+                color: WalColors.background
 
                 layer.enabled: true
                 layer.effect: MultiEffect {
@@ -108,11 +109,12 @@ Variants {
                     anchors.rightMargin: 24
                     spacing: 16
 
+                    // The volume icon
                     Text {
                         id: volumeIcon
                         anchors.verticalCenter: parent.verticalCenter
 
-                        color: volumeOsdPopup.isMuted ? Theme.critical : Theme.on_surface
+                        color: volumeOsdPopup.isMuted ? WalColors.color11 : WalColors.color14
 
                         font {
                             family: "Material Symbols Rounded"
@@ -146,7 +148,7 @@ Variants {
                                 text: "Volume"
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: Theme.on_surface
+                                color: WalColors.foreground
 
                                 font {
                                     family: "Google Sans Medium"
@@ -154,11 +156,12 @@ Variants {
                                 }
                             }
 
+                            // The volume number indicator
                             Text {
                                 id: volumeLabel
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                color: Theme.on_surface
+                                color: WalColors.foreground
 
                                 font {
                                     family: "Google Sans Medium"
@@ -185,7 +188,8 @@ Variants {
                                 width: (parent.width - 4) * parent.visualVolume
                                 radius: height / 2
 
-                                color: volumeOsdPopup.isMuted ? Theme.outline : Theme.primary
+                                // The current volume strip line
+                                color: volumeOsdPopup.isMuted ? WalColors.color11 : WalColors.color14
 
                                 Behavior on width {
                                     SpringAnimation {
@@ -210,10 +214,12 @@ Variants {
                                     anchors.right: parent.right
                                     height: parent.height
 
+                                    // The remaining volume strip line
                                     width: Math.max(parent.width, height)
                                     radius: height / 2
-                                    color: Theme.surface_variant
+                                    color: WalColors.color1
 
+                                    // The tiny dot at the end of the OSD
                                     Rectangle {
                                         anchors.right: parent.right
                                         anchors.verticalCenter: parent.verticalCenter
@@ -221,7 +227,7 @@ Variants {
                                         width: 5
                                         height: 5
                                         radius: 2.5
-                                        color: volumeOsdPopup.isMuted ? Theme.outline : Theme.primary
+                                        color: volumeOsdPopup.isMuted ? WalColors.color11 : WalColors.color14
                                     }
                                 }
                             }

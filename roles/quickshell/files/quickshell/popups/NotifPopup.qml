@@ -340,7 +340,7 @@ Variants {
                         y: 4
 
                         radius: 28
-                        color: Theme.surface_container
+                        color: WalColors.background
 
                         border.color: Theme.outline_variant !== undefined ? Theme.outline_variant : Qt.rgba(Theme.on_surface.r, Theme.on_surface.g, Theme.on_surface.b, 0.15)
                         border.width: 1
@@ -452,7 +452,7 @@ Variants {
                                         Text {
                                             anchors.centerIn: parent
                                             text: "!"
-                                            color: Theme.on_primary_container
+                                            color: WalColors.foreground
                                             font {
                                                 family: "Google Sans Medium"
                                                 pixelSize: 13
@@ -489,7 +489,7 @@ Variants {
 
                                 Text {
                                     text: cardDelegate.applicationName
-                                    color: Theme.primary
+                                    color: WalColors.foreground
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: headerIconWrapper.right
                                     anchors.leftMargin: 12

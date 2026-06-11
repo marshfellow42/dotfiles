@@ -1,0 +1,7 @@
+- name: "{{ role_name }} | Install pywal16"
+  kewlfft.aur.aur:
+    name:
+      - pywal16
+    state: present
+  become: true
+  become_user: aur_builder
