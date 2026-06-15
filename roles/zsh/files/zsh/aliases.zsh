@@ -1,0 +1,1 @@
+alias g-dl="$XDG_PROJECTS_DIR/Gists/smart-gallery-dl.py"

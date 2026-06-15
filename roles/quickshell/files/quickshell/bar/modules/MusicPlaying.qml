@@ -34,13 +34,13 @@ Rectangle {
             readonly property string trackAlbum: currentMusicPlayer?.trackAlbum ?? ""
 
             Item {
-                id: playPauseWrapper
-                width: 16
-                height: 16
+                id: musicPlayinhIconWrapper
+                implicitWidth: 16
+                implicitHeight: 16
                 anchors.verticalCenter: parent.verticalCenter
                 
                 Text {
-                    id: musicPlayingLabel
+                    id: musicPlayingIcon
                     anchors.centerIn: parent
                     color: WalColors.foreground
                     font {
@@ -129,6 +129,7 @@ Rectangle {
         }
 
         TapHandler {
+            gesturePolicy: TapHandler.ReleaseWithinBounds
             onTapped: {
                 const player = root.currentMusicPlayer;
                 

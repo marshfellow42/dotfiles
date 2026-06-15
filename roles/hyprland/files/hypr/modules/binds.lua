@@ -18,14 +18,16 @@ hl.bind(mainMod .. " + P", function ()
 end)
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind("Print", hl.dsp.exec_cmd([[
-    SAVE_DIR="$(xdg-user-dir PICTURES)/Screenshots"
+    SAVE_DIR="$XDG_PICTURES_DIR/Screenshots"
     mkdir -p "$SAVE_DIR"
     SCREENSHOT_PATH="$SAVE_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
-
-    grim -g "$(slurp)" - | tee "$SCREENSHOT_PATH" | wl-copy --type image/png
+    
+    SELECTION=$(slurp) || exit 0
+    
+    grim -g "$SELECTION" - | tee "$SCREENSHOT_PATH" | wl-copy --type image/png
 ]]))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd([[
-    SAVE_DIR="$(xdg-user-dir PICTURES)/Screenshots"
+    SAVE_DIR="$XDG_PICTURES_DIR/Screenshots"
     mkdir -p "$SAVE_DIR"
     SCREENSHOT_PATH="$SAVE_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
 
@@ -63,6 +65,8 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:mag
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind("CTRL + " .. mainMod .. " + right", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind("CTRL + " .. mainMod .. " + left",   hl.dsp.focus({ workspace = "e-1" }))
+
+hl.bind("CTRL + ALT + up", hl.dsp.exec_cmd("quickshell ipc call wallpaperLauncher toggle"))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })

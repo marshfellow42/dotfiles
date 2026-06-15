@@ -39,16 +39,16 @@ enable_cursor_positioning = true
     type = 'text'
     style = 'plain'
     foreground_templates = [
-      '{{ if gt .Code 0 }}p:color11{{ end }}',
       '{{ if eq .Code 0 }}p:color14{{ end }}',
+      '{{ if gt .Code 0 }}p:color11{{ end }}',
     ]
     background = 'transparent'
     template = '❯'
 
 [transient_prompt]
   foreground_templates = [
-    '{{ if gt .Code 0 }}p:color11{{ end }}',
     '{{ if eq .Code 0 }}p:color14{{ end }}',
+    '{{ if gt .Code 0 }}p:color11{{ end }}',
   ]
   background = 'transparent'
   template = '❯ '

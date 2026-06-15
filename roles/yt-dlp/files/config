@@ -1,6 +1,6 @@
 --output "%(title)s [%(id)s] - [%(extractor_key)s].%(ext)s"
 
---paths "$(xdg-user-dir VIDEOS)/yt-dlp"
+--paths "$XDG_VIDEOS_DIR/yt-dlp"
 
 --embed-metadata
 

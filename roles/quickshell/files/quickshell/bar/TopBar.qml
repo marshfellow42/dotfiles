@@ -31,7 +31,7 @@ Variants {
 
         // This margin is important so that the gap between the window and the bar isn't too big
         margins {
-            bottom: -15
+            bottom: Layout.topBarBottomMargin
         }
 
         // --- Core Modules ---

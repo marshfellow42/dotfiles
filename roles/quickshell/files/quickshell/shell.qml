@@ -39,9 +39,8 @@ ShellRoot {
         id: launcherWindow
     }
 
-    // Wallpaper Selector
-    WallpaperSelector {
-        id: wallpaperSelectorWindow
+    Wallpaper {
+        id: wallpaperWindow
     }
 
     VolumePopup {

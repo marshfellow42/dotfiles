@@ -18,7 +18,7 @@ Rectangle {
 
     // --- Styling ---
     implicitWidth: mainLayout.width + 30
-    implicitHeight: mainLayout.height + 18
+    implicitHeight: mainLayout.height + 22
     color: WalColors.background
     radius: height / 2
 
@@ -94,6 +94,7 @@ Rectangle {
 
                 // Interaction Handlers
                 TapHandler {
+                    gesturePolicy: TapHandler.ReleaseWithinBounds
                     onTapped: modelData.activate()
                 }
 

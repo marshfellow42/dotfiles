@@ -3,7 +3,8 @@ import Quickshell.Wayland
 import Quickshell.Io
 import QtQuick
 import QtQuick.Effects
-import "../theme"
+import qs.theme
+import qs.i18n
 
 Variants {
     id: root
@@ -120,24 +121,27 @@ Variants {
                     anchors.rightMargin: 24
                     spacing: 16
 
-                    Text {
-                        id: brightnessIcon
+                    Item {
+                        id: brightnessIconWrapper
+                        implicitWidth: 20
+                        implicitHeight: 20
                         anchors.verticalCenter: parent.verticalCenter
+                        Text {
+                            id: brightnessIcon
+                            anchors.centerIn: parent
+                            color: WalColors.color14
+                            font {
+                                family: Layout.fontFamily
+                                pixelSize: 28
+                            }
+                            text: {
+                                if (brightnessOsdPopup.brightnessLevel >= 0.7)
+                                    return "󰃠";
+                                if (brightnessOsdPopup.brightnessLevel >= 0.3)
+                                    return "󰃟";
 
-                        color: WalColors.foreground
-
-                        font {
-                            family: "Material Symbols Rounded"
-                            pixelSize: 28
-                        }
-
-                        text: {
-                            if (brightnessOsdPopup.brightnessLevel >= 0.7)
-                                return "brightness_high";
-                            if (brightnessOsdPopup.brightnessLevel >= 0.3)
-                                return "brightness_medium";
-
-                            return "brightness_low";
+                                return "󰃞";
+                            }
                         }
                     }
 
@@ -151,7 +155,7 @@ Variants {
                             height: brightnessLabel.implicitHeight
 
                             Text {
-                                text: "Brightness"
+                                text: I18n.lang.lightOSDText
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: WalColors.foreground

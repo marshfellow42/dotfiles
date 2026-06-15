@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Effects
-import "../../theme"
+import qs.theme
 
 Item {
     id: delegateRoot

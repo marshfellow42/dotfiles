@@ -1,7 +1,4 @@
 import QtQuick
-import Quickshell.Services.Pipewire
-import Quickshell.Services.UPower
-import Quickshell.Networking
 import qs.theme
 
 /**
@@ -14,78 +11,15 @@ Rectangle {
     implicitWidth: contentLayout.width + 30
     implicitHeight: contentLayout.height + 18
     color: WalColors.background
-    radius: height / 2
+    radius: height / Layout.cornerShape
 
     Row {
         id: contentLayout
         anchors.centerIn: parent
         spacing: 16
 
-        // --- Internet Module ---
-        Row {
-            id: internetModule
-            spacing: 8
-
-            readonly property var currentWifiDevice: Networking.devices.values[0] ?? null
-            readonly property bool hasNetwork: currentWifiDevice !== null && (currentWifiDevice.networks?.values?.length ?? 0) > 0
-            readonly property bool isConnected: hasNetwork ? currentWifiDevice.connected : false
-            readonly property string networkName: hasNetwork ? (currentWifiDevice.networks.values[0].name ?? "Disconnected") : "Disconnected"
-            readonly property real networkConnectionStrength: hasNetwork ? currentWifiDevice.networks.values[0].signalStrength : 0
-            readonly property int networkConnectionType: hasNetwork ? currentWifiDevice.type : -1
-            readonly property string networkTypeString: hasNetwork ? DeviceType.toString(networkConnectionType) : ""
-
-            Text {
-                id: internetIcon
-                anchors.verticalCenter: parent.verticalCenter
-                font {
-                    family: "JetBrainsMono Nerd Font"
-                    pixelSize: 16
-                }
-                color: parent.isConnected ? WalColors.color14 : WalColors.color11
-
-                text: {
-                    if (parent.networkTypeString == "Wifi") {
-                        if (parent.networkConnectionStrength > 0.8)
-                            return " 󰤨";
-                        if (parent.networkConnectionStrength > 0.6)
-                            return " 󰤥";
-                        if (parent.networkConnectionStrength > 0.4)
-                            return " 󰤢";
-                        if (parent.networkConnectionStrength > 0.2)
-                            return " 󰤟";
-                        return " 󰤯";
-                    }
-                    if (parent.networkTypeString == "Wired") {
-                        return " 󰈀";
-                    }
-                }
-            }
-
-            Text {
-                id: networkLabel
-                anchors.verticalCenter: parent.verticalCenter
-                color: WalColors.foreground
-                font {
-                    family: "Google Sans Medium"
-                    pixelSize: 16
-                }
-                text: {
-                    if (networkMouseArea.hovered) {
-                        if (parent.networkTypeString == "Wifi") {
-                            return parent.networkName;
-                        }
-                        if (parent.networkTypeString == "Wired") {
-                            return "Wired";
-                        }
-                    }
-                    return "";
-                }
-            }
-
-            HoverHandler {
-                id: networkMouseArea
-                cursorShape: Qt.PointingHandCursor
-            }
+        NetworkModule {
+            id: networkModule
         }
 
         // --- Separator ---
@@ -96,85 +30,8 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // --- Audio Module ---
-        Row {
+        VolumeModule {
             id: volumeModule
-            spacing: 8
-
-            // --- Audio State Management ---
-            readonly property var activeSink: Pipewire.defaultAudioSink
-            readonly property bool isMuted: activeSink?.audio?.muted ?? true
-            readonly property real volumeLevel: activeSink?.audio?.volume ?? 0.0
-
-            // Ensures Pipewire sink stays reactive to external system changes.
-            PwObjectTracker {
-                objects: parent.activeSink ? [parent.activeSink] : []
-            }
-
-            Text {
-                id: volumeIcon
-                anchors.verticalCenter: parent.verticalCenter
-                font {
-                    family: "JetBrainsMono Nerd Font"
-                    pixelSize: 16
-                }
-                color: parent.isMuted ? WalColors.color11 : WalColors.color14
-
-                text: {
-                    if (!parent.activeSink?.audio)
-                        return ""; // No device
-                    if (parent.isMuted)
-                        return "";
-                    if (parent.volumeLevel >= 0.6)
-                        return ""; // High
-                    if (parent.volumeLevel >= 0.3)
-                        return ""; // Mid
-                    return "";
-                }
-            }
-
-            Text {
-                id: volumeLabel
-                anchors.verticalCenter: parent.verticalCenter
-                color: WalColors.foreground
-                font {
-                    family: "Google Sans Medium"
-                    pixelSize: 16
-                }
-                text: parent.activeSink?.audio ? Math.round(parent.volumeLevel * 100) + "%" : "--%"
-            }
-
-            HoverHandler {
-                id: audioMouseArea
-                cursorShape: Qt.PointingHandCursor
-            }
-
-            // A handler to mute or unmute the volume with a mouse click
-            TapHandler {
-                onTapped: {
-                    if (parent.activeSink?.audio) {
-                        parent.activeSink.audio.muted = !parent.isMuted
-                    }
-                }
-            }
-
-            // A handler to raise or lower the volume with the mouse scroll wheel
-            WheelHandler {
-                id: audioRotationArea
-                rotationScale: 0.05
-                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                onWheel: (event) => {
-                    if (!parent.activeSink?.audio) return;
-
-                    // Determine scroll direction (positive or negative steps)
-                    let step = event.angleDelta.y > 0 ? rotationScale : -rotationScale;
-                    
-                    // Calculate new volume bound between 0.0 and 1.0
-                    let newVolume = Math.min(1.0, Math.max(0.0, parent.volumeLevel + step));
-                    
-                    parent.activeSink.audio.volume = newVolume;
-                }
-            }
         }
 
         // --- Separator ---
@@ -186,68 +43,8 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        // --- Battery Module ---
-        Row {
+        BatteryModule {
             id: batteryModule
-            spacing: 8
-
-            // Internal logic to keep UI bindings clean
-            readonly property bool isVisible: UPower.displayDevice?.isPresent ?? false
-            readonly property real capacity: (UPower.displayDevice?.percentage ?? 0) * 100
-            readonly property bool isCharging: !UPower.onBattery
-
-            visible: isVisible
-
-            Text {
-                id: batteryIcon
-                anchors.verticalCenter: parent.verticalCenter
-                font {
-                    family: "JetBrainsMono Nerd Font"
-                    pixelSize: 16
-                }
-
-                // Color logic: Alert user if charging (active state) or critically low
-                color: (batteryModule.isCharging && batteryModule.capacity < 100) || batteryModule.capacity <= 20 ? WalColors.color11 : WalColors.color14
-
-                text: {
-                    if (batteryModule.isCharging && batteryModule.capacity < 100)
-                        return "";
-
-                    // Capacity breakpoints
-                    if (batteryModule.capacity == 100)
-                        return "󰁹";
-                    if (batteryModule.capacity >= 90)
-                        return "󰂂";
-                    if (batteryModule.capacity >= 80)
-                        return "󰂁";
-                    if (batteryModule.capacity >= 70)
-                        return "󰂀";
-                    if (batteryModule.capacity >= 60)
-                        return "󰁿";
-                    if (batteryModule.capacity >= 50)
-                        return "󰁾";
-                    if (batteryModule.capacity >= 40)
-                        return "󰁽";
-                    if (batteryModule.capacity >= 30)
-                        return "󰁼";
-                    if (batteryModule.capacity >= 20)
-                        return "󰁻";
-                    if (batteryModule.capacity >= 10)
-                        return "󰁺";
-                    return "󰂃";
-                }
-            }
-
-            Text {
-                id: batteryLabel
-                anchors.verticalCenter: parent.verticalCenter
-                color: WalColors.foreground
-                font {
-                    family: "Google Sans Medium"
-                    pixelSize: 16
-                }
-                text: Math.round(batteryModule.capacity) + "% "
-            }
         }
     }
 }

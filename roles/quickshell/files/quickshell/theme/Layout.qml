@@ -1,10 +1,15 @@
 pragma Singleton
-
 import QtQuick
 
 QtObject {
-    property int topBarHeight: 60
-    property int sideBarWidth: 0
-    property int bottomBarHeight: 0
-    property int cornerRadius: 20
+    // ── General ──────────────────────────────
+    /* A nerd font is required */
+    readonly property string fontFamily: "JetBrainsMono Nerd Font"
+    /* The locale follows the ISO 639-1 language codes */
+    readonly property string locale: "en"
+    readonly property int cornerShape: 2
+
+    // ── Top Bar ───────────────────────────────
+    readonly property int topBarHeight: 60
+    readonly property int topBarBottomMargin: -15
 }

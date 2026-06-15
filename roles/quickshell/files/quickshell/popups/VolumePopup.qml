@@ -3,7 +3,8 @@ import Quickshell.Wayland
 import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Effects
-import "../theme"
+import qs.theme
+import qs.i18n
 
 Variants {
     id: root
@@ -109,29 +110,31 @@ Variants {
                     anchors.rightMargin: 24
                     spacing: 16
 
-                    // The volume icon
-                    Text {
-                        id: volumeIcon
+                    Item {
+                        id: volumeIconWrapper
+                        implicitWidth: 20
+                        implicitHeight: 20
                         anchors.verticalCenter: parent.verticalCenter
+                        Text {
+                            id: volumeIcon
+                            anchors.centerIn: parent
+                            color: volumeOsdPopup.isMuted ? WalColors.color11 : WalColors.color14
+                            font {
+                                family: Layout.fontFamily
+                                pixelSize: 28
+                            }
+                            text: {
+                                if (!volumeOsdPopup.activeSink?.audio)
+                                    return "󰸈";
+                                if (volumeOsdPopup.isMuted)
+                                    return "󰝟";
+                                if (volumeOsdPopup.volumeLevel >= 0.6)
+                                    return "󰕾";
+                                if (volumeOsdPopup.volumeLevel >= 0.3)
+                                    return "󰖀";
 
-                        color: volumeOsdPopup.isMuted ? WalColors.color11 : WalColors.color14
-
-                        font {
-                            family: "Material Symbols Rounded"
-                            pixelSize: 28
-                        }
-
-                        text: {
-                            if (!volumeOsdPopup.activeSink?.audio)
-                                return "volume_off";
-                            if (volumeOsdPopup.isMuted)
-                                return "volume_off";
-                            if (volumeOsdPopup.volumeLevel >= 0.6)
-                                return "volume_up";
-                            if (volumeOsdPopup.volumeLevel >= 0.3)
-                                return "volume_down";
-
-                            return "volume_mute";
+                                return "󰕿";
+                            }
                         }
                     }
 
@@ -145,7 +148,7 @@ Variants {
                             height: volumeLabel.implicitHeight
 
                             Text {
-                                text: "Volume"
+                                text: I18n.lang.volumeOSDText
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: WalColors.foreground

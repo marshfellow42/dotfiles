@@ -141,3 +141,9 @@
         name: filter.lfs.required
         scope: global
         value: true
+
+    - name: "{{ role_name }} | Symlink gpg-agent.conf"
+      ansible.builtin.file:
+        src: "{{ _files_path }}/gpg-agent.conf"
+        dest: "{{ ansible_facts['user_dir'] }}/.gnupg/gnu-agent.conf"
+        state: link

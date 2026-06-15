@@ -5,7 +5,7 @@ import QtQuick
 import QtQuick.Effects
 import QtQuick.Shapes
 import qs.services
-import "../theme"
+import qs.theme
 
 Variants {
     id: root
