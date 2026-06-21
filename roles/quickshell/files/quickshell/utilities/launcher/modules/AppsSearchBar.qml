@@ -5,11 +5,11 @@ import qs.theme
 
 Item {
     id: appSearchBar
-
     property real appSearchBarWidth
     property real appSearchBarHeight
     property string searchText
     property var launcher
+    property var appsList   // <-- new: reference to the AppsList instance
 
     function forceSearchFocus() {
         searchInput.text = "";
@@ -21,7 +21,6 @@ Item {
 
     Rectangle {
         id: appContainer
-
         anchors.fill: parent
         color: WalColors.color5
         border.color: searchInput.activeFocus ? WalColors.color14 : "pink"
@@ -38,30 +37,43 @@ Item {
 
             Text {
                 id: appSearchBarIcon
-
                 anchors.verticalCenter: parent.verticalCenter
                 color: WalColors.color14
-                text: ""
-
+                text: ""
                 font {
                     family: Layout.fontFamily
                     pixelSize: 24
                 }
-
             }
 
             TextInput {
                 id: searchInput
-
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - appSearchBarIcon.width - parent.spacing
                 color: WalColors.foreground
                 clip: true
-                onTextChanged: appSearchBar.searchText = text // ← sync to property
+                onTextChanged: appSearchBar.searchText = text
+
                 Keys.onPressed: (event) => {
-                    if (event.key === Qt.Key_Escape) {
+                    switch (event.key) {
+                    case Qt.Key_Escape:
                         searchInput.focus = false;
-                        launcher.visible = !launcher.visible;
+                        launcher.visible = false;
+                        event.accepted = true;
+                        break;
+                    case Qt.Key_Down:
+                        if (appsList) appsList.selectNext();
+                        event.accepted = true;
+                        break;
+                    case Qt.Key_Up:
+                        if (appsList) appsList.selectPrevious();
+                        event.accepted = true;
+                        break;
+                    case Qt.Key_Return:
+                    case Qt.Key_Enter:
+                        if (appsList) appsList.activateSelected();
+                        event.accepted = true;
+                        break;
                     }
                 }
 
@@ -69,12 +81,9 @@ Item {
                     family: "Google Sans Medium"
                     pixelSize: 24
                 }
-
             }
-
         }
 
-        // Placeholder text
         Text {
             anchors.left: appContainer.left
             anchors.leftMargin: 20 + appSearchBarIcon.width + 10
@@ -83,14 +92,10 @@ Item {
             color: WalColors.foreground
             opacity: 0.4
             visible: searchInput.text.length === 0 && !searchInput.activeFocus
-
             font {
                 family: "Google Sans Medium"
                 pixelSize: 24
             }
-
         }
-
     }
-
 }

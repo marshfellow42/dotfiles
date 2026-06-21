@@ -45,16 +45,14 @@ PanelWindow {
 
         AppsSearchBar {
             id: appsSearchBar
-
             z: 1
             appSearchBarWidth: launcherWindow.implicitWidth - 32
             appSearchBarHeight: 60
             launcher: launcherWindow
+            appsList: appsList   // forward declaration resolves fine in QML
         }
-
         AppsList {
             id: appsList
-
             launcherWindowWidth: launcherWindow.implicitWidth - 32
             launcherWindowHeight: launcherWindow.implicitHeight - appsSearchBar.appSearchBarHeight - 42
             searchQuery: appsSearchBar.searchText
