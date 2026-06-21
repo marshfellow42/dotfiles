@@ -8,13 +8,16 @@ Item {
 
     FileView {
         id: cacheCheck
+
         path: importCacheFilePath
         preload: false
     }
 
     Process {
         id: magickCache
-        command: ["magick", importFilePath, "-thumbnail", "640x360", importCacheFilePath]
+
+        command: ["magick", importFilePath, "-thumbnail", "640", importCacheFilePath]
         running: !cacheCheck.loaded
     }
+
 }

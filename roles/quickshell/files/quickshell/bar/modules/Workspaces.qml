@@ -9,7 +9,7 @@ Rectangle {
     id: root
 
     // --- Configuration ---
-    property string targetMonitor: ""
+    property string targetMonitor
 
     readonly property int animDurationShort: 150
     readonly property int animDurationLong: 200

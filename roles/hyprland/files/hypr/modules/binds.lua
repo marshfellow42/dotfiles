@@ -1,6 +1,7 @@
 local terminal    = "kitty"
 local fileManager = "dolphin"
 local menu        = "quickshell ipc call appLauncher toggle"
+local wallpaperMenu = "quickshell ipc call wallpaperLauncher toggle"
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
@@ -58,15 +59,11 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
 end
 
--- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
-
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind("CTRL + " .. mainMod .. " + right", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind("CTRL + " .. mainMod .. " + left",   hl.dsp.focus({ workspace = "e-1" }))
 
-hl.bind("CTRL + ALT + up", hl.dsp.exec_cmd("quickshell ipc call wallpaperLauncher toggle"))
+hl.bind("CTRL + ALT + up", hl.dsp.exec_cmd(wallpaperMenu))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
@@ -85,3 +82,5 @@ hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = tr
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+hl.bind("XF86PowerOff",  hl.dsp.exec_cmd("systemctl suspend"),       { locked = true })

@@ -11,6 +11,8 @@ for conf in "$XDG_CONFIG_HOME/zsh/"*.zsh; do
 done
 unset conf
 
+export PATH="/usr/lib/qt6/bin:$PATH"
+
 export GPG_TTY=$(tty)
 
 eval "$(zoxide init zsh)"

@@ -1,11 +1,11 @@
+import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import QtQuick
-import QtQuick.Layouts
-import qs.theme
-import qs.i18n
 import "modules"
+import qs.i18n
+import qs.theme
 
 PanelWindow {
     id: launcherWindow
@@ -14,6 +14,15 @@ PanelWindow {
     implicitHeight: Screen.desktopAvailableHeight / 1.5
     color: "transparent"
     visible: false
+    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.namespace: "launcher_overlay"
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    exclusiveZone: -1
+    onVisibleChanged: {
+        if (visible)
+            appsSearchBar.forceSearchFocus();
+
+    }
 
     anchors {
         bottom: true
@@ -29,11 +38,6 @@ PanelWindow {
         radius: 12
     }
 
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.namespace: "launcher_overlay"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-    exclusiveZone: -1
-
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 16
@@ -41,6 +45,7 @@ PanelWindow {
 
         AppsSearchBar {
             id: appsSearchBar
+
             z: 1
             appSearchBarWidth: launcherWindow.implicitWidth - 32
             appSearchBarHeight: 60
@@ -49,30 +54,29 @@ PanelWindow {
 
         AppsList {
             id: appsList
+
             launcherWindowWidth: launcherWindow.implicitWidth - 32
             launcherWindowHeight: launcherWindow.implicitHeight - appsSearchBar.appSearchBarHeight - 42
             searchQuery: appsSearchBar.searchText
         }
-    }
 
-    onVisibleChanged: {
-        if (visible) appsSearchBar.forceSearchFocus()
     }
 
     IpcHandler {
-        target: "appLauncher"
         function toggle() {
-            launcherWindow.visible = !launcherWindow.visible
+            launcherWindow.visible = !launcherWindow.visible;
         }
+
+        target: "appLauncher"
     }
 
     Item {
         focus: true
-
         Keys.onPressed: (event) => {
-            if (event.key === Qt.Key_Escape) {
+            if (event.key === Qt.Key_Escape)
                 launcherWindow.visible = !launcherWindow.visible;
-            }
+
         }
     }
+
 }

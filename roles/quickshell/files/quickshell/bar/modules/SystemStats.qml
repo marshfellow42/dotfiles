@@ -1,5 +1,6 @@
 import QtQuick
 import qs.theme
+import "components"
 
 /**
  * A unified system status indicator for Internet, Audio (Pipewire) and Power (UPower).
@@ -15,11 +16,12 @@ Rectangle {
 
     Row {
         id: contentLayout
+
         anchors.centerIn: parent
         spacing: 16
 
-        NetworkModule {
-            id: networkModule
+        NetworkComponent {
+            id: networkComponent
         }
 
         // --- Separator ---
@@ -30,8 +32,8 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        VolumeModule {
-            id: volumeModule
+        VolumeComponent {
+            id: volumeComponent
         }
 
         // --- Separator ---
@@ -43,8 +45,10 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        BatteryModule {
-            id: batteryModule
+        BatteryComponent {
+            id: batteryComponent
         }
+
     }
+
 }

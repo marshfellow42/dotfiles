@@ -1,13 +1,11 @@
-pragma Singleton
 import QtQuick
+pragma Singleton
 
 QtObject {{
     readonly property string wallpaper: "{wallpaper}"
-
     readonly property color background: "{background}"
     readonly property color foreground: "{foreground}"
     readonly property color cursor:     "{cursor}"
-
     readonly property color color0:  "{color0}"
     readonly property color color1:  "{color1}"
     readonly property color color2:  "{color2}"

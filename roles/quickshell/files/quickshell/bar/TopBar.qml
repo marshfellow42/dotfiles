@@ -77,6 +77,10 @@ Variants {
 
             spacing: 10
 
+            CurrentWeather {
+                id: currentWeather
+            }
+
             SystemStats {
                 id: statusModule
             }

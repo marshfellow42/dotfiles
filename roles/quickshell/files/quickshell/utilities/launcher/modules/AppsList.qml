@@ -9,24 +9,27 @@ Item {
     property real launcherWindowWidth
     property real launcherWindowHeight
     property string searchQuery
+    readonly property var allDesktopApps: DesktopEntries.applications.values
+    readonly property var nameSortedDesktopApps: allDesktopApps.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    })
+    readonly property var filteredApps: nameSortedDesktopApps.filter((app) => {
+        return app.name.toLowerCase().includes(searchQuery.toLowerCase());
+    })
 
     implicitWidth: launcherWindowWidth
     implicitHeight: launcherWindowHeight
 
-    readonly property var allDesktopApps: DesktopEntries.applications.values
-    readonly property var nameSortedDesktopApps: allDesktopApps.sort((a, b) => a.name.localeCompare(b.name));
-    readonly property var filteredApps: nameSortedDesktopApps.filter(app =>
-        app.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-
     ListView {
         id: appLauncherListView
+
         anchors.fill: parent
         model: filteredApps
         spacing: 15
 
         delegate: Rectangle {
             id: appContainer
+
             implicitWidth: appLauncherList.implicitWidth
             implicitHeight: 70
             color: WalColors.color10
@@ -41,49 +44,59 @@ Item {
 
                 IconImage {
                     id: appIcon
+
                     implicitSize: 24
                     anchors.verticalCenter: parent.verticalCenter
                     asynchronous: true
                     source: {
-                        if (!modelData.icon || modelData.icon === "") {
-                            return "image://icon/application-x-executable"
-                        }
-                        if (modelData.icon.startsWith("/")) {
-                            return "file://" + modelData.icon
-                        }
-                        return "image://icon/" + modelData.icon
+                        if (!modelData.icon || modelData.icon === "")
+                            return "image://icon/application-x-executable";
+
+                        if (modelData.icon.startsWith("/"))
+                            return "file://" + modelData.icon;
+
+                        return "image://icon/" + modelData.icon;
                     }
                     onStatusChanged: {
                         if (status === Image.Error)
-                            source = "image://icon/application-x-executable"
+                            source = "image://icon/application-x-executable";
+
                     }
                 }
 
                 Text {
                     id: appName
+
                     verticalAlignment: Text.AlignVCenter
                     height: appContainer.height
                     color: WalColors.foreground
+                    text: modelData.name
+
                     font {
                         family: "Google Sans Medium"
                         pixelSize: 24
                     }
-                    text: modelData.name
+
                 }
+
             }
 
             HoverHandler {
                 id: appContainerMouseArea
+
                 cursorShape: Qt.PointingHandCursor
             }
 
             TapHandler {
                 gesturePolicy: TapHandler.ReleaseWithinBounds
                 onTapped: {
-                    modelData.execute()
+                    modelData.execute();
                     launcherWindow.visible = !launcherWindow.visible;
                 }
             }
+
         }
+
     }
+
 }
