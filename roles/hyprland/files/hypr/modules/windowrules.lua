@@ -38,3 +38,12 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+hl.window_rule({
+    name  = "float-impala-wifi",
+    match = { class = "impala-wifi" },
+
+    size = {800, 550},
+    float = true,
+    center = true
+})

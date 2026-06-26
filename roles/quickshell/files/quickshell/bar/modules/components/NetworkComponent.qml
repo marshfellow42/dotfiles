@@ -1,4 +1,6 @@
 import QtQuick
+import Quickshell
+import Quickshell.Io
 import Quickshell.Networking
 import qs.theme
 
@@ -67,5 +69,16 @@ Row {
     HoverHandler {
         id: networkMouseArea
         cursorShape: Qt.PointingHandCursor
+    }
+
+    Process {
+        id: wifiTui
+
+        command: ["kitty", "--class", "impala-wifi", "-e", "impala"]
+    }
+
+    TapHandler {
+        gesturePolicy: TapHandler.ReleaseWithinBounds
+        onTapped: wifiTui.running = true
     }
 }
